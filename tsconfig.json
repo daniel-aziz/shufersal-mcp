@@ -10,13 +10,14 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "lib": [
-      "es2017",
+      "es2022",
       "dom"
-    ]
+    ],
+    "noEmitOnError": true
   },
   "include": [
-    "./**/*.ts"
+    "src/**/*.ts"
   ]
 }
