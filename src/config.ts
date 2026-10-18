@@ -1,9 +1,25 @@
-/**
- * Configuration constants for the Shufersal MCP server
- */
-export const CONFIG = {
-	SHUFERSAL_BASE_URL: "https://www.shufersal.co.il/online/he/",
-	USER_DATA_DIR: process.env.PUPPETEER_USER_DATA_DIR || "./puppeteer-user-data",
-	SEARCH_ITEMS_LIMIT: parseInt(process.env.SEARCH_ITEMS_LIMIT || "15"),
-	DEFAULT_WAIT_TIMEOUT: parseInt(process.env.DEFAULT_WAIT_TIMEOUT || "2000"),
-};
+import { homedir } from "node:os";
+import { join, resolve } from "node:path";
+import { z } from "zod";
+
+const envSchema = z.object({
+    SHUFERSAL_STATE_DIR: z.string().min(1).default(join(homedir(), ".local", "state", "shufersal-mcp")),
+    SHUFERSAL_SITE_PROFILE: z.string().min(1).optional(),
+    SHUFERSAL_BROWSER_URL: z.string().url().optional(),
+    PUPPETEER_EXECUTABLE_PATH: z.string().min(1).optional(),
+    SHUFERSAL_HEADLESS: z.enum(["true", "false"]).default("false"),
+    SHUFERSAL_ENABLE_CHECKOUT: z.enum(["true", "false"]).default("false"),
+});
+export function readConfig() {
+    const env = envSchema.parse(process.env);
+    const stateDirectory = resolve(env.SHUFERSAL_STATE_DIR);
+    return {
+        stateDirectory,
+        siteProfile: env.SHUFERSAL_SITE_PROFILE,
+        checkoutEnabled: env.SHUFERSAL_ENABLE_CHECKOUT === "true",
+        browser: {
+            profile: join(stateDirectory, "browser"), browserURL: env.SHUFERSAL_BROWSER_URL,
+            executablePath: env.PUPPETEER_EXECUTABLE_PATH, headless: env.SHUFERSAL_HEADLESS === "true",
+        },
+    };
+}

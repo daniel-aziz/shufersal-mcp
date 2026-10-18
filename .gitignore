@@ -12,3 +12,9 @@ dist/
 
 # Puppeteer user data (contains sensitive browser data)
 puppeteer-user-data/
+.env
+.env.*
+*.local.json
+coverage/
+test-results/
+.shufersal-state/
