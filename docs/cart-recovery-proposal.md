@@ -1,3 +1,5 @@
+> The original terminal design below remains available. The supported Dot flow is now documented in [Owner-approved recovery in Dot](../README.md#owner-approved-recovery-in-dot). It records a distinct `mcp_owner` client-attested approval with snapshot-bound targets; it does not claim OS-authenticated human presence. The original evidence limitations still apply.
+
 # Recovery of an uncertain cart operation
 
 Status: implemented as read-only MCP assessment plus an interactive local operator command. No live resolution has been performed. Future server receipt/dispatch instrumentation below is not implemented.

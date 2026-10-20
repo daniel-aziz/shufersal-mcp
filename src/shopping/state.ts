@@ -32,10 +32,16 @@ const operationSchema = z.object({
         context.addIssue({ code: "custom", message: "Incomplete operator resolution" }); return;
     }
     try {
-        if (r.requestFingerprint !== recoveryFingerprint({ operationId: r.operationId, resolutionId: r.resolutionId, expectedRevision: r.reviewedRevision, reason: r.reason })
+        if (r.requestFingerprint !== recoveryFingerprint(r.ownerRequest ?? { operationId: r.operationId, resolutionId: r.resolutionId, expectedRevision: r.reviewedRevision, reason: r.reason })
             || r.observedCart.accountId !== before.accountId || r.reviewedRevision !== revision(r.observedCart)
             || r.beforeQuantity !== quantity(before, product) || r.observedQuantity !== quantity(r.observedCart, product)
             || r.targetQuantity !== operation.targetQuantity) throw new Error("Resolution mismatch");
+        if (r.approval.channel === "mcp_owner") {
+            const request = r.ownerRequest;
+            if (!request || request.operationId !== r.operationId || request.resolutionId !== r.resolutionId
+                || request.expectedRevision !== r.reviewedRevision || request.reason !== r.reason
+                || JSON.stringify({ channel: "mcp_owner", ...request.ownerApproval }) !== JSON.stringify(r.approval)) throw new Error("Owner approval mismatch");
+        } else if (r.ownerRequest) throw new Error("Unexpected owner request");
         for (const cart of [before, r.observedCart]) for (const line of cart.items) quantity(cart, line);
     } catch { context.addIssue({ code: "custom", message: "Resolution does not match its evidence" }); }
 });

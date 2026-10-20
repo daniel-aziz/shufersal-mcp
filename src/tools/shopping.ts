@@ -1,3 +1,4 @@
+import { ownerRecoverySchema, targetsSchema } from "../shopping/recovery.js";
 import { replenishmentInput } from "../shopping/replenishment.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
@@ -10,11 +11,12 @@ const guard = { expectedRevision: z.string().regex(/^[a-f0-9]{64}$/), operationI
 const product = { productId: z.string().min(1), sellingMethod: z.string().min(1) };
 
 export function registerShoppingTools(server: McpServer, service: ShoppingService) {
-    function tool<T extends z.ZodRawShape>(name: string, description: string, schema: T, mutation: boolean, action: (input: z.infer<z.ZodObject<T>>) => Promise<unknown>) {
+    function tool<T extends z.ZodRawShape>(name: string, description: string, schema: T, mutation: boolean, action: (input: z.infer<z.ZodObject<T>>) => Promise<unknown>, selfSerialized = false) {
         const inputSchema: z.ZodRawShape = schema;
         server.registerTool(name, { description, inputSchema, annotations: mutation ? write : readOnly }, async input => {
             try {
-                const result = await service.run(async () => action(z.object(schema).parse(input)));
+                const execute = async () => action(z.object(schema).parse(input));
+                const result = selfSerialized ? await execute() : await service.run(execute);
                 return { content: [{ type: "text", text: JSON.stringify({ ok: true, result }) }] };
             } catch (error) {
                 const code = error instanceof ShoppingError ? error.code : "SITE_CONTRACT_FAILED";
@@ -41,7 +43,10 @@ export function registerShoppingTools(server: McpServer, service: ShoppingServic
     tool("select_shufersal_delivery_slot", "Select and verify an available slot. Read the cart again for the changed delivery fee and revision.", { ...guard, slotId: z.string().min(1) }, true, async input => service.selectSlot(input));
     tool("prepare_shufersal_checkout", "Read a fresh approval summary and possible duplicate orders. Does not submit. Caller owns human approval.", {}, false, async () => service.prepareCheckout());
     tool("submit_shufersal_order", "Purchase only after external approval of expectedRevision. Requires operator-enabled checkout and confirmed=true. Unknown outcomes block further writes.", { ...guard, confirmed: z.literal(true) }, true, async input => service.submit(input));
-    tool("assess_shufersal_cart_recovery", "Read-only assessment of a pending cart operation. Reports current and intended quantities and unrelated quantity changes, without resolving it or enabling replay. Operator acceptance requires the interactive local command.", { operationId: z.string().uuid() }, false, async ({ operationId }) => service.assessCartOperation(operationId));
+    tool("prepare_shufersal_cart_recovery", "Read a fresh complete cart and compare absolute target quantities. Present the full snapshot, revision, targets, missing quantities and unknown history to the owner. No writes or approvals are performed.", { operationId: z.string().uuid(), targets: targetsSchema }, false, async input => service.prepareOwnerRecovery(input));
+    tool("accept_shufersal_cart_recovery", "Only after explicit owner approval of the prepared revision and absolute targets: record acceptance of current state, preserving unknown history. Supply the owner's identity and approval message/reference, never fabricate approval or infer it from general automation permission. Owner must acknowledge outstanding requests investigated and unknown outcome. Does not modify cart. CART_CHANGED requires a fresh prepare and new approval. Client is responsible for authenticating owner approval.", ownerRecoverySchema.shape, true, async input => service.acceptOwnerRecovery(input), true);
+    tool("resume_shufersal_cart_recovery", "Add only the missing quantity for one approved product after a fresh cart read. Use the accepted operationId/resolutionId and current expectedRevision. Repeated calls never replay a recorded addition. On CART_CHANGED read and reassess; on OUTCOME_UNKNOWN recover the returned child operation with new owner approval. Never remove excess or unrelated items. Checkout remains separate and disabled.", { ...product, operationId: z.string().uuid(), resolutionId: z.string().uuid(), expectedRevision: guard.expectedRevision }, true, async input => service.resumeOwnerRecovery(input));
+    tool("assess_shufersal_cart_recovery", "Read-only assessment of a pending cart operation. Reports current and intended quantities and unrelated quantity changes, without resolving it or enabling replay. Use prepare_shufersal_cart_recovery and explicit owner approval to accept a new baseline.", { operationId: z.string().uuid() }, false, async ({ operationId }) => service.assessCartOperation(operationId));
     tool("reconcile_shufersal_cart", "Read the cart to resolve an uncertain quantity change. Never repeats a mutation; requires all other items to match the saved snapshot.", { operationId: z.string().uuid() }, false, async ({ operationId }) => service.reconcileCart(operationId));
     tool("get_shufersal_operation", "Inspect saved operation outcome. A pending operation must never be blindly retried.", { operationId: z.string().uuid() }, false, async ({ operationId }) => service.operation(operationId));
     tool("reconcile_shufersal_checkout", "Read history to resolve an uncertain checkout. Never submits another order; records the matching order number if proven.", { operationId: z.string().uuid() }, false, async ({ operationId }) => service.reconcileCheckout(operationId));

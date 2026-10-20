@@ -69,7 +69,7 @@ test('replenishment plans from stock and history, preserves team items and stops
     } finally { await connection.close(); }
 });
 
-test('MCP exposes read-only recovery assessment but no operator resolution action', async () => {
+test('MCP exposes read-only recovery assessment without implicitly resolving the operation', async () => {
     const site = new FakeSite(); const journal = new MemoryJournal(); const operationId = randomUUID();
     const before = structuredClone(site.current);
     journal.entries[operationId] = { fingerprint: 'fixture', kind: 'cart', status: 'pending', cartBefore: before, product: { productId: 'milk', sellingMethod: 'unit' }, targetQuantity: 8 };
@@ -77,7 +77,7 @@ test('MCP exposes read-only recovery assessment but no operator resolution actio
     try {
         const tools = (await connection.client.listTools()).tools;
         assert.equal(tools.find(tool => tool.name === 'assess_shufersal_cart_recovery').annotations.readOnlyHint, true);
-        assert.equal(tools.some(tool => /accept_current|resolve.*operator/.test(tool.name)), false);
+        assert.equal(tools.find(tool => tool.name === 'accept_shufersal_cart_recovery').annotations.readOnlyHint, false);
         const response = result(await connection.client.callTool({ name: 'assess_shufersal_cart_recovery', arguments: { operationId } }));
         assert.equal(response.result.currentQuantity, 2);assert.equal(response.result.historicalOutcome, 'unknown');
         assert.equal(journal.entries[operationId].status, 'pending');assert.deepEqual(site.current, before);
