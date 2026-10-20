@@ -1,3 +1,4 @@
+import { planReplenishment, replenishmentSchema } from "./replenishment.js";
 import { createHash } from "node:crypto";
 import { cartSchema, orderSchema, possibleDuplicates, quantity, revision, sameProduct, ShoppingError, slotSchema, type ProductKey, type ShoppingSite } from "./model.js";
 import { type Journal, SerialQueue, type Operation } from "./state.js";
@@ -14,6 +15,11 @@ export class ShoppingService {
         return { ...cart, revision: revision(cart) };
     }
     async orders() { return orderSchema.array().parse(await this.site.readOrders()); }
+    async planReplenishment(input: unknown) {
+        const parsed = replenishmentSchema.parse(input);
+        const history = await this.orders();
+        return planReplenishment(cartSchema.parse(await this.cart()), history, parsed);
+    }
     async slots() { return slotSchema.array().parse(await this.site.readSlots()); }
     async operation(operationId: string) {
         const entry = (await this.journal.load())[operationId];

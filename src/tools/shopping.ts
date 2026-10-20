@@ -1,3 +1,4 @@
+import { replenishmentInput } from "../shopping/replenishment.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { ShoppingError } from "../shopping/model.js";
@@ -22,6 +23,7 @@ export function registerShoppingTools(server: McpServer, service: ShoppingServic
             }
         });
     }
+    tool("plan_shufersal_replenishment", "Plan office replenishment without changing the cart. Select 2–8 representative delivered order numbers from history; do not assume listing order is chronological. Map the user stock update to exact product IDs and selling methods. Unlisted stock stays unknown unless the user explicitly says it is empty. Optional target overrides the historical median. Existing cart quantities count toward the target and are never removed.", replenishmentInput, false, async input => service.planReplenishment(input));
     tool("open_shufersal", "Open the dedicated shopping page. The optional configured 1Password provider handles login. No shopping-list prerequisite.", {}, false, async () => service.open());
     tool("search_shufersal", "Search products using the browser session. Returns product IDs, selling methods and prices.", { query: z.string().trim().min(1).max(200) }, false, async ({ query }) => service.search(query));
     tool("get_shufersal_cart", "Read cart lines, prices, total and revision. Unknown address, delivery and substitution fields are null; estimated summaries are not purchase-ready.", {}, false, async () => service.cart());

@@ -133,3 +133,19 @@ test('unverified live capabilities fail before recording or attempting a write',
     await assert.rejects(service.submit({expectedRevision:revision(site.current),operationId:'checkout',confirmed:true}),code('LIVE_CHECKOUT_NOT_VERIFIED'));
     assert.deepEqual(await journal.load(),{}); assert.equal(site.writes,0); assert.equal(site.submits,0);
 });
+
+
+test('replenishment rejects duplicate or foreign baselines and requires review of fractional unit targets', async () => {
+    const { site, service } = setup();
+    site.history = [3, 4].map((amount, i) => { const baseline = cart(); baseline.items[0].quantity = amount; return { orderNumber: String(i), status: 'delivered', cart: baseline }; });
+    const input = { orderNumbers: ['0', '1'], unlistedStockIsEmpty: true };
+    const plan = await service.planReplenishment(input);
+    assert.equal(plan.lines[0].target, 3.5); assert.equal(plan.ready, false);
+    const override = await service.planReplenishment({ ...input, stock: [{ productId: 'milk', sellingMethod: 'unit', remaining: 10, target: 4 }] });
+    assert.equal(override.ready, true); assert.equal(override.lines[0].addQuantity, 0);
+    await assert.rejects(service.planReplenishment({ ...input, orderNumbers: ['0', '0'] }), code('DUPLICATE_INPUT'));
+    await assert.rejects(service.planReplenishment({ ...input, stock: [{ productId: 'unknown', sellingMethod: 'unit', remaining: 0 }] }), code('UNKNOWN_STOCK_PRODUCT'));
+    site.history[0].cart.accountId = 'other-account';
+    await assert.rejects(service.planReplenishment(input), code('INVALID_BASELINE'));
+    assert.equal(site.writes, 0);
+});

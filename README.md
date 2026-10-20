@@ -98,7 +98,7 @@ The dedicated profile and journal live outside the repository by default, under 
 | `PUPPETEER_EXECUTABLE_PATH` | Puppeteer's installed browser |
 | `SHUFERSAL_ENABLE_CHECKOUT` | `false` |
 
-No Slack, order cadence, unusual-purchase rules or office delivery preferences are embedded in the server. Tuesday timing, the ₪100 warning and historical quantity checks belong in the private workflow. The server reads substitution policies but does not automatically choose replacements.
+No Slack, scheduling or office delivery preferences are embedded in the server. Replenishment suggestions are available through `plan_shufersal_replenishment`. Tuesday timing, the ₪100 warning and historical quantity checks belong in the private workflow. The server reads substitution policies but does not automatically choose replacements.
 
 ## Site profile and live verification
 
@@ -157,3 +157,18 @@ Keep this JSON outside Git with owner-only permissions; values below are referen
 Pass `SHUFERSAL_CONFIG_FILE=/absolute/private/path/config.json` in the MCP client environment or when running `npm run auth` / `npm run verify:live`. The same state directory is reused across browser restarts. Credentials are never MCP arguments or tool results. Local 1Password approval, MFA and CAPTCHA cannot be promised away for unattended runs.
 
 The separate opt-in command `npm run verify:cart -- --allow-cart-changes` adds one low-cost test product, verifies idempotency/stale revisions, changes its quantity, removes it, and checks exact original-cart restoration. It forces checkout off. It writes an owner-only recovery baseline outside Git. On an uncertain outcome, it stops and reports the need to inspect/reconcile rather than repeating a mutation. Run only when colleagues are not editing the cart. CI never runs it.
+
+
+## Replenishment with ChatGPT Dot
+
+Dot owns execution and scheduling; no local scheduler is required. The existing Google Calendar Task remains unchanged. Use this workflow for each grocery cycle:
+
+1. Read `get_shufersal_orders` and select 2–8 representative delivered office orders for the same account. Prefer recent orders when delivery dates are available. Never infer recency from listing order or order numbers. Ask which sample to use if office orders cannot be distinguished. Preserve the chosen sample for the cycle.
+2. Call `plan_shufersal_replenishment` with `orderNumbers` and initially empty `stock`. It returns recurring products and missing stock questions. A regular product occurs in at least half the sample and at least two orders; its suggested target is the median quantity across the sample, including absent products as zero. This is a purchase-based suggestion, not a consumption forecast; unusual ordering intervals or bulk purchases need target overrides.
+3. Ask one short stock question using product names and units. Map the answer to exact product IDs and selling methods. `remaining` is office stock, separate from items already in the cart. `target` optionally overrides the suggested total supply. Do not treat an omitted product as empty. Set `unlistedStockIsEmpty` only when the user explicitly says all remaining listed stock is empty. Clarify ambiguous brands, package sizes and fractional unit targets.
+4. Replan with stock. The added quantity is `max(0, target - remaining - inCart)`. One-off purchases default to zero; a target override can include them. New products use search and the existing guarded cart tools. Resolve active orders before adding anything. `ready` means stock/quantity inputs are complete and no active order was found; it does not certify prices, availability or checkout readiness.
+5. Search current products to verify exact IDs, selling methods, availability and prices. Flag prices over ₪100 per unit and unusual quantities/products for review; never silently select a replacement. Historical prices are not used for a current quote.
+6. Re-read/replan if the cart has changed. Use `add_to_shufersal_cart` only for positive additions, sequentially. Start with the plan's `cartRevision` and use each successful write's returned revision for the next. Persist the UUID and exact arguments in Dot's cycle state before each call. Never decrease existing quantities or remove team items. On a stale revision, replan against the new cart; on an uncertain outcome, inspect/reconcile the original operation before doing more work. Retrying a completed operation uses its original UUID and arguments.
+7. Read the final cart and return the actual items and total with unknown/estimated fields clearly marked. No Slack sends, delivery selection or checkout are part of this step. Final order approval remains separate.
+
+The planning tool is read-only; it does not persist stock updates or purchase history in the repository. Dot must securely retain cycle context and operation IDs across its own restarts. The MCP's protected journal retains cart operation results. A request with unknown products, duplicate stock keys, duplicate order IDs, non-delivered orders or foreign-account orders is rejected.
