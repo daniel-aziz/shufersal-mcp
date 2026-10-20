@@ -9,8 +9,8 @@ export const lineSchema = z.object({
     name: id,
     unit: id,
     quantity: z.number().finite().positive(),
-    unitPrice: money,
-    lineTotal: money,
+    unitPrice: money.nullable(),
+    lineTotal: money.nullable(),
     substitution: id.nullable(),
     comment: z.string().optional(),
 });
@@ -25,7 +25,7 @@ export const cartSchema = z.object({
     address: id.nullable(),
     delivery: slotSchema.nullable(),
     deliveryFee: money.nullable(),
-    total: money,
+    total: money.nullable(),
     currency: z.literal("ILS"),
     estimated: z.boolean(),
 });
@@ -80,4 +80,19 @@ export interface ShoppingSite {
     setQuantity(key: ProductKey, amount: number): Promise<void>;
     selectSlot(slotId: string): Promise<void>;
     submit(expectedRevision: string): Promise<void>;
+}
+
+export function hasCompleteMoney(cart: Cart): boolean {
+    return cart.total !== null && cart.deliveryFee !== null
+        && cart.items.every(item => item.unitPrice !== null && item.lineTotal !== null);
+}
+
+/** Prices can refresh independently of a quantity write; all non-monetary row data must still match. */
+export function cartContents(cart: Cart, excluded: ProductKey): string {
+    for (const line of cart.items) quantity(cart, line);
+    return JSON.stringify(cart.items.filter(line => !sameProduct(line, excluded)).map(line => ({
+        productId: line.productId, sellingMethod: line.sellingMethod, quantity: line.quantity,
+        name: line.name, unit: line.unit, substitution: line.substitution, comment: line.comment,
+    }))
+        .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))));
 }

@@ -1,6 +1,6 @@
 import { planReplenishment, replenishmentSchema } from "./replenishment.js";
 import { createHash } from "node:crypto";
-import { cartSchema, orderSchema, possibleDuplicates, quantity, revision, sameProduct, ShoppingError, slotSchema, type ProductKey, type ShoppingSite } from "./model.js";
+import { cartSchema, cartContents, hasCompleteMoney, orderSchema, possibleDuplicates, quantity, revision, ShoppingError, slotSchema, type ProductKey, type ShoppingSite } from "./model.js";
 import { type Journal, SerialQueue, type Operation } from "./state.js";
 
 export class ShoppingService {
@@ -12,6 +12,7 @@ export class ShoppingService {
     async search(query: string) { return this.site.search(query); }
     async cart() {
         const cart = cartSchema.parse(await this.site.readCart());
+        for (const line of cart.items) quantity(cart, line);
         return { ...cart, revision: revision(cart) };
     }
     async orders() { return orderSchema.array().parse(await this.site.readOrders()); }
@@ -81,8 +82,7 @@ export class ShoppingService {
         for (let attempt = 0; attempt < 3; attempt++) {
             try {
                 const after = await this.cart();
-                const others = (cart: typeof cartBefore) => JSON.stringify(cart.items.filter(line => !sameProduct(line, product)).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))));
-                if (quantity(after, product) === targetQuantity && others(cartBefore) === others(after)
+                if (quantity(after, product) === targetQuantity && cartContents(cartBefore, product) === cartContents(after, product)
                     && cartBefore.accountId === after.accountId && cartBefore.address === after.address
                     && JSON.stringify(cartBefore.delivery) === JSON.stringify(after.delivery)) {
                     return { revision: after.revision, ...product, quantity: targetQuantity };
@@ -122,6 +122,7 @@ export class ShoppingService {
 
     async prepareCheckout() {
         const cart = await this.cart();
+        if (!hasCompleteMoney(cart)) throw new ShoppingError("INCOMPLETE_CHECKOUT", "Verified prices, line totals, delivery fee and total are required before final approval.");
         const duplicates = possibleDuplicates(cart, await this.orders());
         return { cart, possibleDuplicateOrderNumbers: duplicates, checkoutEnabled: this.checkoutEnabled, readAt: new Date().toISOString() };
     }
@@ -134,7 +135,7 @@ export class ShoppingService {
         const orders = await this.orders();
         const cart = await this.cart();
         if (cart.revision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "The checkout summary changed. Obtain approval again.");
-        if (!cart.delivery || !cart.items.length || cart.estimated || !cart.address || cart.deliveryFee === null || cart.items.some(item => item.substitution === null)) throw new ShoppingError("INCOMPLETE_CHECKOUT", "Checkout requires items, a delivery window, and an exact total.");
+        if (!cart.delivery || !cart.items.length || cart.estimated || !cart.address || !hasCompleteMoney(cart) || cart.items.some(item => item.substitution === null)) throw new ShoppingError("INCOMPLETE_CHECKOUT", "Checkout requires items, a delivery window, and an exact total.");
         if (Date.parse(cart.delivery.start) <= Date.now()) throw new ShoppingError("SLOT_EXPIRED", "The delivery window is no longer valid.");
         if (possibleDuplicates(cart, orders).length) throw new ShoppingError("POSSIBLE_DUPLICATE_ORDER", "An active order already exists for this address and delivery day. Review it before checkout.");
         operations[input.operationId].checkoutRevision = input.expectedRevision;

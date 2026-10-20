@@ -172,3 +172,10 @@ Dot owns execution and scheduling; no local scheduler is required. The existing 
 7. Read the final cart and return the actual items and total with unknown/estimated fields clearly marked. No Slack sends, delivery selection or checkout are part of this step. Final order approval remains separate.
 
 The planning tool is read-only; it does not persist stock updates or purchase history in the repository. Dot must securely retain cycle context and operation IDs across its own restarts. The MCP's protected journal retains cart operation results. A request with unknown products, duplicate stock keys, duplicate order IDs, non-delivered orders or foreign-account orders is rejected.
+
+
+### Cart quantities when money is unavailable
+
+Live cart reads retain validated product IDs, selling methods, quantities and notes when prices or totals cannot be read unambiguously. Unavailable `unitPrice`, `lineTotal`, `deliveryFee` and `total` values are `null`, never substituted with zero or a calculated cart estimate. The existing `estimated` flag does not make null money values usable. The live adapter waits for product rows, rejects malformed/duplicate rows and fails closed when no product rows can be verified (an empty/loading container is not proof of an empty cart).
+
+Cart-write verification and reconciliation compare quantities and non-monetary contents, account, address and selected delivery. Price refreshes cannot alone prevent reconciliation; changed/missing products, duplicate rows and uncertain outcomes still block it. Approval summaries and submission require all monetary fields to be present, and existing checkout restrictions remain in place. Reconciliation never repeats a write. Keep the existing operation ledger intact.
