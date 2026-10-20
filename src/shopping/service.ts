@@ -57,21 +57,49 @@ export class ShoppingService {
         const current = quantity(before, input);
         const target = input.mode === "add" ? current + input.quantity : input.quantity;
         if (input.mode === "set" && current === 0 && target > 0) throw new ShoppingError("PRODUCT_NOT_IN_CART", "Use add_to_shufersal_cart for a new product.");
+        operations[input.operationId].cartBefore = before;
+        operations[input.operationId].product = { productId: input.productId, sellingMethod: input.sellingMethod };
+        operations[input.operationId].targetQuantity = target;
         return this.perform(input.operationId, operations, async () => {
             if (current !== target) {
                 if (input.mode === "add") await this.site.add(input, input.quantity, input.comment);
                 else await this.site.setQuantity(input, target);
             }
-            const after = await this.cart();
-            if (quantity(after, input) !== target) throw new Error("Quantity not verified");
-            const otherBefore = before.items.filter(line => !sameProduct(line, input));
-            const otherAfter = after.items.filter(line => !sameProduct(line, input));
-            if (JSON.stringify(otherBefore) !== JSON.stringify(otherAfter)) throw new Error("Concurrent cart edit");
-            return { revision: after.revision, productId: input.productId, sellingMethod: input.sellingMethod, quantity: target };
+            return this.verifyCartChange(operations[input.operationId]);
         });
     }
 
+    private async verifyCartChange(operation: Operation) {
+        const { cartBefore, product, targetQuantity } = operation;
+        if (!cartBefore || !product || targetQuantity === undefined) throw new ShoppingError("RECOVERY_DATA_MISSING", "This older operation needs manual inspection before recovery.");
+        for (let attempt = 0; attempt < 3; attempt++) {
+            try {
+                const after = await this.cart();
+                const others = (cart: typeof cartBefore) => JSON.stringify(cart.items.filter(line => !sameProduct(line, product)).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))));
+                if (quantity(after, product) === targetQuantity && others(cartBefore) === others(after)
+                    && cartBefore.accountId === after.accountId && cartBefore.address === after.address
+                    && JSON.stringify(cartBefore.delivery) === JSON.stringify(after.delivery)) {
+                    return { revision: after.revision, ...product, quantity: targetQuantity };
+                }
+            } catch { /* Retry only the read, never the mutation. */ }
+            if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        throw new ShoppingError("OUTCOME_UNKNOWN", "Cart read-back did not prove the intended change. Inspect and reconcile; do not repeat the write.");
+    }
+
+    async reconcileCart(operationId: string) {
+        const operations = await this.journal.load();
+        const operation = operations[operationId];
+        if (!operation || operation.kind !== "cart") throw new ShoppingError("UNKNOWN_OPERATION", "This is not a cart operation.");
+        if (operation.status === "complete") return operation.result;
+        const result = await this.verifyCartChange(operation);
+        operations[operationId] = { ...operation, status: "complete", result };
+        await this.journal.save(operations);
+        return result;
+    }
+
     async selectSlot(input: { slotId: string; expectedRevision: string; operationId: string }) {
+        if (this.site.capabilities?.selectSlot === false) throw new ShoppingError("DELIVERY_SELECTION_NOT_VERIFIED", "This adapter supports reading slots, but selection is not yet verified.");
         const { operations, existing } = await this.begin(input.operationId, input, "delivery");
         if (existing) return existing.result;
         const before = await this.cart();
@@ -94,12 +122,13 @@ export class ShoppingService {
 
     async submit(input: { expectedRevision: string; operationId: string; confirmed: true }) {
         if (!this.checkoutEnabled) throw new ShoppingError("CHECKOUT_DISABLED", "Checkout is disabled until the site adapter has been verified and checkout explicitly enabled by the operator.");
+        if (this.site.capabilities?.submit === false) throw new ShoppingError("LIVE_CHECKOUT_NOT_VERIFIED", "This adapter has not verified the final purchase page. No checkout will be attempted.");
         const { operations, existing } = await this.begin(input.operationId, input, "checkout");
         if (existing) return existing.result;
         const orders = await this.orders();
         const cart = await this.cart();
         if (cart.revision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "The checkout summary changed. Obtain approval again.");
-        if (!cart.delivery || !cart.items.length || cart.estimated) throw new ShoppingError("INCOMPLETE_CHECKOUT", "Checkout requires items, a delivery window, and an exact total.");
+        if (!cart.delivery || !cart.items.length || cart.estimated || !cart.address || cart.deliveryFee === null || cart.items.some(item => item.substitution === null)) throw new ShoppingError("INCOMPLETE_CHECKOUT", "Checkout requires items, a delivery window, and an exact total.");
         if (Date.parse(cart.delivery.start) <= Date.now()) throw new ShoppingError("SLOT_EXPIRED", "The delivery window is no longer valid.");
         if (possibleDuplicates(cart, orders).length) throw new ShoppingError("POSSIBLE_DUPLICATE_ORDER", "An active order already exists for this address and delivery day. Review it before checkout.");
         operations[input.operationId].checkoutRevision = input.expectedRevision;

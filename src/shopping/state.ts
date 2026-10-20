@@ -1,7 +1,7 @@
 import { mkdir, open, readFile, rename, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
-import { ShoppingError } from "./model.js";
+import { cartSchema, ShoppingError } from "./model.js";
 
 const operationSchema = z.object({
     fingerprint: z.string(),
@@ -10,6 +10,9 @@ const operationSchema = z.object({
     result: z.unknown().optional(),
     checkoutRevision: z.string().optional(),
     previousOrders: z.array(z.string()).optional(),
+    cartBefore: cartSchema.optional(),
+    product: z.object({ productId: z.string(), sellingMethod: z.string() }).optional(),
+    targetQuantity: z.number().nonnegative().optional(),
 });
 export type Operation = z.infer<typeof operationSchema>;
 export interface Journal {

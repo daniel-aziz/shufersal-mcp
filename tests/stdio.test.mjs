@@ -12,7 +12,7 @@ test('compiled entry point exposes tools over stdio without launching a browser 
     const client=new Client({name:'stdio-test',version:'1'});
     try {
         await client.connect(transport);
-        assert.equal((await client.listTools()).tools.length,14);
+        assert.equal((await client.listTools()).tools.length,16);
         const response=await client.callTool({name:'create_shopping_list_table',arguments:{recipe:[{ingredient:'Milk | Oat',quantity:'2',unit_of_measure:'litre'}]}});
         assert.match(response.content[0].text,/Milk &#124; Oat/);
         const cart=await client.callTool({name:'get_shufersal_cart',arguments:{}});

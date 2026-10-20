@@ -104,3 +104,32 @@ test('file journal survives reload and ownership is exclusive', async () => {
         await release(); const releaseAgain = await acquireOwnership(directory); await releaseAgain();
     } finally { await rm(directory, { recursive: true, force: true }); }
 });
+
+
+test('uncertain cart writes reconcile after restart without repeating the mutation', async () => {
+    const { site, journal, service } = setup(); site.failAfterWrite = true;
+    const request = input(site);
+    await assert.rejects(service.changeQuantity(request), code('OUTCOME_UNKNOWN'));
+    const restarted = new ShoppingService(site, journal);
+    site.current.items.push({ ...site.current.items[0], productId: 'team-addition' });
+    await assert.rejects(restarted.reconcileCart(request.operationId), code('OUTCOME_UNKNOWN'));
+    site.current.items.pop();
+    const result = await restarted.reconcileCart(request.operationId);
+    assert.equal(result.quantity, 3); assert.equal(site.writes, 1);
+    assert.deepEqual(await restarted.changeQuantity(request), result); assert.equal(site.writes, 1);
+});
+
+test('cart mutation tolerates a transient read failure without writing twice', async () => {
+    const { site, service } = setup(); const read = site.readCart.bind(site); let reads = 0;
+    site.readCart = async () => { if (++reads === 2) throw Error('transient'); return read(); };
+    const result = await service.changeQuantity(input(site));
+    assert.equal(result.quantity, 3); assert.equal(site.writes, 1); assert.equal(reads, 3);
+});
+
+
+test('unverified live capabilities fail before recording or attempting a write', async () => {
+    const { site, journal, service } = setup(); site.capabilities = {selectSlot:false,submit:false};
+    await assert.rejects(service.selectSlot({slotId:'slot-1',expectedRevision:revision(site.current),operationId:'slot'}),code('DELIVERY_SELECTION_NOT_VERIFIED'));
+    await assert.rejects(service.submit({expectedRevision:revision(site.current),operationId:'checkout',confirmed:true}),code('LIVE_CHECKOUT_NOT_VERIFIED'));
+    assert.deepEqual(await journal.load(),{}); assert.equal(site.writes,0); assert.equal(site.submits,0);
+});
