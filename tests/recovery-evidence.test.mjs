@@ -6,6 +6,7 @@ import { FakeSite, MemoryJournal } from './helpers.mjs';
 
 const operationId = 'fixture-uncertain-yogurt';
 const code = expected => error => error.code === expected;
+const originalEvidence = entries => Object.fromEntries(Object.entries(entries).map(([id, entry]) => [id, Object.fromEntries(Object.entries(entry).filter(([key]) => !['evidence','unresolved'].includes(key)))]));
 async function pending(applied) {
     const site = new FakeSite(); const journal = new MemoryJournal();
     site.current.items[0].quantity = 6;
@@ -35,19 +36,20 @@ test('concurrent unrelated quantity edits stay untouched and do not unlock an un
     const beforeRead = structuredClone(site.current); const ledger = structuredClone(journal.entries);
     await assert.rejects(service.reconcileCart(operationId), code('OUTCOME_UNKNOWN'));
     await assert.rejects(service.changeQuantity({ ...request, operationId: 'new-operation', expectedRevision: revision(site.current) }), code('UNRESOLVED_OPERATION'));
-    assert.deepEqual(site.current, beforeRead); assert.deepEqual(journal.entries, ledger); assert.equal(site.writes, 1);
+    assert.deepEqual(site.current, beforeRead); assert.deepEqual(originalEvidence(journal.entries), originalEvidence(ledger)); assert.equal(site.writes, 1);
 });
 
 test('a write that never happened and a concurrent target edit reverting an applied write have identical evidence', async () => {
     const notApplied = await pending(false); const appliedThenReverted = await pending(true);
     appliedThenReverted.site.current.items[0].quantity = 6; appliedThenReverted.site.reprice();
     assert.deepEqual(await notApplied.service.cart(), await appliedThenReverted.service.cart());
-    assert.deepEqual(notApplied.journal.entries, appliedThenReverted.journal.entries);
+    assert.deepEqual(originalEvidence(notApplied.journal.entries), originalEvidence(appliedThenReverted.journal.entries));
     for (const context of [notApplied, appliedThenReverted]) {
         const saved = structuredClone(context.journal.entries);
         await assert.rejects(context.service.reconcileCart(operationId), code('OUTCOME_UNKNOWN'));
         await assert.rejects(context.service.changeQuantity(context.request), code('OUTCOME_UNKNOWN'));
-        assert.deepEqual(context.journal.entries, saved);
+        assert.deepEqual(originalEvidence(context.journal.entries), originalEvidence(saved));
+        assert.ok(context.journal.entries[operationId].evidence.length > saved[operationId].evidence.length);
     }
     assert.equal(notApplied.site.writes, 0); assert.equal(appliedThenReverted.site.writes, 1);
 });
@@ -56,7 +58,7 @@ test('target equality cannot attribute application when another actor can make t
     const applied = await pending(true); const notAppliedThenEdited = await pending(false);
     notAppliedThenEdited.site.current.items[0].quantity = 12; notAppliedThenEdited.site.reprice();
     assert.deepEqual(await applied.service.cart(), await notAppliedThenEdited.service.cart());
-    assert.deepEqual(applied.journal.entries, notAppliedThenEdited.journal.entries);
+    assert.deepEqual(originalEvidence(applied.journal.entries), originalEvidence(notAppliedThenEdited.journal.entries));
     assert.equal(applied.site.writes, 1); assert.equal(notAppliedThenEdited.site.writes, 0);
     // Equal observations support a current postcondition, not attribution of the original request.
     assert.equal(applied.journal.entries[operationId].status, 'pending');

@@ -83,3 +83,23 @@ test('MCP exposes read-only recovery assessment without implicitly resolving the
         assert.equal(journal.entries[operationId].status, 'pending');assert.deepEqual(site.current, before);
     } finally { await connection.close(); }
 });
+
+test('MCP absolute-target batch and unresolved listing are wired and duplicate IDs cannot dispatch', async () => {
+    const site = new FakeSite(); const connection = await connect(site);
+    try {
+        const tools = (await connection.client.listTools()).tools;
+        assert.equal(tools.find(t => t.name === 'get_shufersal_unresolved_items').annotations.readOnlyHint, true);
+        assert.equal(tools.find(t => t.name === 'apply_shufersal_cart_targets').annotations.readOnlyHint, false);
+        const read = async () => result(await connection.client.callTool({ name: 'get_shufersal_cart', arguments: {} })).result;
+        const cart = await read();
+        const target = { productId: 'milk', sellingMethod: 'unit', expectedName: cart.items[0].name, quantity: 5, operationId: randomUUID() };
+        const apply = args => connection.client.callTool({ name: 'apply_shufersal_cart_targets', arguments: args });
+        assert.equal((await apply({ expectedRevision: cart.revision, targets: [target, target] })).isError, true);
+        assert.equal(site.writes, 0);
+        const batch = result(await apply({ expectedRevision: cart.revision, targets: [target] }));
+        assert.equal(batch.result.verified.length, 1); assert.equal(site.current.items[0].quantity, 5);
+        await apply({ expectedRevision: (await read()).revision, targets: [target] });
+        assert.equal(site.writes, 1);
+        assert.deepEqual(result(await connection.client.callTool({ name: 'get_shufersal_unresolved_items', arguments: {} })).result, []);
+    } finally { await connection.close(); }
+});

@@ -57,8 +57,15 @@ Every shopping result is JSON text: `{ "ok": true, "result": ... }` or an MCP er
 | `prepare_shufersal_checkout` | Read the complete summary and possible duplicate order numbers |
 | `submit_shufersal_order` | Submit the unchanged reviewed cart and verify a new matching order number |
 | `get_shufersal_operation` | Inspect a saved operation's outcome |
-| `reconcile_shufersal_cart` | Read-only recovery of an uncertain cart write; never repeats the mutation |
+| `reconcile_shufersal_cart` | Read the cart and record a verified postcondition when possible; never repeat the cart mutation |
 | `reconcile_shufersal_checkout` | Resolve an uncertain checkout by reading history, without submitting again |
+| `plan_shufersal_replenishment` | Plan absolute targets from history and office stock |
+| `assess_shufersal_cart_recovery` | Compare an uncertain operation with fresh state |
+| `prepare_shufersal_cart_recovery` | Prepare a snapshot and replacement targets for owner approval |
+| `accept_shufersal_cart_recovery` | Record explicit approval while preserving uncertain history |
+| `resume_shufersal_cart_recovery` | Add only the approved deficit using deterministic operation IDs |
+| `get_shufersal_unresolved_items` | List pending identities, targets, scopes and sanitized evidence |
+| `apply_shufersal_cart_targets` | Process absolute targets sequentially and report four result categories |
 | `create_shopping_list_table` | Format an ingredient list locally |
 
 All mutations require a fresh `expectedRevision` from `get_shufersal_cart` and a caller-generated UUID `operationId`. Reuse the exact same ID and arguments when checking a retry. Successful repeats return the saved result without repeating the write; changing arguments under an existing ID fails.
@@ -71,7 +78,7 @@ The revision covers the account, every line, quantities, unit/line prices, subst
 
 The service checks pending/confirmed orders for the same account, address and Israel delivery day. Possible duplicates block checkout even if totals differ. Cancelling an order or resolving a legitimate same-day second order is outside these tools.
 
-Operations are recorded before the external write. A lost response, failed verification or crash leaves the operation pending and blocks new writes. Reads remain available. Never delete the journal to make a retry possible.
+Operations are recorded before the external write. A lost response, failed verification or crash leaves the operation pending. Known affected SKUs and equivalent packs are blocked; independent items may continue after verified complete reads. Unknown scope, integrity or checkout uncertainty blocks globally. Reads remain available. Never delete the journal to make a retry possible.
 
 For uncertain checkout, call `reconcile_shufersal_checkout` with the original operation ID. It requires exactly one new pending/confirmed order with the same complete cart revision, excluding orders known before submission. If history is empty, delayed, incomplete, mismatched or ambiguous, it stays uncertain. Retry the **read**, not checkout. A successful click or empty cart is not sufficient proof.
 
@@ -194,8 +201,17 @@ When server evidence cannot resolve the history, a local operator can explicitly
 2. Show the owner the full snapshot and targets. Ask for explicit approval to accept that revision as the baseline, retire the old intent with history still **unknown**, and add only missing quantities. Investigate outstanding requests first. General automation permission does not count as approval of this snapshot.
 3. Call `accept_shufersal_cart_recovery` with `operationId`, a new stable UUID `resolutionId`, `expectedRevision: currentRevision`, `reason`, the same `targets`, and `ownerApproval: {confirmed: true, owner: "<owner identity>", approvalReference: "<owner message/reference>", acceptsUnknownOutcome: true, outstandingRequestsInvestigated: true}`. It re-reads twice, checks the ledger and persists `resolved_by_operator` plus the approved targets and snapshot. **It does not modify the cart.** A changed cart requires a new prepare and owner approval. Retry an identical acceptance after response loss using the same resolution ID and payload.
 4. For each approved product, read `get_shufersal_cart`, reassess its missing quantity, then call `resume_shufersal_cart_recovery` with the original `operationId`, accepted `resolutionId`, `productId`, `sellingMethod`, and fresh `expectedRevision`. The server computes the deficit itself, checks another fresh cart before writing, adds only a positive deficit, and verifies readback. Excess and unrelated quantities are never reduced. On `CART_CHANGED`, refresh and reassess before continuing.
-5. Every product has one deterministic child operation ID per resolution, including zero-deficit decisions. Repeated calls and restarts cannot replay that addition. If a child returns `OUTCOME_UNKNOWN`, use the child ID from the error for a **new** recovery review and explicit approval; never retry the old add. Other pending operations continue to block writes. After a completed attempt, a later removal requires a new shopping intent rather than reusing this approval.
+5. Every product has one deterministic child operation ID per resolution, including zero-deficit decisions. Repeated calls and restarts cannot replay that addition. If a child returns `OUTCOME_UNKNOWN`, use the child ID from the error for a **new** recovery review and explicit approval; never retry the old add. Other pending operations block overlapping writes; unknown scope or checkout uncertainty blocks globally. After a completed attempt, a later removal requires a new shopping intent rather than reusing this approval.
 
 Trust boundary: the local MCP client (Dot) authenticates the owner and obtains approval before calling acceptance. The MCP stores the caller's approval attestation; it cannot independently authenticate a chat message or prove human presence. `mcp_owner` is recorded separately from the terminal's OS identity. Do not expose this stdio server to untrusted clients. No credentials or checkout settings are changed by this flow.
 
-The site has no atomic compare-and-swap for carts: an external colleague or delayed server request can still race the final browser write. Fresh pre-write reads reduce this window; unverified readback leaves a pending operation and blocks further writes. Recovery never claims that the old operation succeeded or failed. Fixture tests never access the real cart.
+The site has no atomic compare-and-swap for carts: an external colleague or delayed server request can still race the final browser write. Fresh pre-write reads reduce this window; unverified readback leaves a pending operation and blocks overlapping writes, or all writes when scope is unknown. Recovery never claims that the old operation succeeded or failed. Fixture tests never access the real cart.
+
+
+### Scoped uncertainty and absolute target batches
+
+See [cart workflow contract and incident findings](docs/cart-workflow-contract.md) for the verified add/update contract, exact product metadata, safe scope isolation and remaining metadata limitations. `get_shufersal_unresolved_items` lists pending items separately. `apply_shufersal_cart_targets` processes absolute desired totals sequentially and returns distinct verified/unresolved/unavailable/unattempted groups. Unknown scope or cart integrity still blocks globally; no terminal or uncertain operation is blindly replayed.
+
+Existing recovery tools support replacing a superseded product target or accepting `targets: []` to abandon it. Owner approval still binds the full current snapshot and targets, with historical outcome unknown. Missing or unverified rows never authorize a zero-based addition.
+
+See [Dot deployment and tool discovery](docs/dot-setup.md) for updating the local worker without resetting its session or ledger.

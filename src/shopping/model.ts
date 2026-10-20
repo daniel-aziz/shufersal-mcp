@@ -3,6 +3,12 @@ import { z } from "zod";
 
 const money = z.number().finite().nonnegative();
 const id = z.string().trim().min(1);
+export const identitySchema = z.object({
+    barcode: id.nullable(), variant: id.nullable(), packSize: id.nullable(),
+    equivalenceKeys: z.array(id).min(1).nullable(),
+});
+export const productDescriptionSchema = z.object({ productId: id, sellingMethod: id, name: id, identity: identitySchema, available: z.boolean().nullable() });
+export type ProductDescription = z.infer<typeof productDescriptionSchema>;
 export const lineSchema = z.object({
     productId: id,
     sellingMethod: id,
@@ -13,6 +19,7 @@ export const lineSchema = z.object({
     lineTotal: money.nullable(),
     substitution: id.nullable(),
     comment: z.string().optional(),
+    identity: identitySchema.optional(),
 });
 export const slotSchema = z.object({
     id,
@@ -28,6 +35,7 @@ export const cartSchema = z.object({
     total: money.nullable(),
     currency: z.literal("ILS"),
     estimated: z.boolean(),
+    integrity: z.object({ complete: z.boolean(), cartId: id }).optional(),
 });
 export const orderSchema = z.object({
     orderNumber: id,
@@ -55,6 +63,7 @@ export function sameProduct(line: ProductKey, key: ProductKey): boolean {
 export function quantity(cart: Cart, key: ProductKey): number {
     const lines = cart.items.filter(line => sameProduct(line, key));
     if (lines.length > 1) throw new ShoppingError("DUPLICATE_LINES", "Resolve duplicate product lines before changing quantity.");
+    if (!lines.length && cart.integrity?.complete === false) throw new ShoppingError("INCOMPLETE_CART", "A missing row cannot establish zero quantity in an incomplete cart.");
     return lines[0]?.quantity ?? 0;
 }
 
@@ -76,7 +85,8 @@ export interface ShoppingSite {
     readCart(): Promise<Cart>;
     readOrders(): Promise<Order[]>;
     readSlots(): Promise<Slot[]>;
-    add(key: ProductKey, amount: number, comment: string): Promise<void>;
+    describeProduct?(key: ProductKey): Promise<ProductDescription>;
+    add(key: ProductKey, amount: number, comment: string, guard?: { expectedQuantity: number; targetQuantity: number; accountId: string }): Promise<void | import("./evidence.js").WriteEvidence>;
     setQuantity(key: ProductKey, amount: number): Promise<void>;
     selectSlot(slotId: string): Promise<void>;
     submit(expectedRevision: string): Promise<void>;

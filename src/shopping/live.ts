@@ -1,8 +1,9 @@
+import { CartWriteError, sanitizedError, type WriteEvidence } from "./evidence.js";
 import { createHash } from "node:crypto";
-import { type Page } from "puppeteer";
+import { type Page, type HTTPResponse } from "puppeteer";
 import { z } from "zod";
 import { BrowserShoppingSite } from "./site.js";
-import { cartSchema, orderSchema, ShoppingError, slotSchema, type ProductKey, type Order } from "./model.js";
+import { cartSchema, orderSchema, ShoppingError, slotSchema, type ProductKey, type Order, type ProductDescription } from "./model.js";
 
 const base = "https://www.shufersal.co.il/online/he/";
 const accountSchema = z.object({ uid: z.string().min(1), anonymous: z.literal(false) });
@@ -95,6 +96,9 @@ export class LiveShufersalSite extends BrowserShoppingSite {
                     unitPrice: gross === null ? null : Math.round(gross / quantity * 10000) / 10000,
                     lineTotal: net !== null && net >= 0 ? Math.round(net * 100) / 100 : null,
                     substitution: null,
+                    identity: { barcode: /^P_\d+$/.test(productId) ? productId.slice(2) : null,
+                        variant: row.getAttribute("data-variant"), packSize: row.getAttribute("data-unit-description"),
+                        equivalenceKeys: row.getAttribute("data-base-product-code") ? [`sku:${productId.replace(/^P_/, "")}`, `base:${row.getAttribute("data-base-product-code")}`] : null },
                     comment: commentInput instanceof HTMLInputElement ? commentInput.value : "",
                 };
             });
@@ -102,7 +106,23 @@ export class LiveShufersalSite extends BrowserShoppingSite {
                 deliveryFee: money(root, ".infoSubText"), total: money(root, ".totalPrice"),
             };
         });
-        return cartSchema.parse({ ...cart, accountId });
+        // The full cart/load response provides an independent membership check. A partial DOM must never imply zero.
+        const complete = await page.evaluate(async expected => {
+            if (window.miglog.cart?.order) return false;
+            const response = await fetch("/online/he/cart/load", { credentials: "include", signal: AbortSignal.timeout(15_000) });
+            if (!response.ok) return false;
+            const document = new DOMParser().parseFromString(await response.text(), "text/html");
+            if (!document.querySelector(".miglog-prodlist")) return false;
+            const rows = [...document.querySelectorAll("article")].filter(row => !row.classList.contains("miglog-prod-comment") || row.hasAttribute("data-product-code"));
+            const actual = rows.map(row => {
+                const method = row.querySelector("[name='sellingMethod']");
+                return { productId: row.getAttribute("data-product-code"), quantity: Number(row.getAttribute("data-entry-qty")),
+                    sellingMethod: method instanceof HTMLInputElement || method instanceof HTMLSelectElement ? method.value : null };
+            });
+            const normalize = (values: unknown[]) => JSON.stringify(values.map(value => JSON.stringify(value)).sort());
+            return rows.length > 0 && normalize(actual) === normalize(expected);
+        }, cart.items.map(({ productId, quantity, sellingMethod }) => ({ productId, quantity, sellingMethod })));
+        return cartSchema.parse({ ...cart, accountId, integrity: { complete, cartId: "active" } });
     }
 
     override async readSlots() {
@@ -178,12 +198,82 @@ export class LiveShufersalSite extends BrowserShoppingSite {
         return results;
     }
 
-    override async add(key: ProductKey, amount: number, comment: string) {
-        const { page } = await this.page();
-        await page.evaluate(async (key, amount, comment) => {
-            if (typeof window.miglog?.cart?.addToCart !== "function") throw new Error("Cart operation unavailable");
-            await window.miglog.cart.addToCart(key.productId, amount, key.sellingMethod, comment, { openFrom: "SEARCH", recommendationType: "AUTOCOMPLETE_LIST" });
-        }, key, amount, comment);
+    async describeProduct(key: ProductKey): Promise<ProductDescription> {
+        const results = await this.search(key.productId.replace(/^P_/, ""));
+        const matches = results.results.filter(product => product.code === key.productId
+            && (typeof product.sellingMethod === "string" ? product.sellingMethod : product.sellingMethod.code) === key.sellingMethod);
+        if (matches.length !== 1) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact SKU and sale unit were not uniquely returned by catalog search.");
+        const product = matches[0];
+        return { ...key, name: product.name, available: product.available ?? null,
+            identity: { barcode: /^P_\d+$/.test(product.code) ? product.code.slice(2) : null,
+                variant: product.variant ?? null, packSize: product.unitDescription ?? null,
+                equivalenceKeys: product.baseProduct ? [`sku:${product.code.replace(/^P_/, "")}`, `base:${product.baseProduct}`] : null } };
+    }
+
+    override async add(key: ProductKey, amount: number, comment: string, guard?: { expectedQuantity: number; targetQuantity: number; accountId: string }): Promise<WriteEvidence> {
+        let page: Page;
+        try {
+            const snapshot = await this.readCart();
+            if (!snapshot.integrity?.complete) throw new ShoppingError("INCOMPLETE_CART", "Full cart membership could not be verified.");
+            if (!guard || snapshot.accountId !== guard.accountId) throw new ShoppingError("ACCOUNT_CHANGED", "Account changed before dispatch.");
+            page = await this.livePage();
+        }
+        catch (error) { throw new CartWriteError("NOT_DISPATCHED", "The cart page could not be verified before dispatch.", { ...sanitizedError(error, "not_dispatched", "precondition"), outcome: "not_applied" }); }
+        let responseStatus: number | undefined;
+        const observeResponse = (response: HTTPResponse) => {
+            const url = new URL(response.url());
+            if (url.origin === new URL(this.liveBase).origin && ["/online/he/cart/add", "/online/he/cart/update"].includes(url.pathname)) responseStatus = response.status();
+        };
+        page.on("response", observeResponse);
+        try {
+            const evidence = await page.evaluate(async (key, amount, comment, guard) => {
+                const at = () => new Date().toISOString();
+                const rows = [...document.querySelectorAll("#cartContainer article[data-product-code]")].filter(row => row.getAttribute("data-product-code") === key.productId);
+                const row = rows[0];
+                const method = row?.querySelector("[name='sellingMethod']");
+                const sellingMethod = method instanceof HTMLInputElement || method instanceof HTMLSelectElement ? method.value : null;
+                const current = row ? Number(row.getAttribute("data-entry-qty")) : 0;
+                const entry = row?.getAttribute("data-entry-number");
+                const target = current + amount;
+                if (!guard || rows.length > 1 || (row && (sellingMethod !== key.sellingMethod || !entry || !/^\d+$/.test(entry)))
+                    || !Number.isFinite(current) || current !== guard.expectedQuantity || target !== guard.targetQuantity)
+                    return { at: at(), stage: "not_dispatched", outcome: "not_applied", reason: "precondition" };
+                if (typeof window.miglog?.cart?.addToCart !== "function" || (row && typeof window.miglog.cart.item.update_qty !== "function"))
+                    return { at: at(), stage: "not_dispatched", outcome: "not_applied", reason: "adapter_unavailable" };
+                const endpoint = row ? "cart/update" : "cart/add";
+                try {
+                    const response: unknown = row
+                        ? await window.miglog.cart.item.update_qty(Number(entry), key.sellingMethod, target, key.productId)
+                        : await window.miglog.cart.addToCart(key.productId, amount, key.sellingMethod, comment, null, { openFrom: "SEARCH", recommendationType: "AUTOCOMPLETE_LIST" });
+                    let responseQuantity: number | null = null;
+                    if (typeof response === "string") {
+                        const doc = new DOMParser().parseFromString(response, "text/html");
+                        const lines = [...doc.querySelectorAll("article[data-product-code]")].filter(line => line.getAttribute("data-product-code") === key.productId);
+                        const raw = lines.length === 1 ? lines[0].getAttribute("data-entry-qty") : null;
+                        const value = raw && /^\d+(?:\.\d+)?$/.test(raw) ? Number(raw) : NaN;
+                        if (Number.isFinite(value) && value >= 0) responseQuantity = value;
+                    }
+                    return { at: at(), stage: "response_received", endpoint, responseQuantity, reason: "response" };
+                } catch (error) {
+                    // jQuery rejects with an XHR object; only the numeric status may cross the browser boundary.
+                    const status = error && typeof error === "object" && "status" in error && typeof error.status === "number" ? error.status : 0;
+                    const name = error instanceof Error ? error.name : "Other";
+                    const original = error instanceof Error ? `${error.name}:${error.message}` : `XHR status ${status}`;
+                    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(original));
+                    const errorDigest = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+                    return { at: at(), stage: "dispatch_attempted", endpoint, httpStatus: status >= 0 && status <= 599 ? status : 0, reason: "transport",
+                        errorName: ["Error", "TypeError", "TimeoutError"].includes(name) ? name : "Other", errorDigest };
+                }
+            }, key, amount, comment, guard);
+            const { evidenceSchema } = await import("./evidence.js");
+            const parsed = evidenceSchema.parse({ ...evidence, ...(responseStatus !== undefined ? { httpStatus: responseStatus } : {}) });
+            if (parsed.stage === "not_dispatched") throw new CartWriteError("CART_CHANGED", "Adapter preconditions failed before dispatch.", parsed);
+            if (parsed.stage === "dispatch_attempted") throw new CartWriteError("OUTCOME_UNKNOWN", "Cart request outcome is unknown.", parsed);
+            return parsed;
+        } catch (error) {
+            if (error instanceof CartWriteError) throw error;
+            throw new CartWriteError("OUTCOME_UNKNOWN", "The browser outcome could not be verified.", sanitizedError(error, "dispatch_attempted", "transport"));
+        } finally { page.off("response", observeResponse); }
     }
 
     override async setQuantity(key: ProductKey, amount: number) {

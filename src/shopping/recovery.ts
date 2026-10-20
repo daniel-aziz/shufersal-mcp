@@ -17,7 +17,7 @@ export type RecoveryApprover = (assessment: ReturnType<typeof assessCartRecovery
 export const targetsSchema = z.array(z.object({
     productId: z.string().trim().min(1), sellingMethod: z.string().trim().min(1),
     quantity: z.number().finite().nonnegative(),
-}).strict()).min(1).max(200).refine(targets => new Set(targets.map(t => JSON.stringify([t.productId, t.sellingMethod]))).size === targets.length, "Duplicate targets");
+}).strict()).max(200).refine(targets => new Set(targets.map(t => JSON.stringify([t.productId, t.sellingMethod]))).size === targets.length, "Duplicate targets");
 export const ownerRecoverySchema = recoveryInputSchema.extend({
     targets: targetsSchema,
     ownerApproval: z.object({

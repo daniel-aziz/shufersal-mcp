@@ -7,6 +7,7 @@ const searchSchema = z.object({ results: z.array(z.object({
     code: z.string(), name: z.string(),
     price: z.union([z.number(), z.object({ value: z.number(), formattedValue: z.string().optional() })]),
     sellingMethod: z.union([z.string(), z.object({ code: z.string() })]),
+    baseProduct: z.string().nullish(), variant: z.string().nullish(), available: z.boolean().optional(),
     unitDescription: z.string().nullish(), brandName: z.string().nullish(),
     sourceOfSupply: z.string().nullish(), longTail: z.boolean().nullish(),
 })) });
@@ -80,6 +81,7 @@ export class BrowserShoppingSite implements ShoppingSite {
             const estimated = read(document, fields.estimated);
             if (estimated !== "true" && estimated !== "false") throw new Error("Unknown total certainty");
             return {
+                integrity: { complete: true, cartId: "profile-cart" },
                 accountId: read(document, fields.accountId), address: read(document, fields.address),
                 currency: read(document, fields.currency), estimated: estimated === "true",
                 deliveryFee: number(read(document, fields.deliveryFee)), total: number(read(document, fields.total)),
@@ -155,7 +157,7 @@ export class BrowserShoppingSite implements ShoppingSite {
         return slotSchema.array().parse(values);
     }
 
-    async add(key: ProductKey, amount: number, comment: string) {
+    async add(key: ProductKey, amount: number, comment: string): Promise<void | import("./evidence.js").WriteEvidence> {
         await this.readCart();
         const page = await this.getPage();
         await page.evaluate(async (key, amount, comment) => {
