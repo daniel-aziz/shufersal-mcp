@@ -1,18 +1,43 @@
+import { recoveryFingerprint, resolutionSchema } from "./recovery.js";
 import { mkdir, open, readFile, rename, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
-import { cartSchema, ShoppingError } from "./model.js";
+import { quantity, revision, cartSchema, lineSchema, slotSchema, ShoppingError } from "./model.js";
+
+const snapshotSchema = cartSchema.extend({
+    items: z.array(lineSchema.passthrough()),
+    delivery: slotSchema.innerType().passthrough().refine(slot => Date.parse(slot.end) > Date.parse(slot.start), "Invalid delivery window").nullable(),
+}).passthrough();
 
 const operationSchema = z.object({
     fingerprint: z.string(),
     kind: z.enum(["cart", "delivery", "checkout"]),
-    status: z.enum(["pending", "complete"]),
+    status: z.enum(["pending", "complete", "resolved_by_operator"]),
+    resolution: resolutionSchema.optional(),
     result: z.unknown().optional(),
     checkoutRevision: z.string().optional(),
     previousOrders: z.array(z.string()).optional(),
-    cartBefore: cartSchema.optional(),
-    product: z.object({ productId: z.string(), sellingMethod: z.string() }).optional(),
+    cartBefore: snapshotSchema.optional(),
+    product: z.object({ productId: z.string(), sellingMethod: z.string() }).passthrough().optional(),
     targetQuantity: z.number().nonnegative().optional(),
+}).passthrough().superRefine((operation, context) => {
+    if (operation.status !== "resolved_by_operator") {
+        if (operation.resolution) context.addIssue({ code: "custom", message: "Unexpected resolution on non-resolved operation" });
+        return;
+    }
+    const r = operation.resolution;
+    const before = operation.cartBefore;
+    const product = operation.product;
+    if (!r || operation.kind !== "cart" || !before || !product || operation.targetQuantity === undefined) {
+        context.addIssue({ code: "custom", message: "Incomplete operator resolution" }); return;
+    }
+    try {
+        if (r.requestFingerprint !== recoveryFingerprint({ operationId: r.operationId, resolutionId: r.resolutionId, expectedRevision: r.reviewedRevision, reason: r.reason })
+            || r.observedCart.accountId !== before.accountId || r.reviewedRevision !== revision(r.observedCart)
+            || r.beforeQuantity !== quantity(before, product) || r.observedQuantity !== quantity(r.observedCart, product)
+            || r.targetQuantity !== operation.targetQuantity) throw new Error("Resolution mismatch");
+        for (const cart of [before, r.observedCart]) for (const line of cart.items) quantity(cart, line);
+    } catch { context.addIssue({ code: "custom", message: "Resolution does not match its evidence" }); }
 });
 export type Operation = z.infer<typeof operationSchema>;
 export interface Journal {
@@ -25,7 +50,13 @@ export class FileJournal implements Journal {
 
     async load(): Promise<Record<string, Operation>> {
         try {
-            return z.record(operationSchema).parse(JSON.parse(await readFile(join(this.directory, "operations.json"), "utf8")));
+            const operations = z.record(operationSchema).parse(JSON.parse(await readFile(join(this.directory, "operations.json"), "utf8")));
+            const resolutions = new Set<string>();
+            for (const [id, operation] of Object.entries(operations)) if (operation.resolution) {
+                if (operation.resolution.operationId !== id || resolutions.has(operation.resolution.resolutionId)) throw new Error("Conflicting resolution identity");
+                resolutions.add(operation.resolution.resolutionId);
+            }
+            return operations;
         } catch (error) {
             if (error instanceof Error && "code" in error && error.code === "ENOENT") return {};
             throw new ShoppingError("STATE_UNREADABLE", "Operation history is unreadable. Writes are blocked; preserve it for recovery.");

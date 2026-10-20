@@ -1,3 +1,4 @@
+import { assessCartRecovery, operatorApprovalSchema, recoveryFingerprint, recoveryInputSchema, resolutionSchema, type RecoveryApprover } from "./recovery.js";
 import { planReplenishment, replenishmentSchema } from "./replenishment.js";
 import { createHash } from "node:crypto";
 import { cartSchema, cartContents, hasCompleteMoney, orderSchema, possibleDuplicates, quantity, revision, ShoppingError, slotSchema, type ProductKey, type ShoppingSite } from "./model.js";
@@ -5,7 +6,8 @@ import { type Journal, SerialQueue, type Operation } from "./state.js";
 
 export class ShoppingService {
     private readonly queue = new SerialQueue();
-    constructor(private readonly site: ShoppingSite, private readonly journal: Journal, private readonly checkoutEnabled = false) {}
+    private recoveryPersistenceUncertain = false;
+    constructor(private readonly site: ShoppingSite, private readonly journal: Journal, private readonly checkoutEnabled = false, private readonly approveRecovery?: RecoveryApprover) {}
 
     run<T>(action: () => Promise<T>): Promise<T> { return this.queue.run(action); }
     async open() { return this.site.open(); }
@@ -29,6 +31,7 @@ export class ShoppingService {
     }
 
     private async begin(operationId: string, input: unknown, kind: Operation["kind"], extra: Partial<Operation> = {}) {
+        if (this.recoveryPersistenceUncertain) throw new ShoppingError("STATE_UNREADABLE", "Recovery persistence was uncertain. Restart and inspect the preserved ledger before writing.");
         const operations = await this.journal.load();
         const fingerprint = createHash("sha256").update(JSON.stringify(input)).digest("hex");
         const existing = operations[operationId];
@@ -58,7 +61,7 @@ export class ShoppingService {
 
     async changeQuantity(input: ProductKey & { quantity: number; mode: "add" | "set"; expectedRevision: string; operationId: string; comment: string }) {
         const { operations, existing } = await this.begin(input.operationId, input, "cart");
-        if (existing) return existing.result;
+        if (existing) return existing.status === "resolved_by_operator" ? { status: existing.status, resolution: existing.resolution } : existing.result;
         const before = await this.cart();
         if (before.revision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "Read and review the changed cart before writing.");
         const current = quantity(before, input);
@@ -94,9 +97,11 @@ export class ShoppingService {
     }
 
     async reconcileCart(operationId: string) {
+        if (this.recoveryPersistenceUncertain) throw new ShoppingError("STATE_UNREADABLE", "Restart and inspect the preserved ledger after uncertain persistence.");
         const operations = await this.journal.load();
         const operation = operations[operationId];
         if (!operation || operation.kind !== "cart") throw new ShoppingError("UNKNOWN_OPERATION", "This is not a cart operation.");
+        if (operation.status === "resolved_by_operator") return { status: operation.status, resolution: operation.resolution };
         if (operation.status === "complete") return operation.result;
         const result = await this.verifyCartChange(operation);
         operations[operationId] = { ...operation, status: "complete", result };
@@ -104,10 +109,55 @@ export class ShoppingService {
         return result;
     }
 
+
+    async assessCartOperation(operationId: string) {
+        return assessCartRecovery(operationId, await this.operation(operationId), cartSchema.parse(await this.cart()));
+    }
+
+    /** Operator recovery is deliberately not an MCP mutation. The local host supplies approval, never tool arguments. */
+    async acceptCurrentCartState(rawInput: unknown) {
+        return this.run(async () => {
+            if (!this.approveRecovery) throw new ShoppingError("OPERATOR_APPROVAL_UNAVAILABLE", "Use the interactive local operator command; MCP cannot approve recovery.");
+            if (this.recoveryPersistenceUncertain) throw new ShoppingError("STATE_UNREADABLE", "Restart and inspect the preserved ledger after uncertain persistence.");
+            const input = recoveryInputSchema.parse(rawInput);
+            const operations = await this.journal.load();
+            const operation = operations[input.operationId];
+            if (!operation) throw new ShoppingError("UNKNOWN_OPERATION", "No operation exists with this ID.");
+            const fingerprint = recoveryFingerprint(input);
+            if (operation.status === "resolved_by_operator") {
+                if (operation.resolution?.requestFingerprint !== fingerprint) throw new ShoppingError("RESOLUTION_CONFLICT", "This operation already has a different recorded resolution.");
+                return operation.resolution;
+            }
+            if (Object.values(operations).some(entry => entry.resolution?.resolutionId === input.resolutionId)) throw new ShoppingError("RESOLUTION_CONFLICT", "The resolution ID is already in use.");
+            const assessment = await this.assessCartOperation(input.operationId);
+            if (assessment.currentRevision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "Review a fresh assessment before accepting the current state.");
+            const approval = operatorApprovalSchema.parse(await this.approveRecovery(assessment, input));
+            const observedCart = cartSchema.parse(await this.cart());
+            const finalAssessment = assessCartRecovery(input.operationId, operation, observedCart);
+            if (finalAssessment.currentRevision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "The cart changed during approval; obtain approval of the new state.");
+            const latest = await this.journal.load();
+            if (JSON.stringify(latest) !== JSON.stringify(operations)) throw new ShoppingError("STATE_CHANGED", "The operation ledger changed during approval; inspect it before continuing.");
+            const resolution = resolutionSchema.parse({
+                version: 1, operationId: input.operationId, resolutionId: input.resolutionId,
+                decision: "accept_current_state", historicalOutcome: "unknown", recordedAt: new Date().toISOString(),
+                reason: input.reason, requestFingerprint: fingerprint, reviewedRevision: input.expectedRevision,
+                observedCart, beforeQuantity: assessment.beforeQuantity, targetQuantity: assessment.targetQuantity,
+                observedQuantity: finalAssessment.currentQuantity, approval,
+            });
+            operations[input.operationId] = { ...operation, status: "resolved_by_operator", resolution };
+            try { await this.journal.save(operations); }
+            catch {
+                this.recoveryPersistenceUncertain = true;
+                throw new ShoppingError("STATE_UNREADABLE", "Resolution persistence is uncertain; no cart action was taken. Restart and inspect the preserved ledger.");
+            }
+            return resolution;
+        });
+    }
+
     async selectSlot(input: { slotId: string; expectedRevision: string; operationId: string }) {
         if (this.site.capabilities?.selectSlot === false) throw new ShoppingError("DELIVERY_SELECTION_NOT_VERIFIED", "This adapter supports reading slots, but selection is not yet verified.");
         const { operations, existing } = await this.begin(input.operationId, input, "delivery");
-        if (existing) return existing.result;
+        if (existing) return existing.status === "resolved_by_operator" ? { status: existing.status, resolution: existing.resolution } : existing.result;
         const before = await this.cart();
         if (before.revision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "Read and review the changed cart before selecting delivery.");
         const slot = (await this.slots()).find(candidate => candidate.id === input.slotId);
@@ -131,7 +181,7 @@ export class ShoppingService {
         if (!this.checkoutEnabled) throw new ShoppingError("CHECKOUT_DISABLED", "Checkout is disabled until the site adapter has been verified and checkout explicitly enabled by the operator.");
         if (this.site.capabilities?.submit === false) throw new ShoppingError("LIVE_CHECKOUT_NOT_VERIFIED", "This adapter has not verified the final purchase page. No checkout will be attempted.");
         const { operations, existing } = await this.begin(input.operationId, input, "checkout");
-        if (existing) return existing.result;
+        if (existing) return existing.status === "resolved_by_operator" ? { status: existing.status, resolution: existing.resolution } : existing.result;
         const orders = await this.orders();
         const cart = await this.cart();
         if (cart.revision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "The checkout summary changed. Obtain approval again.");
@@ -156,9 +206,11 @@ export class ShoppingService {
     }
 
     async reconcileCheckout(operationId: string) {
+        if (this.recoveryPersistenceUncertain) throw new ShoppingError("STATE_UNREADABLE", "Restart and inspect the preserved ledger after uncertain persistence.");
         const operations = await this.journal.load();
         const operation = operations[operationId];
         if (!operation || operation.kind !== "checkout") throw new ShoppingError("UNKNOWN_OPERATION", "This is not a checkout operation.");
+        if (operation.status === "resolved_by_operator") return { status: operation.status, resolution: operation.resolution };
         if (operation.status === "complete") return operation.result;
         const result = await this.verifyOrder(operation);
         operations[operationId] = { ...operation, status: "complete", result };
