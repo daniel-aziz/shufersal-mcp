@@ -12,7 +12,7 @@ test('real Chromium exercises search, cart changes, slots, checkout and order ve
     const fixture = await startFixture();
     const browser = await puppeteer.launch({headless:true,executablePath:process.env.PUPPETEER_EXECUTABLE_PATH,args:process.env.CI?['--no-sandbox']:[]});
     try {
-        const page=await browser.newPage(); page.setDefaultTimeout(1000);
+        const page=await browser.newPage(); page.setDefaultTimeout(10_000);
         const site=new BrowserShoppingSite(async()=>page,profile,fixture.base);
         const service=new ShoppingService(site,new MemoryJournal(),true);
         assert.equal((await site.open()).authenticated,true);

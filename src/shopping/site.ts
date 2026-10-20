@@ -7,12 +7,14 @@ const searchSchema = z.object({ results: z.array(z.object({
     code: z.string(), name: z.string(),
     price: z.union([z.number(), z.object({ value: z.number(), formattedValue: z.string().optional() })]),
     sellingMethod: z.union([z.string(), z.object({ code: z.string() })]),
-    unitDescription: z.string().optional(), brandName: z.string().optional(),
+    unitDescription: z.string().nullish(), brandName: z.string().nullish(),
+    sourceOfSupply: z.string().nullish(), longTail: z.boolean().nullish(),
 })) });
 
 export class BrowserShoppingSite implements ShoppingSite {
     constructor(private readonly getPage: () => Promise<Page>, private readonly profile: SiteProfile | undefined,
-        private readonly base = "https://www.shufersal.co.il/online/he/") {}
+        private readonly base = "https://www.shufersal.co.il/online/he/",
+        private readonly authenticate?: (page: Page) => Promise<void>) {}
 
     private requireProfile(): SiteProfile {
         if (!this.profile) throw new ShoppingError("SITE_PROFILE_REQUIRED", "This tool requires a live-verified site profile. No unverified selectors or checkout endpoints are assumed.");
@@ -21,7 +23,12 @@ export class BrowserShoppingSite implements ShoppingSite {
 
     private async navigate(path: string): Promise<Page> {
         const page = await this.getPage();
-        const response = await page.goto(sameOriginUrl(path, this.base), { waitUntil: "domcontentloaded" });
+        if (this.authenticate) await this.authenticate(page);
+        let response = await page.goto(sameOriginUrl(path, this.base), { waitUntil: "domcontentloaded" });
+        if (new URL(page.url()).pathname.endsWith("/login") && this.authenticate) {
+            await this.authenticate(page);
+            response = await page.goto(sameOriginUrl(path, this.base), { waitUntil: "domcontentloaded" });
+        }
         if (!response?.ok()) throw new ShoppingError("SITE_UNAVAILABLE", "The site did not return a successful page. Check access and authentication.");
         sameOriginUrl(page.url(), this.base);
         return page;

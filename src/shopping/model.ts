@@ -11,7 +11,8 @@ export const lineSchema = z.object({
     quantity: z.number().finite().positive(),
     unitPrice: money,
     lineTotal: money,
-    substitution: id,
+    substitution: id.nullable(),
+    comment: z.string().optional(),
 });
 export const slotSchema = z.object({
     id,
@@ -21,9 +22,9 @@ export const slotSchema = z.object({
 export const cartSchema = z.object({
     accountId: id,
     items: z.array(lineSchema),
-    address: id,
+    address: id.nullable(),
     delivery: slotSchema.nullable(),
-    deliveryFee: money,
+    deliveryFee: money.nullable(),
     total: money,
     currency: z.literal("ILS"),
     estimated: z.boolean(),
@@ -61,7 +62,7 @@ export function possibleDuplicates(cart: Cart, orders: Order[]): string[] {
     return orders.filter(order =>
         (order.status === "pending" || order.status === "confirmed") &&
         order.cart.accountId === cart.accountId &&
-        order.cart.address === cart.address &&
+        (cart.address === null || order.cart.address === null || order.cart.address === cart.address) &&
         (cart.delivery === null || order.cart.delivery === null ||
             new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jerusalem" }).format(new Date(order.cart.delivery.start)) ===
             new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jerusalem" }).format(new Date(cart.delivery.start)))
@@ -69,6 +70,7 @@ export function possibleDuplicates(cart: Cart, orders: Order[]): string[] {
 }
 
 export interface ShoppingSite {
+    capabilities?: { selectSlot: boolean; submit: boolean };
     open(): Promise<unknown>;
     search(query: string): Promise<unknown>;
     readCart(): Promise<Cart>;

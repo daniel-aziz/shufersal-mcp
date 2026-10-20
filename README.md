@@ -1,8 +1,10 @@
 # Shufersal MCP
 
-A focused Shufersal tool server, forked from [matipojo/shufersal-mcp](https://github.com/matipojo/shufersal-mcp). Uses Puppeteer and one persistent browser session. Authentication providers, scheduling, Slack announcements, shopping policies and human approval belong in the calling application.
+A focused Shufersal tool server, forked from [matipojo/shufersal-mcp](https://github.com/matipojo/shufersal-mcp). Uses Puppeteer and one persistent browser session. Optional local 1Password sign-in is supported. Scheduling, Slack announcements, shopping policies and human approval belong in the calling application.
 
-**Status:** tool contracts, retry protection and a synthetic browser integration are tested. The new cart/history/delivery/checkout DOM mappings have **not been validated against live Shufersal**. No production site profile is shipped. Without a verified profile, opening the site and upstream-style search are available; the new shopping operations fail with `SITE_PROFILE_REQUIRED`. Checkout is disabled by default. Do not describe fixture tests as proof that production ordering works.
+**Status:** the opt-in `live` adapter has been exercised against Shufersal for session reuse, search, cart reads, history, available windows, and reversible cart changes. Checkout is disabled. Live delivery selection and the final purchase page remain blocked pending their own validation. Current-cart address, selected window and substitutions are returned as `null` until mapped; totals remain marked estimated. Never use these results as a purchase-ready approval summary. See [the checklist](PROGRESS.md).
+
+Set `SHUFERSAL_SITE_MODE=live` to use the observed adapter without a custom profile. The default `profile` mode retains the configurable synthetic/test adapter.
 
 ## Install and run
 
@@ -34,7 +36,7 @@ Example MCP client configuration:
 }
 ```
 
-Never place credentials in this configuration. Sign in through the dedicated browser or an external credential-injection integration. Login challenges require human intervention. `open_shufersal` reports authentication only when a site profile supplies a verified authenticated-page marker; otherwise it reports `null`, not a guessed login state.
+Never place credentials in this configuration. Configure `SHUFERSAL_AUTH_ACCOUNT`, `SHUFERSAL_AUTH_VAULT`, `SHUFERSAL_AUTH_ITEM` and optionally `SHUFERSAL_OP_EXECUTABLE` with local 1Password references. The provider signs in to the CLI and reads the item in memory only when the browser session requires it. An unlocked desktop app and its CLI integration are required; Touch ID authorization may be requested. Login challenges require human intervention. `open_shufersal` reports authentication only when a site profile supplies a verified authenticated-page marker; otherwise it reports `null`, not a guessed login state.
 
 ## Tools
 
@@ -42,6 +44,7 @@ Every shopping result is JSON text: `{ "ok": true, "result": ... }` or an MCP er
 
 | Tool | Purpose |
 |---|---|
+| `authenticate_shufersal` | Reuse the saved browser session or sign in directly through the local 1Password provider |
 | `open_shufersal` | Open a shopping page and report profile/authentication status |
 | `search_shufersal` | Search through the current browser session; return product IDs, prices and selling methods |
 | `get_shufersal_cart` | Read items, quantities, selling units, prices, substitution policy, address, delivery, total and revision |
@@ -54,6 +57,7 @@ Every shopping result is JSON text: `{ "ok": true, "result": ... }` or an MCP er
 | `prepare_shufersal_checkout` | Read the complete summary and possible duplicate order numbers |
 | `submit_shufersal_order` | Submit the unchanged reviewed cart and verify a new matching order number |
 | `get_shufersal_operation` | Inspect a saved operation's outcome |
+| `reconcile_shufersal_cart` | Read-only recovery of an uncertain cart write; never repeats the mutation |
 | `reconcile_shufersal_checkout` | Resolve an uncertain checkout by reading history, without submitting again |
 | `create_shopping_list_table` | Format an ingredient list locally |
 
@@ -71,7 +75,7 @@ Operations are recorded before the external write. A lost response, failed verif
 
 For uncertain checkout, call `reconcile_shufersal_checkout` with the original operation ID. It requires exactly one new pending/confirmed order with the same complete cart revision, excluding orders known before submission. If history is empty, delayed, incomplete, mismatched or ambiguous, it stays uncertain. Retry the **read**, not checkout. A successful click or empty cart is not sufficient proof.
 
-For uncertain cart or delivery writes, inspect the saved operation and the actual site state. Automatic reconciliation for these writes is not yet supplied: an operator must resolve the pending record offline only after verifying the outcome. Preserve the record and original operation ID. Do not repeat an additive write blindly.
+For an uncertain cart write, call `reconcile_shufersal_cart`. It compares the target quantity and all other lines against the saved pre-write snapshot. It never adds, removes or changes products. Uncertain delivery writes and older journal records without recovery snapshots still need manual inspection. Preserve the record and original operation ID.
 
 ## Browser ownership and security
 
@@ -81,18 +85,20 @@ Use **one state directory per account** and one active worker. A filesystem lock
 
 `SHUFERSAL_BROWSER_URL` can attach Puppeteer to an existing **loopback HTTP** Chrome debugging endpoint, sharing its default context while creating a separate shopping tab. Other automation, including Playwright, must use the same external coordinator; this server cannot lock independent clients or colleagues' browsers. It closes only its own tab and disconnects on shutdown when attached. Do not expose the debugging port publicly.
 
-The dedicated profile and journal live outside the repository by default, under `~/.local/state/shufersal-mcp`. New directories/files use restricted permissions. Use encrypted disk storage; sessions are credentials and must not be uploaded as test artifacts. The journal stores operation fingerprints, status, verification results and order IDs, not passwords or complete cart snapshots.
+The dedicated profile and journal live outside the repository by default, under `~/.local/state/shufersal-mcp`. New directories/files use restricted permissions. Use encrypted disk storage; sessions are credentials and must not be uploaded as test artifacts. The journal stores operation fingerprints, status, verification results and order IDs, and pre-write cart snapshots for recovery, never passwords. These snapshots contain shopping/account data and must remain local with the same protection as the browser profile.
 
 | Setting | Default |
 |---|---|
 | `SHUFERSAL_STATE_DIR` | `~/.local/state/shufersal-mcp` |
-| `SHUFERSAL_SITE_PROFILE` | unset; verified site mappings required for shopping operations |
+| `SHUFERSAL_CONFIG_FILE` | optional local JSON file containing non-secret configuration and vault references; environment overrides it |
+| `SHUFERSAL_SITE_MODE` | `profile`; set `live` for the observed Shufersal adapter |
+| `SHUFERSAL_SITE_PROFILE` | unset; required in profile mode |
 | `SHUFERSAL_HEADLESS` | `false` |
 | `SHUFERSAL_BROWSER_URL` | unset; launch dedicated browser |
 | `PUPPETEER_EXECUTABLE_PATH` | Puppeteer's installed browser |
 | `SHUFERSAL_ENABLE_CHECKOUT` | `false` |
 
-No Slack, 1Password, order cadence, unusual-purchase rules or office delivery preferences are embedded in the server. Tuesday timing, the ₪100 warning and historical quantity checks belong in the private workflow. The server reads substitution policies but does not automatically choose replacements.
+No Slack, scheduling or office delivery preferences are embedded in the server. Replenishment suggestions are available through `plan_shufersal_replenishment`. Tuesday timing, the ₪100 warning and historical quantity checks belong in the private workflow. The server reads substitution policies but does not automatically choose replacements.
 
 ## Site profile and live verification
 
@@ -104,7 +110,7 @@ Before deployment:
 
 1. Establish read-only access from the intended remote host; if blocked, use an authorized local worker. No cloud access is assumed.
 2. Inspect authenticated pages and create a local profile outside Git. Confirm a complete cart, prices, substitution policy, address, total, history pagination and delivery windows against the UI.
-   After authentication and profile setup, run `node scripts/verify-live.mjs`. It calls only open/cart/history/slot reads, forces checkout off, and prints no account data. This check is deliberately excluded from CI.
+   After local configuration, run `npm run auth` or `npm run verify:live`. The live check authenticates and calls only search/cart/history/slot reads, forces checkout off, and prints no account data. This check is deliberately excluded from CI.
 3. Run supervised cart/delivery edits with permission. Verify changed quantities and totals, session expiry and concurrent edits. Shufersal's internal add endpoint comes from upstream and may change.
 4. Keep checkout disabled until the final summary mapping and approval flow are verified. A real purchase needs separate explicit approval. Test an uncertain response using fixtures, not deliberate production duplicate attempts.
 
@@ -132,3 +138,37 @@ GitHub Actions runs lint, build, service/MCP tests, browser fixtures, dependency
 - Removed the general-purpose `read_webpage_content` tool. Reading unrelated recipe sites should use a separate tool, not the authenticated shopping browser.
 - Fixed the build entry point to produce `dist/index.js` as advertised.
 - Updated the MCP SDK and Puppeteer and removed unused dependencies; the lockfile is committed.
+
+## Local configuration example
+
+Keep this JSON outside Git with owner-only permissions; values below are references, never passwords:
+
+```json
+{
+  "SHUFERSAL_SITE_MODE": "live",
+  "SHUFERSAL_HEADLESS": "true",
+  "SHUFERSAL_ENABLE_CHECKOUT": "false",
+  "SHUFERSAL_AUTH_ACCOUNT": "your-account.1password.com",
+  "SHUFERSAL_AUTH_VAULT": "your-vault-id",
+  "SHUFERSAL_AUTH_ITEM": "your-login-item-id"
+}
+```
+
+Pass `SHUFERSAL_CONFIG_FILE=/absolute/private/path/config.json` in the MCP client environment or when running `npm run auth` / `npm run verify:live`. The same state directory is reused across browser restarts. Credentials are never MCP arguments or tool results. Local 1Password approval, MFA and CAPTCHA cannot be promised away for unattended runs.
+
+The separate opt-in command `npm run verify:cart -- --allow-cart-changes` adds one low-cost test product, verifies idempotency/stale revisions, changes its quantity, removes it, and checks exact original-cart restoration. It forces checkout off. It writes an owner-only recovery baseline outside Git. On an uncertain outcome, it stops and reports the need to inspect/reconcile rather than repeating a mutation. Run only when colleagues are not editing the cart. CI never runs it.
+
+
+## Replenishment with ChatGPT Dot
+
+Dot owns execution and scheduling; no local scheduler is required. The existing Google Calendar Task remains unchanged. Use this workflow for each grocery cycle:
+
+1. Read `get_shufersal_orders` and select 2–8 representative delivered office orders for the same account. Prefer recent orders when delivery dates are available. Never infer recency from listing order or order numbers. Ask which sample to use if office orders cannot be distinguished. Preserve the chosen sample for the cycle.
+2. Call `plan_shufersal_replenishment` with `orderNumbers` and initially empty `stock`. It returns recurring products and missing stock questions. A regular product occurs in at least half the sample and at least two orders; its suggested target is the median quantity across the sample, including absent products as zero. This is a purchase-based suggestion, not a consumption forecast; unusual ordering intervals or bulk purchases need target overrides.
+3. Ask one short stock question using product names and units. Map the answer to exact product IDs and selling methods. `remaining` is office stock, separate from items already in the cart. `target` optionally overrides the suggested total supply. Do not treat an omitted product as empty. Set `unlistedStockIsEmpty` only when the user explicitly says all remaining listed stock is empty. Clarify ambiguous brands, package sizes and fractional unit targets.
+4. Replan with stock. The added quantity is `max(0, target - remaining - inCart)`. One-off purchases default to zero; a target override can include them. New products use search and the existing guarded cart tools. Resolve active orders before adding anything. `ready` means stock/quantity inputs are complete and no active order was found; it does not certify prices, availability or checkout readiness.
+5. Search current products to verify exact IDs, selling methods, availability and prices. Flag prices over ₪100 per unit and unusual quantities/products for review; never silently select a replacement. Historical prices are not used for a current quote.
+6. Re-read/replan if the cart has changed. Use `add_to_shufersal_cart` only for positive additions, sequentially. Start with the plan's `cartRevision` and use each successful write's returned revision for the next. Persist the UUID and exact arguments in Dot's cycle state before each call. Never decrease existing quantities or remove team items. On a stale revision, replan against the new cart; on an uncertain outcome, inspect/reconcile the original operation before doing more work. Retrying a completed operation uses its original UUID and arguments.
+7. Read the final cart and return the actual items and total with unknown/estimated fields clearly marked. No Slack sends, delivery selection or checkout are part of this step. Final order approval remains separate.
+
+The planning tool is read-only; it does not persist stock updates or purchase history in the repository. Dot must securely retain cycle context and operation IDs across its own restarts. The MCP's protected journal retains cart operation results. A request with unknown products, duplicate stock keys, duplicate order IDs, non-delivered orders or foreign-account orders is rejected.
