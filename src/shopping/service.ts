@@ -1,9 +1,18 @@
+import { CartWriteError, sanitizedError } from "./evidence.js";
 import { assessCartRecovery, ownerRecoverySchema, mcpApprovalSchema, targetsSchema, targetComparison, recoveryAdditionId, operatorApprovalSchema, recoveryFingerprint, recoveryInputSchema, resolutionSchema, type RecoveryApprover } from "./recovery.js";
 import { planReplenishment, replenishmentSchema } from "./replenishment.js";
 import { z } from "zod";
 import { createHash } from "node:crypto";
-import { cartSchema, cartContents, hasCompleteMoney, orderSchema, possibleDuplicates, quantity, revision, ShoppingError, slotSchema, type ProductKey, type ShoppingSite } from "./model.js";
+import { cartSchema, cartContents, hasCompleteMoney, orderSchema, possibleDuplicates, quantity, revision, ShoppingError, slotSchema, productDescriptionSchema, type Cart, type ProductDescription, type ProductKey, type ShoppingSite } from "./model.js";
 import { type Journal, SerialQueue, type Operation } from "./state.js";
+
+export const batchTargetsSchema = z.object({
+    expectedRevision: z.string().regex(/^[a-f0-9]{64}$/),
+    targets: z.array(z.object({ productId: z.string().min(1), sellingMethod: z.string().min(1),
+        quantity: z.number().finite().nonnegative(), expectedName: z.string().min(1), operationId: z.string().uuid(),
+    }).strict()).min(1).max(100),
+}).strict().refine(input => new Set(input.targets.map(t => t.operationId)).size === input.targets.length
+    && new Set(input.targets.map(t => t.productId.replace(/^P_/, ""))).size === input.targets.length, "Duplicate target or operation ID");
 
 export class ShoppingService {
     private readonly queue = new SerialQueue();
@@ -15,6 +24,7 @@ export class ShoppingService {
     async search(query: string) { return this.site.search(query); }
     async cart() {
         const cart = cartSchema.parse(await this.site.readCart());
+        if (cart.integrity?.complete === false) throw new ShoppingError("INCOMPLETE_CART", "Cart integrity is unverified; all writes are blocked.");
         for (const line of cart.items) quantity(cart, line);
         return { ...cart, revision: revision(cart) };
     }
@@ -31,7 +41,39 @@ export class ShoppingService {
         return entry;
     }
 
-    private async begin(operationId: string, input: unknown, kind: Operation["kind"], extra: Partial<Operation> = {}) {
+    private async describe(cart: Cart, key: ProductKey): Promise<ProductDescription> {
+        const line = cart.items.find(item => item.productId === key.productId && item.sellingMethod === key.sellingMethod);
+        if (line) return { productId: line.productId, sellingMethod: line.sellingMethod, name: line.name, available: true,
+            identity: line.identity ?? { barcode: null, variant: null, packSize: null, equivalenceKeys: null } };
+        if (!this.site.describeProduct) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact product identity and availability must be verified before adding an absent SKU.");
+        const description = productDescriptionSchema.parse(await this.site.describeProduct(key));
+        if (description.productId !== key.productId || description.sellingMethod !== key.sellingMethod) throw new ShoppingError("PRODUCT_MISMATCH", "The returned SKU or sale unit does not match the requested product.");
+        return description;
+    }
+
+    private assertIndependent(operations: Record<string, Operation>, cart: Cart | undefined, product: ProductDescription | undefined) {
+        for (const operation of Object.values(operations).filter(op => op.status === "pending")) {
+            const scope = operation.unresolved?.scope;
+            if (operation.kind !== "cart" || !scope || !cart?.integrity?.complete || !product?.identity.equivalenceKeys)
+                throw new ShoppingError("UNRESOLVED_OPERATION", "A pending write has unknown scope or integrity, or concerns checkout/delivery. All writes remain blocked.");
+            if (scope.accountId !== cart.accountId || scope.cartId !== cart.integrity.cartId) continue;
+            const key = (id: string) => id.replace(/^P_/, "");
+            if (key(operation.product?.productId ?? "") === key(product.productId)
+                || scope.equivalenceKeys.some(id => product.identity.equivalenceKeys!.includes(id)))
+                throw new ShoppingError("SKU_OUTCOME_UNKNOWN", "This SKU or an equivalent sale unit has an unresolved write. Independent verified products may continue.");
+        }
+    }
+
+    async unresolvedItems() {
+        return Object.entries(await this.journal.load()).filter(([, op]) => op.status === "pending").map(([operationId, op]) => ({
+            operationId, product: op.product, requestedAbsoluteTarget: op.requestedAbsoluteTarget ?? op.targetQuantity ?? null,
+            lastVerifiedQuantity: op.unresolved?.lastVerifiedQuantity ?? (op.cartBefore && op.product ? quantity(op.cartBefore, op.product) : null),
+            reason: op.unresolved?.reason ?? "Legacy uncertain operation: dispatch and scope evidence unavailable",
+            scope: op.unresolved?.scope ?? null, historicalOutcome: "unknown", evidence: op.evidence ?? [],
+        }));
+    }
+
+    private async begin(operationId: string, input: unknown, kind: Operation["kind"], extra: Partial<Operation> = {}, description?: ProductDescription) {
         if (this.recoveryPersistenceUncertain) throw new ShoppingError("STATE_UNREADABLE", "Recovery persistence was uncertain. Restart and inspect the preserved ledger before writing.");
         const operations = await this.journal.load();
         const fingerprint = createHash("sha256").update(JSON.stringify(input)).digest("hex");
@@ -41,40 +83,80 @@ export class ShoppingService {
             if (existing.status === "pending") throw new ShoppingError("OUTCOME_UNKNOWN", "Do not retry. Inspect the operation and current site state first.");
             return { operations, existing };
         }
-        if (Object.values(operations).some(operation => operation.status === "pending")) {
-            throw new ShoppingError("UNRESOLVED_OPERATION", "An earlier write has an unknown outcome. All new writes are blocked.");
-        }
+        this.assertIndependent(operations, kind === "cart" ? extra.cartBefore : undefined, description);
         operations[operationId] = { ...extra, fingerprint, kind, status: "pending" };
         return { operations, existing: undefined };
     }
 
-    private async perform<T>(operationId: string, operations: Record<string, Operation>, action: () => Promise<T>): Promise<T> {
-        await this.journal.save(operations);
-        try {
-            const result = await action();
-            operations[operationId] = { ...operations[operationId], status: "complete", result };
-            await this.journal.save(operations);
-            return result;
-        } catch {
-            throw new ShoppingError("OUTCOME_UNKNOWN", "The write may have succeeded. It will not be retried automatically. Read the cart or order history and reconcile first.");
-        }
+    private async saveEvidence(operations: Record<string, Operation>) {
+        try { await this.journal.save(operations); }
+        catch { this.recoveryPersistenceUncertain = true; throw new ShoppingError("STATE_UNREADABLE", "Persistence is uncertain. Stop all writes and inspect the preserved ledger after restart."); }
     }
 
-    async changeQuantity(input: ProductKey & { quantity: number; mode: "add" | "set"; expectedRevision: string; operationId: string; comment: string }) {
-        const { operations, existing } = await this.begin(input.operationId, input, "cart");
-        if (existing) return existing.status === "resolved_by_operator" ? { status: existing.status, resolution: existing.resolution } : existing.result;
+    private async perform<T>(operationId: string, operations: Record<string, Operation>, action: () => Promise<T>): Promise<T> {
+        const operation = operations[operationId];
+        operation.evidence = [{ at: new Date().toISOString(), stage: "prepared" }];
+        await this.saveEvidence(operations);
+        operation.evidence.push({ at: new Date().toISOString(), stage: "dispatch_attempted" });
+        await this.saveEvidence(operations);
+        let result: T;
+        try { result = await action(); }
+        catch (error) {
+            const evidence = error instanceof CartWriteError ? error.evidence : sanitizedError(error, "dispatch_attempted", "transport");
+            operation.evidence.push(evidence);
+            if (error instanceof CartWriteError && evidence.stage === "not_dispatched") {
+                evidence.outcome = "not_applied";
+                operation.status = "not_applied";
+                operation.result = { status: "not_applied", reason: evidence.reason, code: error.code };
+            }
+            await this.saveEvidence(operations);
+            if (operation.status === "not_applied") throw new ShoppingError(error instanceof ShoppingError ? error.code : "NOT_DISPATCHED", "The adapter verified that no cart request was dispatched. The evidence is saved; do not replay this ID.");
+            throw new ShoppingError("OUTCOME_UNKNOWN", `Operation ${operationId} remains unresolved. Inspect sanitized evidence and fresh state; never replay it.`);
+        }
+        operations[operationId] = { ...operation, status: "complete", result };
+        await this.saveEvidence(operations);
+        return result;
+    }
+
+    async changeQuantity(input: ProductKey & { quantity: number; mode: "add" | "set"; expectedRevision: string; operationId: string; comment: string; absoluteTarget?: number }) {
+        if (this.recoveryPersistenceUncertain) throw new ShoppingError("STATE_UNREADABLE", "Restart and inspect the ledger after uncertain persistence.");
+        // Handle old IDs before reading or calculating a new deficit.
+        const loaded = await this.journal.load();
+        const prior = loaded[input.operationId];
+        if (prior) {
+            const { existing } = await this.begin(input.operationId, input, "cart");
+            return existing!.status === "resolved_by_operator" ? { status: existing!.status, resolution: existing!.resolution } : existing!.result;
+        }
+        if (Object.values(loaded).some(op => op.status === "pending" && (op.kind !== "cart" || !op.unresolved?.scope)))
+            throw new ShoppingError("UNRESOLVED_OPERATION", "A pending operation has unknown scope or affects checkout/delivery. Preserve it for recovery.");
         const before = await this.cart();
         if (before.revision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "Read and review the changed cart before writing.");
         const current = quantity(before, input);
-        const target = input.mode === "add" ? current + input.quantity : input.quantity;
+        const target = input.absoluteTarget !== undefined ? Math.max(current, input.absoluteTarget) : input.mode === "add" ? current + input.quantity : input.quantity;
+        if (!Number.isFinite(target) || target < 0) throw new ShoppingError("INVALID_QUANTITY", "Invalid absolute quantity.");
         if (input.mode === "set" && current === 0 && target > 0) throw new ShoppingError("PRODUCT_NOT_IN_CART", "Use add_to_shufersal_cart for a new product.");
-        operations[input.operationId].cartBefore = before;
-        operations[input.operationId].product = { productId: input.productId, sellingMethod: input.sellingMethod };
-        operations[input.operationId].targetQuantity = target;
+        const description = await this.describe(before, input);
+        if (description.available === null) throw new ShoppingError("AVAILABILITY_UNVERIFIED", "Catalog availability is unknown; no write was attempted.");
+        if (description.available === false) throw new ShoppingError("PRODUCT_UNAVAILABLE", "The exact requested product is unavailable; no substitute was selected.");
+        const equivalenceKeys = description.identity.equivalenceKeys;
+        if (before.items.some(line => (line.productId !== input.productId || line.sellingMethod !== input.sellingMethod)
+            && (line.productId.replace(/^P_/, "") === input.productId.replace(/^P_/, "") || line.identity?.equivalenceKeys?.some(key => equivalenceKeys?.includes(key)))))
+            throw new ShoppingError("PACK_EQUIVALENCE_REVIEW", "An equivalent pack or sale unit is already in the cart; review the conversion rather than adding duplicates.");
+        const { operations } = await this.begin(input.operationId, input, "cart", {
+            cartBefore: before, product: description, targetQuantity: target, requestedAbsoluteTarget: input.absoluteTarget ?? target,
+            unresolved: { reason: "Write outcome not yet verified", lastVerifiedQuantity: current,
+                scope: before.integrity?.complete && equivalenceKeys ? { accountId: before.accountId, cartId: before.integrity.cartId, equivalenceKeys } : null },
+        }, description);
         return this.perform(input.operationId, operations, async () => {
+            let fresh;
+            try { fresh = await this.cart(); }
+            catch (error) { throw new CartWriteError("INCOMPLETE_CART", "Pre-dispatch cart read failed.", { ...sanitizedError(error, "not_dispatched", "incomplete_read"), outcome: "not_applied" }); }
+            if (fresh.revision !== before.revision) throw new CartWriteError("CART_CHANGED", "Cart changed before dispatch.", { at: new Date().toISOString(), stage: "not_dispatched", outcome: "not_applied", reason: "precondition" });
             if (current !== target) {
-                if (input.mode === "add") await this.site.add(input, input.quantity, input.comment);
-                else await this.site.setQuantity(input, target);
+                if (input.mode === "add") {
+                    const evidence = await this.site.add(input, target - current, input.comment, { expectedQuantity: current, targetQuantity: target, accountId: before.accountId });
+                    if (evidence) operations[input.operationId].evidence!.push(evidence);
+                } else await this.site.setQuantity(input, target);
             }
             return this.verifyCartChange(operations[input.operationId]);
         });
@@ -86,12 +168,21 @@ export class ShoppingService {
         for (let attempt = 0; attempt < 3; attempt++) {
             try {
                 const after = await this.cart();
-                if (quantity(after, product) === targetQuantity && cartContents(cartBefore, product) === cartContents(after, product)
+                const observedQuantity = after.items.some(item => item.productId === product.productId && item.sellingMethod === product.sellingMethod) || after.integrity?.complete ? quantity(after, product) : null;
+                if (operation.unresolved && observedQuantity !== null) operation.unresolved.lastVerifiedQuantity = observedQuantity;
+                if (observedQuantity === targetQuantity && cartContents(cartBefore, product) === cartContents(after, product)
                     && cartBefore.accountId === after.accountId && cartBefore.address === after.address
                     && JSON.stringify(cartBefore.delivery) === JSON.stringify(after.delivery)) {
+                    operation.evidence?.push({ at: new Date().toISOString(), stage: "readback_verified", outcome: "verified", observedQuantity });
                     return { revision: after.revision, ...product, quantity: targetQuantity };
+                } else {
+                    operation.evidence?.push({ at: new Date().toISOString(), stage: "readback_unverified", reason: "readback_mismatch", observedQuantity });
+                    if (operation.unresolved) operation.unresolved.reason = "Fresh readback did not verify the requested target";
                 }
-            } catch { /* Retry only the read, never the mutation. */ }
+            } catch (error) {
+                operation.evidence?.push(sanitizedError(error, "readback_unverified", "incomplete_read"));
+                if (operation.unresolved) operation.unresolved.reason = "Readback incomplete or unverified";
+            }
             if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 500));
         }
         throw new ShoppingError("OUTCOME_UNKNOWN", "Cart read-back did not prove the intended change. Inspect and reconcile; do not repeat the write.");
@@ -103,8 +194,10 @@ export class ShoppingService {
         const operation = operations[operationId];
         if (!operation || operation.kind !== "cart") throw new ShoppingError("UNKNOWN_OPERATION", "This is not a cart operation.");
         if (operation.status === "resolved_by_operator") return { status: operation.status, resolution: operation.resolution };
-        if (operation.status === "complete") return operation.result;
-        const result = await this.verifyCartChange(operation);
+        if (operation.status === "complete" || operation.status === "not_applied") return operation.result;
+        let result;
+        try { result = await this.verifyCartChange(operation); }
+        catch (error) { await this.saveEvidence(operations); throw error; }
         operations[operationId] = { ...operation, status: "complete", result };
         await this.journal.save(operations);
         return result;
@@ -189,7 +282,7 @@ export class ShoppingService {
         const existing = operations[additionId];
         if (existing?.status === "pending") throw new ShoppingError("OUTCOME_UNKNOWN", `Recovery addition ${additionId} is uncertain. Prepare a new owner recovery for that operation; never replay it.`);
         if (existing) return { operationId: additionId, status: existing.status, result: existing.result, resolution: existing.resolution };
-        if (Object.values(operations).some(op => op.status === "pending")) throw new ShoppingError("UNRESOLVED_OPERATION", "Resolve all pending operations before adding missing quantities.");
+
         const cart = await this.cart();
         if (cart.accountId !== resolution.observedCart.accountId) throw new ShoppingError("ACCOUNT_CHANGED", "The account changed since owner approval.");
         if (cart.revision !== input.expectedRevision) throw new ShoppingError("CART_CHANGED", "Read the fresh cart and reassess missing quantities before continuing.");
@@ -204,6 +297,45 @@ export class ShoppingService {
                 throw new ShoppingError("OUTCOME_UNKNOWN", `Recovery addition ${additionId} is uncertain. Read the cart and prepare owner recovery for this child operation. Never retry the add.`);
             throw error;
         }
+    }
+
+    async applyTargets(rawInput: unknown) {
+        const input = batchTargetsSchema.parse(rawInput);
+        const results: { verified: unknown[]; unresolved: unknown[]; unavailable: unknown[]; unattempted: unknown[] } = { verified: [], unresolved: [], unavailable: [], unattempted: [] };
+        let first = true;
+        for (const target of input.targets) {
+            try {
+                const cart = await this.cart();
+                if (!cart.integrity?.complete) throw new ShoppingError("INCOMPLETE_CART", "A complete fresh cart is required for batch targets.");
+                if (first && cart.revision !== input.expectedRevision) {
+                    results.unattempted.push(...input.targets.map(item => ({ ...item, reason: "CART_CHANGED" })));
+                    break;
+                }
+                first = false;
+                const description = await this.describe(cart, target);
+                if (description.name !== target.expectedName) throw new ShoppingError("PRODUCT_MISMATCH", "Exact name and SKU do not match the approved product.");
+                if (description.available === null) throw new ShoppingError("AVAILABILITY_UNVERIFIED", "Catalog availability is unknown; no write was attempted.");
+                if (description.available === false) throw new ShoppingError("PRODUCT_UNAVAILABLE", "The exact product is unavailable.");
+                const prior = (await this.journal.load())[target.operationId];
+                if (prior) {
+                    if (prior.product?.productId !== target.productId || prior.product.sellingMethod !== target.sellingMethod
+                        || prior.requestedAbsoluteTarget !== target.quantity) throw new ShoppingError("OPERATION_CONFLICT", "This target operation ID belongs to a different intent.");
+                    if (prior.status === "pending") { results.unresolved.push({ ...target, product: description, reason: "OUTCOME_UNKNOWN" }); continue; }
+                    if (prior.status !== "complete") { results.unattempted.push({ ...target, product: description, status: prior.status, reason: "RETIRED_INTENT" }); continue; }
+                    results.verified.push({ ...target, product: description, result: prior.result, replayed: false }); continue;
+                }
+                const result = await this.changeQuantity({ productId: target.productId, sellingMethod: target.sellingMethod,
+                    quantity: 0, absoluteTarget: target.quantity, mode: "add", comment: "", operationId: target.operationId, expectedRevision: cart.revision });
+                results.verified.push({ ...target, product: description, result });
+            } catch (error) {
+                const reason = error instanceof ShoppingError ? error.code : "INCOMPLETE_CART";
+                const item = { ...target, reason };
+                if (["OUTCOME_UNKNOWN", "SKU_OUTCOME_UNKNOWN"].includes(reason)) results.unresolved.push(item);
+                else if (reason === "PRODUCT_UNAVAILABLE") results.unavailable.push(item);
+                else results.unattempted.push(item);
+            }
+        }
+        return { ...results, pendingOperations: await this.unresolvedItems() };
     }
 
     async selectSlot(input: { slotId: string; expectedRevision: string; operationId: string }) {
@@ -263,7 +395,7 @@ export class ShoppingService {
         const operation = operations[operationId];
         if (!operation || operation.kind !== "checkout") throw new ShoppingError("UNKNOWN_OPERATION", "This is not a checkout operation.");
         if (operation.status === "resolved_by_operator") return { status: operation.status, resolution: operation.resolution };
-        if (operation.status === "complete") return operation.result;
+        if (operation.status === "complete" || operation.status === "not_applied") return operation.result;
         const result = await this.verifyOrder(operation);
         operations[operationId] = { ...operation, status: "complete", result };
         await this.journal.save(operations);

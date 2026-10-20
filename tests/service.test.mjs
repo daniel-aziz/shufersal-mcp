@@ -121,9 +121,9 @@ test('uncertain cart writes reconcile after restart without repeating the mutati
 
 test('cart mutation tolerates a transient read failure without writing twice', async () => {
     const { site, service } = setup(); const read = site.readCart.bind(site); let reads = 0;
-    site.readCart = async () => { if (++reads === 2) throw Error('transient'); return read(); };
+    site.readCart = async () => { if (++reads === 3) throw Error('transient'); return read(); };
     const result = await service.changeQuantity(input(site));
-    assert.equal(result.quantity, 3); assert.equal(site.writes, 1); assert.equal(reads, 3);
+    assert.equal(result.quantity, 3); assert.equal(site.writes, 1); assert.equal(reads, 4);
 });
 
 

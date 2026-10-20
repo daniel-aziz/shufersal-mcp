@@ -3,7 +3,8 @@ declare global {
         miglog: {
             account: { uid: string; anonymous: boolean };
             cart: {
-                addToCart: (productId: string, quantity: number, sellingMethod: string, comment: string, context: Record<string, string>) => Promise<unknown>;
+                order?: unknown;
+                addToCart: (productId: string, quantity: number, sellingMethod: string, comment: string, element: HTMLElement | null, context: Record<string, string>) => Promise<unknown>;
                 item: { update_qty: (entry: number, sellingMethod: string, quantity: number, productId: string) => Promise<unknown> };
             };
         };

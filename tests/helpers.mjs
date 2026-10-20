@@ -10,10 +10,11 @@ export class MemoryJournal {
     async save(entries) { this.entries = structuredClone(entries); }
 }
 export class FakeSite {
-    current = cart(); history = []; writes = 0; submits = 0; failAfterWrite = false;
+    current = { ...cart(), integrity: { complete: true, cartId: 'active' } }; history = []; writes = 0; submits = 0; failAfterWrite = false;
     async open() { return { opened: true }; }
     async search(query) { return { results: [{ code: query }] }; }
     async readCart() { return structuredClone(this.current); }
+    async describeProduct(key) { return { ...key, name: 'Fixture product', available: true, identity: { barcode: null, variant: null, packSize: null, equivalenceKeys: ['sku:' + key.productId] } }; }
     async readOrders() { return structuredClone(this.history); }
     async readSlots() { return [slot]; }
     async add(key, amount) {

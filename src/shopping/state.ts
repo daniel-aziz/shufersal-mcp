@@ -1,8 +1,9 @@
+import { evidenceSchema } from "./evidence.js";
 import { recoveryFingerprint, resolutionSchema } from "./recovery.js";
 import { mkdir, open, readFile, rename, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
-import { quantity, revision, cartSchema, lineSchema, slotSchema, ShoppingError } from "./model.js";
+import { identitySchema, quantity, revision, cartSchema, lineSchema, slotSchema, ShoppingError } from "./model.js";
 
 const snapshotSchema = cartSchema.extend({
     items: z.array(lineSchema.passthrough()),
@@ -12,15 +13,31 @@ const snapshotSchema = cartSchema.extend({
 const operationSchema = z.object({
     fingerprint: z.string(),
     kind: z.enum(["cart", "delivery", "checkout"]),
-    status: z.enum(["pending", "complete", "resolved_by_operator"]),
+    status: z.enum(["pending", "complete", "resolved_by_operator", "not_applied"]),
     resolution: resolutionSchema.optional(),
     result: z.unknown().optional(),
+    evidence: z.array(evidenceSchema).optional(),
+    unresolved: z.object({
+        reason: z.string(), lastVerifiedQuantity: z.number().finite().nonnegative().nullable(),
+        scope: z.object({ accountId: z.string(), cartId: z.string(), equivalenceKeys: z.array(z.string()).min(1) }).nullable(),
+    }).optional(),
     checkoutRevision: z.string().optional(),
     previousOrders: z.array(z.string()).optional(),
     cartBefore: snapshotSchema.optional(),
     product: z.object({ productId: z.string(), sellingMethod: z.string() }).passthrough().optional(),
-    targetQuantity: z.number().nonnegative().optional(),
+    targetQuantity: z.number().finite().nonnegative().optional(),
+    requestedAbsoluteTarget: z.number().finite().nonnegative().optional(),
 }).passthrough().superRefine((operation, context) => {
+    if (operation.status === "not_applied" && !operation.evidence?.some(item => item.stage === "not_dispatched" && item.outcome === "not_applied"))
+        context.addIssue({ code: "custom", message: "Not-applied status requires pre-dispatch evidence" });
+    const scope = operation.unresolved?.scope;
+    if (scope) {
+        const identity = identitySchema.safeParse(operation.product?.identity);
+        if (operation.kind !== "cart" || !operation.cartBefore?.integrity?.complete
+            || scope.accountId !== operation.cartBefore.accountId || scope.cartId !== operation.cartBefore.integrity.cartId
+            || !identity.success || JSON.stringify(scope.equivalenceKeys) !== JSON.stringify(identity.data.equivalenceKeys))
+            context.addIssue({ code: "custom", message: "Unresolved scope does not match its verified snapshot and identity" });
+    }
     if (operation.status !== "resolved_by_operator") {
         if (operation.resolution) context.addIssue({ code: "custom", message: "Unexpected resolution on non-resolved operation" });
         return;
