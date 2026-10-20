@@ -46,40 +46,60 @@ export class LiveShufersalSite extends BrowserShoppingSite {
 
     override async readCart() {
         const { page, accountId } = await this.page();
-        await page.waitForSelector("#cartContainer");
+        await page.waitForSelector("#cartContainer article:not(.miglog-prod-comment)");
         const cart = await page.evaluate(() => {
-            const root = document.querySelector("#cartContainer");
-            if (!root) throw new Error("Cart missing");
-            const number = (value: string | null | undefined) => {
-                const match = value?.replace(/,/g, "").match(/-?\d+(?:\.\d+)?/g);
-                if (match?.length !== 1) throw new Error("Ambiguous price");
-                return Number(match[0]);
+            const roots = document.querySelectorAll("#cartContainer");
+            if (roots.length !== 1) throw new Error("Cart missing or ambiguous");
+            const root = roots[0];
+            const money = (scope: ParentNode, selector: string, signed = false): number | null => {
+                const nodes = scope.querySelectorAll(selector);
+                if (nodes.length !== 1) return null;
+                const matches = nodes[0].textContent?.replace(/,/g, "").match(/-?\d+(?:\.\d+)?/g);
+                if (matches?.length !== 1) return null;
+                const value = Number(matches[0]);
+                return Number.isFinite(value) && (signed || value >= 0) ? value : null;
             };
-            const items = Array.from(root.querySelectorAll("article[data-product-code][data-entry-number]")).map(row => {
-                const quantity = number(row.getAttribute("data-entry-qty"));
-                const gross = number(row.querySelector(".miglog-prod-totalPrize")?.textContent);
-                const discountNode = row.querySelector(".miglog-prod-totalDiscount");
-                const discount = discountNode ? number(discountNode.textContent) : 0;
-                if (discount > 0) throw new Error("Unexpected discount sign");
-                const method = row.querySelector("[name='sellingMethod']");
+            // Read every row, including malformed ones: silently skipping a row would make recovery unsafe.
+            const rows = Array.from(root.querySelectorAll("article")).filter(row =>
+                !row.classList.contains("miglog-prod-comment") || row.matches("[data-product-code], [data-entry-number], [data-entry-qty]")
+                || Boolean(row.querySelector(".miglog-prod-name, [name='sellingMethod']")));
+            if (!rows.length) throw new Error("Cart contents not verified: no product rows");
+            const entries = new Set<string>();
+            const products = new Set<string>();
+            const items = rows.map(row => {
+                const rawQuantity = row.getAttribute("data-entry-qty");
+                const entry = row.getAttribute("data-entry-number");
+                const productId = row.getAttribute("data-product-code")?.trim();
+                if (!rawQuantity || !/^\d+(?:\.\d+)?$/.test(rawQuantity) || !entry || !/^\d+$/.test(entry)
+                    || !productId || entries.has(entry)) throw new Error("Incomplete or duplicate cart row");
+                entries.add(entry);
+                const quantity = Number(rawQuantity);
+                if (!Number.isFinite(quantity) || quantity <= 0) throw new Error("Invalid quantity");
+                const methods = row.querySelectorAll("[name='sellingMethod']");
+                const method = methods.length === 1 ? methods[0] : null;
                 const sellingMethod = method instanceof HTMLSelectElement || method instanceof HTMLInputElement ? method.value : null;
                 if (sellingMethod !== "BY_UNIT" && sellingMethod !== "BY_WEIGHT") throw new Error("Unknown selling method");
+                const key = JSON.stringify([productId, sellingMethod]);
+                if (products.has(key)) throw new Error("Duplicate product rows");
+                products.add(key);
+                const names = row.querySelectorAll(".miglog-prod-name");
+                if (names.length !== 1) throw new Error("Missing or ambiguous product name");
+                const gross = money(row, ".miglog-prod-totalPrize");
+                const discountNodes = row.querySelectorAll(".miglog-prod-totalDiscount");
+                const discount = discountNodes.length ? money(row, ".miglog-prod-totalDiscount", true) : 0;
+                const net = gross !== null && discount !== null && discount <= 0 ? gross + discount : null;
                 const commentInput = row.querySelector("input[name^='comment_']");
                 return {
-                    productId: row.getAttribute("data-product-code"), sellingMethod,
-                    name: row.querySelector(".miglog-prod-name")?.textContent?.trim(), quantity,
+                    productId, sellingMethod, name: names[0].textContent?.trim(), quantity,
                     unit: sellingMethod === "BY_WEIGHT" ? "kg" : "unit",
-                    unitPrice: Math.round(gross / quantity * 10000) / 10000,
-                    lineTotal: Math.round((gross + discount) * 100) / 100,
+                    unitPrice: gross === null ? null : Math.round(gross / quantity * 10000) / 10000,
+                    lineTotal: net !== null && net >= 0 ? Math.round(net * 100) / 100 : null,
                     substitution: null,
                     comment: commentInput instanceof HTMLInputElement ? commentInput.value : "",
                 };
             });
-            const totalNodes = root.querySelectorAll(".totalPrice");
-            const deliveryNodes = root.querySelectorAll(".infoSubText");
-            if (totalNodes.length !== 1 || deliveryNodes.length !== 1) throw new Error("Cart totals ambiguous");
             return { items, address: null, delivery: null, currency: "ILS", estimated: true,
-                deliveryFee: number(deliveryNodes[0].textContent), total: number(totalNodes[0].textContent),
+                deliveryFee: money(root, ".infoSubText"), total: money(root, ".totalPrice"),
             };
         });
         return cartSchema.parse({ ...cart, accountId });

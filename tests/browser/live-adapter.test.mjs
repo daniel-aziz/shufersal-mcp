@@ -6,7 +6,7 @@ import { LiveShufersalSite } from '../../dist/shopping/live.js';
 
 test('observed live mapping reads discounted cart, strips payment data and handles unknown delivery fields', async () => {
     const start=Date.parse('2099-10-20T10:00:00+03:00');
-    let malformed=false; let expired=false;
+    let malformed=false; let expired=false; let transform = html => html;
     const server=createServer((req,res)=>{
         res.setHeader('content-type','application/json');
         if(req.url==='/online/he/my-account/orders') {res.end(JSON.stringify({activeOrders:[],closedOrders:[{code:'123'}]}));return;}
@@ -22,12 +22,12 @@ test('observed live mapping reads discounted cart, strips payment data and handl
             res.end(JSON.stringify({'20991020':[{code:'available',fromHour:start,toHour:start+7200000,selectable:true,price:{value:10,currencyIso:'ILS'}},{code:'closed',fromHour:start,toHour:start+7200000,selectable:false,price:{value:10,currencyIso:'ILS'}}]}));return;
         }
         res.setHeader('content-type','text/html; charset=utf-8');
-        res.end(`<script>window.miglog={account:{uid:'fixture',anonymous:${expired}}};</script><a href="/online/he/my-account">Account</a>
+        res.end(transform(`<script>window.miglog={account:{uid:'fixture',anonymous:${expired}}};</script><a href="/online/he/my-account">Account</a>
         <aside id="cartContainer"><article data-product-code="milk" data-entry-number="0" data-entry-qty="2">
         <h3 class="miglog-prod-name">Milk</h3><select name="sellingMethod"><option selected>BY_UNIT</option></select>
         <p class="miglog-prod-totalPrize">14.00₪שקלים חדשים</p><p class="miglog-prod-totalDiscount">₪שקלים חדשים -2.00</p>
-        <input name="comment_0" value="Keep team note"></article><span class="infoSubText">10.00₪</span>
-        <span class="totalPrice">${malformed?'unavailable':'22.00₪שקלים חדשים'}</span></aside>`);
+        <article class="miglog-prod-comment"><input name="comment_0" value="Keep team note"></article></article><span class="infoSubText">10.00₪</span>
+        <span class="totalPrice">${malformed?'unavailable':'22.00₪שקלים חדשים'}</span></aside>`));
     });
     await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
     const browser=await puppeteer.launch({headless:true,executablePath:process.env.PUPPETEER_EXECUTABLE_PATH,args:process.env.CI?['--no-sandbox']:[]});
@@ -45,6 +45,36 @@ test('observed live mapping reads discounted cart, strips payment data and handl
         expired=true; let authChecks=0;
         const recovering=new LiveShufersalSite(async()=>page,async()=>{if(++authChecks===2)expired=false;},`http://127.0.0.1:${server.address().port}/online/he/`);
         assert.equal((await recovering.readCart()).items.length,1);assert.equal(authChecks,2);
-        malformed=true;await assert.rejects(site.readCart());
+        malformed=true;assert.equal((await site.readCart()).total,null);malformed=false;
+        for (const selector of ['totalPrice', 'infoSubText', 'miglog-prod-totalPrize', 'miglog-prod-totalDiscount']) {
+            for (const duplicate of [false, true]) {
+                transform = html => html.replace(new RegExp(`<([a-z]+) class="${selector}">.*?</\\1>`), match => duplicate ? match + match : match.replace(/>[^<]*</, '>unavailable<'));
+                const partial = await site.readCart();
+                assert.equal(partial.items[0].quantity,2);assert.equal(partial.items[0].productId,'milk');
+                if(selector==='totalPrice') assert.equal(partial.total,null);
+                if(selector==='infoSubText') assert.equal(partial.deliveryFee,null);
+                if(selector==='miglog-prod-totalPrize') {assert.equal(partial.items[0].unitPrice,null);assert.equal(partial.items[0].lineTotal,null);}
+                if(selector==='miglog-prod-totalDiscount') assert.equal(partial.items[0].lineTotal,null);
+            }
+        }
+        transform = html => html.replace(/<(span|p) class="(?:totalPrice|infoSubText|miglog-prod-totalPrize|miglog-prod-totalDiscount)">.*?<\/\1>/g,'');
+        const missing = await site.readCart();
+        assert.equal(missing.total,null);assert.equal(missing.deliveryFee,null);assert.equal(missing.items[0].unitPrice,null);assert.equal(missing.items[0].lineTotal,null);assert.equal(missing.items[0].quantity,2);
+        transform = html => {
+            const content = html.match(/<aside id="cartContainer">([\s\S]*?)<\/aside>/)[1];
+            return html.replace(/<aside id="cartContainer">[\s\S]*?<\/aside>/, `<aside id="cartContainer"></aside><script>setTimeout(() => document.querySelector('#cartContainer').innerHTML = ${JSON.stringify(content)}, 100)</script>`);
+        };
+        assert.equal((await site.readCart()).items[0].quantity,2);
+        for (const breakCart of [
+            html => html.replace('data-product-code="milk"',''),
+            html => html.replace('data-entry-qty="2"','data-entry-qty="2 unknown"'),
+            html => html.replace('data-entry-number="0"',''),
+            html => html.replace('</article>','</article><article data-entry-qty="3"></article>'),
+            html => html.replace(/<article[\s\S]*?<\/article>/, match => match + match),
+            html => html.replace(/<article[\s\S]*?<\/article>/,''),
+            html => html.replace('id="cartContainer"','id="wrong"'),
+        ]) {
+            transform=breakCart;page.setDefaultTimeout(300);await assert.rejects(site.readCart());
+        }
     } finally {await browser.close();await new Promise(resolve=>server.close(resolve));}
 });

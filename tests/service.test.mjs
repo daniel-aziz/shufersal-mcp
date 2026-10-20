@@ -149,3 +149,57 @@ test('replenishment rejects duplicate or foreign baselines and requires review o
     await assert.rejects(service.planReplenishment(input), code('INVALID_BASELINE'));
     assert.equal(site.writes, 0);
 });
+
+test('quantity recovery ignores unavailable or refreshed money while preserving the durable pending operation', async () => {
+    const { site, journal, service } = setup();
+    site.current.items.push({ ...site.current.items[0], productId: 'team-product', quantity: 4 });site.reprice();
+    const request = input(site);site.failAfterWrite=true;
+    await assert.rejects(service.changeQuantity(request), code('OUTCOME_UNKNOWN'));
+    const saved = structuredClone(journal.entries[request.operationId]);
+    site.current.total=null;site.current.deliveryFee=null;
+    for(const row of site.current.items) {row.unitPrice=null;row.lineTotal=null;}
+    const restarted = new ShoppingService(site,journal,true);
+    assert.equal((await restarted.cart()).items[0].quantity,3);
+    assert.equal((await restarted.reconcileCart(request.operationId)).quantity,3);
+    assert.equal(site.writes,1);
+    assert.deepEqual(journal.entries[request.operationId].cartBefore,saved.cartBefore);
+    assert.equal(journal.entries[request.operationId].fingerprint,saved.fingerprint);
+    assert.equal((await restarted.changeQuantity(request)).quantity,3);assert.equal(site.writes,1);
+    await assert.rejects(restarted.prepareCheckout(),code('INCOMPLETE_CHECKOUT'));
+    await assert.rejects(restarted.submit({expectedRevision:(await restarted.cart()).revision,operationId:'checkout-missing',confirmed:true}),code('INCOMPLETE_CHECKOUT'));
+    assert.equal(site.submits,0);
+});
+
+test('quantity recovery keeps uncertainty for incomplete, duplicate or changed non-monetary cart rows', async () => {
+    const { site,journal,service }=setup();
+    site.current.items.push({...site.current.items[0],productId:'team',quantity:4});site.reprice();
+    site.failAfterWrite=true;const request=input(site);
+    await assert.rejects(service.changeQuantity(request),code('OUTCOME_UNKNOWN'));
+    const after=structuredClone(site.current);
+    for(const change of [
+        current=>current.items.pop(),
+        current=>current.items.push({...current.items[1]}),
+        current=>{current.items[1].quantity=7;},
+        current=>{current.items[0].quantity=2;},
+        current=>{current.accountId='different';},
+        current=>{current.items[1].productId='different';},
+        current=>{current.items[1].quantity=undefined;},
+    ]) {
+        site.current=structuredClone(after);change(site.current);
+        await assert.rejects(service.reconcileCart(request.operationId),code('OUTCOME_UNKNOWN'));
+        assert.equal(journal.entries[request.operationId].status,'pending');assert.equal(site.writes,1);
+    }
+    await assert.rejects(service.changeQuantity({...request,operationId:'another'}),code('UNRESOLVED_OPERATION'));
+    site.current=structuredClone(after);site.current.items[1].unitPrice=9;site.current.items[1].lineTotal=36;
+    assert.equal((await service.reconcileCart(request.operationId)).quantity,3);assert.equal(site.writes,1);
+});
+
+test('missing monetary data permits guarded cart verification but never a purchase-ready summary', async () => {
+    const {site,service}=setup();
+    const add=site.add.bind(site);
+    site.add=async (...args)=>{await add(...args);site.current.total=null;site.current.items[0].lineTotal=null;};
+    assert.equal((await service.changeQuantity(input(site))).quantity,3);
+    await assert.rejects(service.prepareCheckout(),code('INCOMPLETE_CHECKOUT'));
+    site.current.total=31;site.current.items[0].lineTotal=21;
+    assert.equal((await service.prepareCheckout()).cart.total,31);
+});
