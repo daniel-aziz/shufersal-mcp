@@ -112,7 +112,7 @@ async function exists(path: string) {
     try { await readFile(path); return true; }
     catch (error) { if (error instanceof Error && "code" in error && error.code === "ENOENT") return false; throw error; }
 }
-const locked = () => new ShoppingError("ACCOUNT_LOCKED", "State is owned or recovery is in progress. Stop duplicate workers; for a crashed worker run node dist/recover-lock.js using the same configuration. Never delete the lock or ledger.");
+const locked = () => new ShoppingError("ACCOUNT_LOCKED", "Another operation owns this state, or recovery is in progress. Wait for it to finish, then reassess with the same operation ID for any write retry. For a crashed worker inspect ownership with node dist/recover-lock.js using the same configuration. Never delete the lock or ledger.");
 
 /** Acquisitions also check the recovery gate after creating their exclusive lock. */
 export async function acquireOwnership(directory: string): Promise<() => Promise<void>> {

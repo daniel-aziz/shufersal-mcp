@@ -17,9 +17,21 @@ export const batchTargetsSchema = z.object({
 export class ShoppingService {
     private readonly queue = new SerialQueue();
     private recoveryPersistenceUncertain = false;
-    constructor(private readonly site: ShoppingSite, private readonly journal: Journal, private readonly checkoutEnabled = false, private readonly approveRecovery?: RecoveryApprover) {}
+    private stopping = false;
+    constructor(private readonly site: ShoppingSite, private readonly journal: Journal, private readonly checkoutEnabled = false, private readonly approveRecovery?: RecoveryApprover,
+        private readonly ownership?: { run<T>(action: () => Promise<T>): Promise<T> }) {}
 
-    run<T>(action: () => Promise<T>): Promise<T> { return this.queue.run(action); }
+    run<T>(action: () => Promise<T>): Promise<T> {
+        return this.queue.run(async () => {
+            if (this.stopping) throw new ShoppingError("SERVER_STOPPING", "This MCP connection is closing; reconnect before requesting another operation.");
+            return this.ownership ? this.ownership.run(action) : action();
+        });
+    }
+    async shutdown(): Promise<void> {
+        this.stopping = true;
+        // Drain the active operation and its cleanup; queued operations will refuse to start.
+        await this.queue.run(async () => {});
+    }
     async open() { return this.site.open(); }
     async search(query: string) { return this.site.search(query); }
     async cart() {
