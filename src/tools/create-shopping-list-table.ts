@@ -9,7 +9,7 @@ export function registerCreateShoppingListTableTool(server: McpServer) {
         })) },
         annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     }, async ({ recipe }) => {
-        const escape = (text: string) => text.replaceAll("|", "&#124;").replace(/[\r\n]+/g, " ");
+        const escape = (text: string) => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replace(/[\\`*_[\]()!]/g, character => `&#${character.charCodeAt(0)};`).replaceAll("|", "&#124;").replace(/[\r\n]+/g, " ");
         const rows = recipe.map(item => [item.ingredient, item.quantity, item.unit_of_measure, item.brand_name ?? ""].map(escape).join(" | "));
         return { content: [{ type: "text", text: ["| Ingredient | Quantity | Unit | Brand |", "| --- | --- | --- | --- |", ...rows.map(row => `| ${row} |`)].join("\n") }] };
     });

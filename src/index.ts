@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readBuildInfo } from "./build-info.js";
 import { readFile } from "node:fs/promises";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -15,6 +16,7 @@ import { registerShoppingTools } from "./tools/shopping.js";
 import { registerCreateShoppingListTableTool } from "./tools/create-shopping-list-table.js";
 
 async function main() {
+    const build = readBuildInfo();
     const config = readConfig();
     const profile = config.siteProfile ? siteProfileSchema.parse(JSON.parse(await readFile(config.siteProfile, "utf8"))) : undefined;
     const release = await acquireOwnership(config.stateDirectory);
@@ -25,7 +27,12 @@ async function main() {
     const site = config.siteMode === "live" ? new LiveShufersalSite(() => browser.getPage(), authenticate)
         : new BrowserShoppingSite(() => browser.getPage(), profile, undefined, authenticate);
     const service = new ShoppingService(site, new FileJournal(config.stateDirectory), config.checkoutEnabled);
-    const server = new McpServer({ name: "shufersal-mcp-server", version: "0.0.1" });
+    const server = new McpServer({ name: "shufersal-mcp-server", version: `${build.version}+${build.buildId.slice(0, 12)}` });
+    server.registerResource("build", "shufersal://build", { description: "Installed build provenance and source/dist freshness; reconnect after rebuilding.", mimeType: "application/json" }, async uri => {
+        const installed = readBuildInfo();
+        return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify({ ...build,
+            runningBuildMatchesInstalled: installed.buildId === build.buildId, installed }) }] };
+    });
     server.registerTool("authenticate_shufersal", {
         description: "Reuse the local session or sign in with operator-configured 1Password references. Never accepts or returns credentials.",
         inputSchema: {}, annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
@@ -57,4 +64,8 @@ async function main() {
     process.stdin.on("end", async () => { await close(); });
 }
 try { await main(); }
-catch { console.error("Shufersal MCP failed to start. Check configuration, site profile and ownership lock. Sensitive error details are suppressed."); process.exitCode = 1; }
+catch (error) {
+    console.error(JSON.stringify({ ok: false, error: error instanceof ShoppingError ? { code: error.code, message: error.message }
+        : { code: "STARTUP_FAILED", message: "Check configuration, site profile and build metadata; run npm run build and reconnect. Sensitive details suppressed." } }));
+    process.exitCode = 1;
+}

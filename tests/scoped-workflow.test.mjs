@@ -131,7 +131,8 @@ test('owner can supersede PRO25 with PRO20 and abandon-only targets without repl
 test('batch reports unavailable and unattempted separately and keeps stable target IDs across retries',async()=>{
  const f=fixture();
  // Absent catalog item has a distinct unavailable outcome, not an inferred zero/success.
- f.site.describeProduct=async key=>({...key,name:'Unavailable yogurt',available:false,identity:{barcode:null,variant:null,packSize:null,equivalenceKeys:['missing']}});
+ const describe=f.site.describeProduct.bind(f.site);
+ f.site.describeProduct=async key=>key.productId==='absent'?({...key,name:'Unavailable yogurt',available:false,identity:{barcode:null,variant:null,packSize:null,equivalenceKeys:['missing']}}):describe(key);
  const targets=[{productId:'absent',sellingMethod:'unit',quantity:1,expectedName:'Unavailable yogurt',operationId:randomUUID()},
   {...f.target(PRO20,17),expectedName:'wrong'},f.target('forest',4)];
  const response=await f.service.applyTargets({expectedRevision:revision(f.site.current),targets});
