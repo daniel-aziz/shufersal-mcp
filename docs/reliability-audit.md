@@ -29,3 +29,7 @@ Live purchases, delivery reservations, credential/permission changes, ledger del
 - [Scoped operation queue and recovery](cart-workflow-contract.md)
 
 Passing fixture tests cannot prove live server quantity semantics or atomic concurrency. Keep owner confirmation for recovery and checkout disabled until their separate live validation is authorized. Reconnect clients after a rebuild and inspect the build resource rather than assuming a running process loaded new code.
+
+## Independent execution evidence
+
+The [saved candidate matrices and transcripts](verification/9230633/README.md) retain exact builds, inputs, results, state changes and blocked boundaries. The final rerun is recorded separately in the PR so earlier evidence is not relabeled as a later execution.

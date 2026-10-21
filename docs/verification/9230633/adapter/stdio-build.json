@@ -1,0 +1,9 @@
+{
+  "contents": [
+    {
+      "uri": "shufersal://build",
+      "mimeType": "application/json",
+      "text": "{\"version\":\"0.0.1\",\"commit\":\"9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc\",\"dirty\":false,\"builtAt\":\"2026-10-21T07:43:21.966Z\",\"sourceDigest\":\"ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075\",\"distDigest\":\"b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db\",\"buildId\":\"e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618\",\"sourceMatchesBuild\":true,\"distMatchesBuild\":true,\"runningBuildMatchesInstalled\":true,\"installed\":{\"version\":\"0.0.1\",\"commit\":\"9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc\",\"dirty\":false,\"builtAt\":\"2026-10-21T07:43:21.966Z\",\"sourceDigest\":\"ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075\",\"distDigest\":\"b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db\",\"buildId\":\"e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618\",\"sourceMatchesBuild\":true,\"distMatchesBuild\":true}}"
+    }
+  ]
+}

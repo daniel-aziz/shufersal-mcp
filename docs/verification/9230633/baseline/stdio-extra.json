@@ -1,0 +1,47 @@
+[
+  {
+    "stale": false,
+    "server": {
+      "name": "shufersal-mcp-server",
+      "version": "0.0.1"
+    },
+    "tools": [
+      "authenticate_shufersal",
+      "plan_shufersal_replenishment",
+      "open_shufersal",
+      "search_shufersal",
+      "get_shufersal_cart",
+      "get_shufersal_orders",
+      "get_shufersal_order",
+      "get_shufersal_delivery_slots",
+      "add_to_shufersal_cart",
+      "set_shufersal_cart_quantity",
+      "select_shufersal_delivery_slot",
+      "prepare_shufersal_checkout",
+      "submit_shufersal_order",
+      "get_shufersal_unresolved_items",
+      "apply_shufersal_cart_targets",
+      "prepare_shufersal_cart_recovery",
+      "accept_shufersal_cart_recovery",
+      "resume_shufersal_cart_recovery",
+      "assess_shufersal_cart_recovery",
+      "reconcile_shufersal_cart",
+      "get_shufersal_operation",
+      "reconcile_shufersal_checkout",
+      "create_shopping_list_table"
+    ],
+    "authentication": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"ok\":false,\"error\":{\"code\":\"AUTH_NOT_CONFIGURED\",\"message\":\"Configure local 1Password item, vault and account references first.\"}}"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "stale": true,
+    "error": "MCP error -32000: Connection closed"
+  }
+]

@@ -1,0 +1,893 @@
+[
+  {
+    "name": "unlocked CLI",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-1"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "unlocked then already_unlocked, pending preserved",
+    "actual": [
+      {
+        "exit": 0,
+        "ok": true,
+        "result": {
+          "status": "unlocked",
+          "lockFingerprint": null,
+          "pendingOperationIds": [
+            "pending"
+          ],
+          "recoveryInProgress": false
+        }
+      },
+      {
+        "exit": 0,
+        "ok": true,
+        "result": {
+          "status": "already_unlocked",
+          "pendingOperationIds": [
+            "pending"
+          ]
+        }
+      }
+    ],
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "live owner refuses recovery and duplicate acquisition",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-2"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "OWNER_ALIVE and ACCOUNT_LOCKED",
+    "actual": {
+      "exit": 1,
+      "ok": false,
+      "error": {
+        "code": "OWNER_ALIVE",
+        "message": "Owner PID is alive or reused. Stop and inspect it; recovery refused."
+      }
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99a5d66ce21a9be911e8ce91b814a3f3fa49de85476427e42d6b05744116d2b7"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99a5d66ce21a9be911e8ce91b814a3f3fa49de85476427e42d6b05744116d2b7"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "killed child recovery archives lock preserving pending ledger",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-2"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "absent process and audited recovery",
+    "actual": [
+      {
+        "exit": 0,
+        "ok": true,
+        "result": {
+          "status": "locked",
+          "lockFingerprint": "99a5d66ce21a9be911e8ce91b814a3f3fa49de85476427e42d6b05744116d2b7",
+          "format": "verified_record",
+          "pid": 67466,
+          "processState": "absent",
+          "sameHost": true,
+          "pendingOperationIds": [
+            "pending"
+          ],
+          "recoveryInProgress": false
+        }
+      },
+      {
+        "exit": 0,
+        "ok": true,
+        "result": {
+          "recoveryId": "ff037bdc-58bc-4218-8516-065ea1c95f76",
+          "at": "2026-10-21T07:45:30.244Z",
+          "previousOwner": {
+            "version": 1,
+            "pid": 67466,
+            "host": "MacBook-Pro-3.local",
+            "started": "Wed Oct 21 10:45:30 2026",
+            "token": "b73e94e7-58ec-4947-bce7-fcb353f01284"
+          },
+          "legacyOwnerAttested": false,
+          "lockFingerprint": "99a5d66ce21a9be911e8ce91b814a3f3fa49de85476427e42d6b05744116d2b7",
+          "pendingOperationIds": [
+            "pending"
+          ],
+          "ledgerDigest": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+          "action": "archive_dead_owner_lock_preserve_operations"
+        }
+      }
+    ],
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99a5d66ce21a9be911e8ce91b814a3f3fa49de85476427e42d6b05744116d2b7"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner-ff037bdc-58bc-4218-8516-065ea1c95f76.lock": "99a5d66ce21a9be911e8ce91b814a3f3fa49de85476427e42d6b05744116d2b7",
+      "owner-recovery-ff037bdc-58bc-4218-8516-065ea1c95f76.json": "c00c398f9fb9b0ebbc0ce712b74da3d35a8b323bff72d5cc76d50f7ac63625f0"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "foreign host",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-3"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "OWNER_UNVERIFIED and unchanged owner",
+    "actual": {
+      "exit": 1,
+      "ok": false,
+      "error": {
+        "code": "OWNER_UNVERIFIED",
+        "message": "Owner identity is legacy, malformed, or belongs to another host. Automatic recovery refused."
+      }
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "94fd1be530ea2ad13e52d776cfa011e49c785c3bc93363160b0186d6a2e9c865"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "94fd1be530ea2ad13e52d776cfa011e49c785c3bc93363160b0186d6a2e9c865"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "reused PID",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-4"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "OWNER_ALIVE and unchanged owner",
+    "actual": {
+      "exit": 1,
+      "ok": false,
+      "error": {
+        "code": "OWNER_ALIVE",
+        "message": "Owner PID is alive or reused. Stop and inspect it; recovery refused."
+      }
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "d939a583cf7bf49df11d89dfd92145a6c7db3a791cc69adc711d49521aba12d2"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "d939a583cf7bf49df11d89dfd92145a6c7db3a791cc69adc711d49521aba12d2"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "malformed",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-5"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "OWNER_UNVERIFIED and unchanged owner",
+    "actual": {
+      "exit": 1,
+      "ok": false,
+      "error": {
+        "code": "OWNER_UNVERIFIED",
+        "message": "Owner identity is legacy, malformed, or belongs to another host. Automatic recovery refused."
+      }
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "f0cb064efbffff00babf6ec702d847ef0cbf366d281b00a747deda78c761b59f"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "f0cb064efbffff00babf6ec702d847ef0cbf366d281b00a747deda78c761b59f"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "legacy unapproved",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-6"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "OWNER_UNVERIFIED and unchanged owner",
+    "actual": {
+      "exit": 1,
+      "ok": false,
+      "error": {
+        "code": "OWNER_UNVERIFIED",
+        "message": "Owner identity is legacy, malformed, or belongs to another host. Automatic recovery refused."
+      }
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99d31be516f172300a1313376280ff2b1a1bc38742b0ed41e50390f5deb00b77"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99d31be516f172300a1313376280ff2b1a1bc38742b0ed41e50390f5deb00b77"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "legacy reviewed fingerprint and provenance confirmation",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-7"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "wrong fingerprint refused, correct fingerprint recovers",
+    "actual": [
+      {
+        "exit": 1,
+        "ok": false,
+        "error": {
+          "code": "OWNERSHIP_CHANGED",
+          "message": "Lock differs from reviewed fingerprint. Inspect again."
+        }
+      },
+      {
+        "exit": 0,
+        "ok": true,
+        "result": {
+          "recoveryId": "71eb749e-fc1f-4b4a-9b8c-2ef3a48ff534",
+          "at": "2026-10-21T07:45:30.574Z",
+          "previousOwner": {
+            "version": 1,
+            "pid": 67466,
+            "host": "MacBook-Pro-3.local",
+            "started": "legacy-owner-attested",
+            "token": "4a8b0219-37ad-4fe0-8772-90c6c0004078"
+          },
+          "legacyOwnerAttested": true,
+          "lockFingerprint": "99d31be516f172300a1313376280ff2b1a1bc38742b0ed41e50390f5deb00b77",
+          "pendingOperationIds": [
+            "pending"
+          ],
+          "ledgerDigest": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+          "action": "archive_dead_owner_lock_preserve_operations"
+        }
+      }
+    ],
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99d31be516f172300a1313376280ff2b1a1bc38742b0ed41e50390f5deb00b77"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner-71eb749e-fc1f-4b4a-9b8c-2ef3a48ff534.lock": "99d31be516f172300a1313376280ff2b1a1bc38742b0ed41e50390f5deb00b77",
+      "owner-recovery-71eb749e-fc1f-4b4a-9b8c-2ef3a48ff534.json": "079fa21d71799ed64faa61173e71e0241ae3032d738b7917189a1d1d9cfb9edc"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "legacy dangling browser lock",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-8"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "BROWSER_OWNERSHIP_UNVERIFIED",
+    "actual": {
+      "exit": 1,
+      "ok": false,
+      "error": {
+        "code": "BROWSER_OWNERSHIP_UNVERIFIED",
+        "message": "Browser profile lock exists. Close and verify its owner before legacy recovery; do not delete it blindly."
+      }
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99d31be516f172300a1313376280ff2b1a1bc38742b0ed41e50390f5deb00b77"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "99d31be516f172300a1313376280ff2b1a1bc38742b0ed41e50390f5deb00b77"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "interrupted recovery without owner",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-9"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "recovery_blocked, RECOVERY_LOCKED, acquisition blocked",
+    "actual": [
+      {
+        "exit": 0,
+        "ok": true,
+        "result": {
+          "status": "recovery_blocked",
+          "lockFingerprint": null,
+          "pendingOperationIds": [
+            "pending"
+          ],
+          "recoveryInProgress": true
+        }
+      },
+      {
+        "exit": 1,
+        "ok": false,
+        "error": {
+          "code": "RECOVERY_LOCKED",
+          "message": "Recovery is already active or interrupted. Preserve the recovery marker for investigation."
+        }
+      }
+    ],
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner-recovery.lock": "d512d96ea31ab0b9bb9b66da70c4d675f7db657518f4b6c0cc6d5823e6da5509"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner-recovery.lock": "d512d96ea31ab0b9bb9b66da70c4d675f7db657518f4b6c0cc6d5823e6da5509"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "release after owner replacement",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-10"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "OWNERSHIP_CHANGED, replacement retained",
+    "actual": "replacement retained",
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "73cdee9ba2d6553d6375e4e471f83f2da71ad7d1e5dab690f537de797950f979"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "73cdee9ba2d6553d6375e4e471f83f2da71ad7d1e5dab690f537de797950f979"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "concurrent acquisitions",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-11"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "exactly one owner",
+    "actual": [
+      "rejected",
+      "fulfilled",
+      "rejected",
+      "rejected",
+      "rejected",
+      "rejected",
+      "rejected",
+      "rejected"
+    ],
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "concurrent CLI recovery",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-12"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "one archive, others blocked or already unlocked",
+    "actual": [
+      {
+        "ok": false,
+        "error": {
+          "code": "RECOVERY_LOCKED",
+          "message": "Recovery is already active or interrupted. Preserve the recovery marker for investigation."
+        }
+      },
+      {
+        "ok": false,
+        "error": {
+          "code": "RECOVERY_LOCKED",
+          "message": "Recovery is already active or interrupted. Preserve the recovery marker for investigation."
+        }
+      },
+      {
+        "ok": true,
+        "result": {
+          "recoveryId": "cb22faec-e7c9-4d9f-99e3-298b03669522",
+          "at": "2026-10-21T07:45:30.915Z",
+          "previousOwner": {
+            "version": 1,
+            "pid": 67840,
+            "host": "MacBook-Pro-3.local",
+            "started": "Wed Oct 21 10:45:30 2026",
+            "token": "7e2f157b-201b-4ef2-a364-20ac4e6c78a4"
+          },
+          "legacyOwnerAttested": false,
+          "lockFingerprint": "465e69a43c727f73ff2ace1407ab343eb1375dff061979c3e9e90d73396e88f5",
+          "pendingOperationIds": [
+            "pending"
+          ],
+          "ledgerDigest": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+          "action": "archive_dead_owner_lock_preserve_operations"
+        }
+      },
+      {
+        "ok": false,
+        "error": {
+          "code": "RECOVERY_LOCKED",
+          "message": "Recovery is already active or interrupted. Preserve the recovery marker for investigation."
+        }
+      },
+      {
+        "ok": false,
+        "error": {
+          "code": "RECOVERY_LOCKED",
+          "message": "Recovery is already active or interrupted. Preserve the recovery marker for investigation."
+        }
+      }
+    ],
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner.lock": "465e69a43c727f73ff2ace1407ab343eb1375dff061979c3e9e90d73396e88f5"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b",
+      "owner-cb22faec-e7c9-4d9f-99e3-298b03669522.lock": "465e69a43c727f73ff2ace1407ab343eb1375dff061979c3e9e90d73396e88f5",
+      "owner-recovery-cb22faec-e7c9-4d9f-99e3-298b03669522.json": "27d9c3ec43c185bdf60bdad0c4734c7e0fdf9456224b68af5930094a79b44631"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "fresh MCP discovery, build resource, actual safe tool calls",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-13"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "exact candidate identity; complete discovery; safe tool response",
+    "actual": {
+      "version": {
+        "name": "shufersal-mcp-server",
+        "version": "0.0.1+e11984cf2bd6"
+      },
+      "info": {
+        "version": "0.0.1",
+        "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+        "dirty": false,
+        "builtAt": "2026-10-21T07:43:21.966Z",
+        "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+        "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+        "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618",
+        "sourceMatchesBuild": true,
+        "distMatchesBuild": true,
+        "runningBuildMatchesInstalled": true,
+        "installed": {
+          "version": "0.0.1",
+          "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+          "dirty": false,
+          "builtAt": "2026-10-21T07:43:21.966Z",
+          "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+          "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+          "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618",
+          "sourceMatchesBuild": true,
+          "distMatchesBuild": true
+        }
+      },
+      "tools": [
+        "authenticate_shufersal",
+        "plan_shufersal_replenishment",
+        "open_shufersal",
+        "search_shufersal",
+        "get_shufersal_cart",
+        "get_shufersal_orders",
+        "get_shufersal_order",
+        "get_shufersal_delivery_slots",
+        "add_to_shufersal_cart",
+        "set_shufersal_cart_quantity",
+        "select_shufersal_delivery_slot",
+        "prepare_shufersal_checkout",
+        "submit_shufersal_order",
+        "get_shufersal_unresolved_items",
+        "apply_shufersal_cart_targets",
+        "prepare_shufersal_cart_recovery",
+        "accept_shufersal_cart_recovery",
+        "resume_shufersal_cart_recovery",
+        "assess_shufersal_cart_recovery",
+        "reconcile_shufersal_cart",
+        "get_shufersal_operation",
+        "reconcile_shufersal_checkout",
+        "create_shopping_list_table"
+      ],
+      "resources": {
+        "resources": [
+          {
+            "name": "build",
+            "uri": "shufersal://build",
+            "description": "Installed build provenance and source/dist freshness; reconnect after rebuilding.",
+            "mimeType": "application/json"
+          }
+        ]
+      },
+      "calls": [
+        {
+          "name": "get_shufersal_cart",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"ok\":false,\"error\":{\"code\":\"SITE_PROFILE_REQUIRED\",\"message\":\"This tool requires a live-verified site profile. No unverified selectors or checkout endpoints are assumed.\"}}"
+              }
+            ],
+            "isError": true
+          }
+        },
+        {
+          "name": "plan_shufersal_replenishment",
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "MCP error -32602: Input validation error: Invalid arguments for tool plan_shufersal_replenishment: Required at orderNumbers"
+              }
+            ],
+            "isError": true
+          }
+        }
+      ]
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "running identity versus changed installed copy and reconnect",
+    "command": "node dist/recover-lock.js / isolated compiled API / MCP stdio",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/case-14"
+    },
+    "input": "synthetic pending operation only",
+    "expected": "old running identity retained; mismatch shown; reconnect loads new build",
+    "actual": {
+      "before": {
+        "version": "0.0.1",
+        "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+        "dirty": false,
+        "builtAt": "2026-10-21T07:43:21.966Z",
+        "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+        "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+        "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618",
+        "sourceMatchesBuild": null,
+        "distMatchesBuild": true,
+        "runningBuildMatchesInstalled": true,
+        "installed": {
+          "version": "0.0.1",
+          "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+          "dirty": false,
+          "builtAt": "2026-10-21T07:43:21.966Z",
+          "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+          "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+          "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618",
+          "sourceMatchesBuild": null,
+          "distMatchesBuild": true
+        }
+      },
+      "after": {
+        "version": "0.0.1",
+        "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+        "dirty": false,
+        "builtAt": "2026-10-21T07:43:21.966Z",
+        "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+        "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+        "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618",
+        "sourceMatchesBuild": null,
+        "distMatchesBuild": true,
+        "runningBuildMatchesInstalled": false,
+        "installed": {
+          "version": "0.0.1",
+          "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+          "dirty": false,
+          "builtAt": "2026-10-21T07:43:21.966Z",
+          "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+          "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+          "buildId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "sourceMatchesBuild": null,
+          "distMatchesBuild": false
+        }
+      },
+      "reconnected": {
+        "version": "0.0.1",
+        "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+        "dirty": false,
+        "builtAt": "2026-10-21T07:43:21.966Z",
+        "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+        "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+        "buildId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "sourceMatchesBuild": null,
+        "distMatchesBuild": false,
+        "runningBuildMatchesInstalled": true,
+        "installed": {
+          "version": "0.0.1",
+          "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+          "dirty": false,
+          "builtAt": "2026-10-21T07:43:21.966Z",
+          "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+          "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+          "buildId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "sourceMatchesBuild": null,
+          "distMatchesBuild": false
+        }
+      },
+      "version": {
+        "name": "shufersal-mcp-server",
+        "version": "0.0.1+bbbbbbbbbbbb"
+      },
+      "tools": [
+        "authenticate_shufersal",
+        "plan_shufersal_replenishment",
+        "open_shufersal",
+        "search_shufersal",
+        "get_shufersal_cart",
+        "get_shufersal_orders",
+        "get_shufersal_order",
+        "get_shufersal_delivery_slots",
+        "add_to_shufersal_cart",
+        "set_shufersal_cart_quantity",
+        "select_shufersal_delivery_slot",
+        "prepare_shufersal_checkout",
+        "submit_shufersal_order",
+        "get_shufersal_unresolved_items",
+        "apply_shufersal_cart_targets",
+        "prepare_shufersal_cart_recovery",
+        "accept_shufersal_cart_recovery",
+        "resume_shufersal_cart_recovery",
+        "assess_shufersal_cart_recovery",
+        "reconcile_shufersal_cart",
+        "get_shufersal_operation",
+        "reconcile_shufersal_checkout",
+        "create_shopping_list_table"
+      ]
+    },
+    "before": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "after": {
+      "operations.json": "6d4fd4aabc10b83d690c9b6cadf490d51518258790c55f7deec16e7a328f658b"
+    },
+    "verdict": "PASS"
+  },
+  {
+    "name": "valid read-only tool invocations in isolated profileless session",
+    "command": "fresh MCP stdio tools/call",
+    "build": {
+      "version": "0.0.1",
+      "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+      "dirty": false,
+      "builtAt": "2026-10-21T07:43:21.966Z",
+      "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+      "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+      "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618"
+    },
+    "env": {
+      "SHUFERSAL_STATE_DIR": "/private/tmp/shufersal-verify-ownership/valid-calls"
+    },
+    "input": "synthetic search and two synthetic order IDs",
+    "expected": "Cart and plan safely refuse missing profile; search may use public catalog fallback; no cart or operation mutation",
+    "actual": [
+      {
+        "name": "get_shufersal_cart",
+        "args": {},
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"ok\":false,\"error\":{\"code\":\"SITE_PROFILE_REQUIRED\",\"message\":\"This tool requires a live-verified site profile. No unverified selectors or checkout endpoints are assumed.\"}}"
+            }
+          ],
+          "isError": true
+        }
+      },
+      {
+        "name": "search_shufersal",
+        "args": {
+          "query": "synthetic-test"
+        },
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"ok\":true,\"result\":{\"results\":[{\"code\":\"P_3700135020382\",\"name\":\"Synthetic Nature \u05d9\u05d5\u05e0\u05d9\u05e1\u05e7\u05e1\",\"price\":{\"value\":883.9,\"formattedValue\":\"883.90 \u20aa\"},\"sellingMethod\":{\"code\":\"BY_UNIT\"},\"baseProduct\":\"P_3700135020382\",\"stock\":{\"stockLevelStatus\":{\"code\":\"inStock\"}},\"unitDescription\":\"100 \u05de\\\"\u05dc\",\"brandName\":\"Frederic Malle\",\"sourceOfSupply\":\"DIRECT\",\"longTail\":true}],\"pagination\":{\"complete\":true,\"limit\":30,\"reason\":\"reported_total\"}}}"
+            }
+          ]
+        }
+      },
+      {
+        "name": "plan_shufersal_replenishment",
+        "args": {
+          "orderNumbers": [
+            "synthetic-a",
+            "synthetic-b"
+          ]
+        },
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"ok\":false,\"error\":{\"code\":\"SITE_PROFILE_REQUIRED\",\"message\":\"This tool requires a live-verified site profile. No unverified selectors or checkout endpoints are assumed.\"}}"
+            }
+          ],
+          "isError": true
+        }
+      }
+    ],
+    "before": {},
+    "after": {
+      "files": [
+        "browser"
+      ]
+    },
+    "verdict": "PASS",
+    "actualNote": "Cart and plan returned SITE_PROFILE_REQUIRED. Search succeeded through catalog fallback with one public product result. No live account/cart correctness claimed."
+  }
+]

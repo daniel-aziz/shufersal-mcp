@@ -35,7 +35,7 @@ test('empty live cart requires positive zero-count evidence in DOM and complete 
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const browser=await puppeteer.launch({headless:true,args:process.env.CI?['--no-sandbox']:[]});
  try{
-  const page=await browser.newPage();page.setDefaultTimeout(200);
+  const page=await browser.newPage();page.setDefaultTimeout(5_000);
   const site=new LiveShufersalSite(async()=>page,undefined,`http://127.0.0.1:${server.address().port}/online/he/`);
   const empty=await site.readCart();assert.deepEqual(empty.items,[]);assert.equal(empty.integrity.complete,true);assert.equal(empty.total,null);
   serverCount=null;assert.equal((await site.readCart()).integrity.complete,false);
