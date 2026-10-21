@@ -1,5 +1,4 @@
 import * as fs from 'node:fs/promises';
-import assert from 'node:assert/strict';
 const repo='/Users/daniel/projects/shufersal-mcp',root='/private/tmp/shufersal-verify-ownership';
 const {Client}=await import(repo+'/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.js');
 const {StdioClientTransport}=await import(repo+'/node_modules/@modelcontextprotocol/sdk/dist/esm/client/stdio.js');
