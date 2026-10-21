@@ -1,4 +1,5 @@
 import test from 'node:test';
+import puppeteer from 'puppeteer';
 import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -7,7 +8,13 @@ import { BrowserSession } from '../../dist/browser.js';
 import { OperationOwnership } from '../../dist/shopping/ownership.js';
 import { inspectOwnership } from '../../dist/shopping/state.js';
 
-test('owned Chromium closes after success/error and another session reuses the same profile',async()=>{
+test('owned Chromium closes after success/error and another session reuses the same profile',async(t)=>{
+ // Match existing synthetic Chromium fixtures on restricted Linux CI runners.
+ // The real production BrowserSession launch options remain unchanged.
+ if(process.env.CI) {
+  const launch=puppeteer.launch.bind(puppeteer);
+  t.mock.method(puppeteer,'launch',options=>launch({...options,args:[...(options.args??[]),'--no-sandbox']}));
+ }
  const dir=await mkdtemp(join(tmpdir(),'browser-handoff-'));
  const a=new BrowserSession({profile:join(dir,'browser'),headless:true});
  const b=new BrowserSession({profile:join(dir,'browser'),headless:true});
