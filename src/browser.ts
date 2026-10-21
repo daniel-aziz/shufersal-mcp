@@ -28,8 +28,15 @@ export class BrowserSession {
         return this.page;
     }
     async close(): Promise<void> {
-        await this.page?.close();
-        if (this.options.browserURL) this.browser?.disconnect();
-        else await this.browser?.close();
+        if (this.options.browserURL) {
+            // Close our page before disconnecting; disconnect alone leaves its activity running.
+            await this.page?.close();
+            this.browser?.disconnect();
+        } else {
+            // Closing the owned browser closes every page, even if page.close would fail.
+            await this.browser?.close();
+        }
+        this.page = undefined;
+        this.browser = undefined;
     }
 }

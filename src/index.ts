@@ -11,7 +11,8 @@ import { ShoppingService } from "./shopping/service.js";
 import { LiveShufersalSite } from "./shopping/live.js";
 import { BrowserShoppingSite } from "./shopping/site.js";
 import { siteProfileSchema } from "./shopping/site-profile.js";
-import { acquireOwnership, FileJournal } from "./shopping/state.js";
+import { FileJournal } from "./shopping/state.js";
+import { OperationOwnership } from "./shopping/ownership.js";
 import { registerShoppingTools } from "./tools/shopping.js";
 import { registerCreateShoppingListTableTool } from "./tools/create-shopping-list-table.js";
 
@@ -19,14 +20,14 @@ async function main() {
     const build = readBuildInfo();
     const config = readConfig();
     const profile = config.siteProfile ? siteProfileSchema.parse(JSON.parse(await readFile(config.siteProfile, "utf8"))) : undefined;
-    const release = await acquireOwnership(config.stateDirectory);
     const browser = new BrowserSession(config.browser);
     const authConfig = config.authentication;
     const authentication = authConfig ? new ShufersalAuthentication(() => readOnePassword(authConfig)) : undefined;
     const authenticate = authentication ? async (page: import("puppeteer").Page) => { await authentication.ensure(page); } : undefined;
     const site = config.siteMode === "live" ? new LiveShufersalSite(() => browser.getPage(), authenticate)
         : new BrowserShoppingSite(() => browser.getPage(), profile, undefined, authenticate);
-    const service = new ShoppingService(site, new FileJournal(config.stateDirectory), config.checkoutEnabled);
+    const ownership = new OperationOwnership(config.stateDirectory, () => browser.close());
+    const service = new ShoppingService(site, new FileJournal(config.stateDirectory), config.checkoutEnabled, undefined, ownership);
     const server = new McpServer({ name: "shufersal-mcp-server", version: `${build.version}+${build.buildId.slice(0, 12)}` });
     server.registerResource("build", "shufersal://build", { description: "Installed build provenance and source/dist freshness; reconnect after rebuilding.", mimeType: "application/json" }, async uri => {
         const installed = readBuildInfo();
@@ -52,10 +53,7 @@ async function main() {
     const close = async () => {
         if (closing) return;
         closing = true;
-        await service.run(async () => {
-            await browser.close();
-            await release();
-        });
+        await service.shutdown();
     };
     process.on("SIGINT", async () => { await close(); process.exit(0); });
     process.on("SIGTERM", async () => { await close(); process.exit(0); });
