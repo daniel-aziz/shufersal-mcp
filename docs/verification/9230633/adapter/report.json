@@ -1,0 +1,4556 @@
+{
+  "build": {
+    "version": "0.0.1",
+    "commit": "9230633aefe5ea66d8f36c2ba4e8b7c615fbd2bc",
+    "dirty": false,
+    "builtAt": "2026-10-21T07:43:21.966Z",
+    "sourceDigest": "ad1ebeb5f6c084fa736a2c2c829e58cfbb2046c0e76df9de4173a3a357931075",
+    "distDigest": "b10fbe4f2336cdabf441abb7753c3bc921b12201a4b685286ebd41880778c1db",
+    "buildId": "e11984cf2bd6c106bfad592b2effa27f615c749e667c4fc0444ae69362d92618",
+    "sourceMatchesBuild": true,
+    "distMatchesBuild": true
+  },
+  "matrix": [
+    {
+      "id": "open",
+      "expected": "authenticated fixture",
+      "actual": {
+        "ok": true,
+        "result": {
+          "opened": true,
+          "authenticated": true,
+          "siteAdapter": "live",
+          "siteProfileConfigured": false,
+          "checkoutVerified": false
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "beyond30",
+      "expected": "matcha at ordinal47 found; reported67 complete",
+      "actual": {
+        "ok": true,
+        "result": {
+          "results": [
+            {
+              "code": "P_8100000000000",
+              "name": "Tea 0",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000001",
+              "name": "Tea 1",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000002",
+              "name": "Tea 2",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000003",
+              "name": "Tea 3",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000004",
+              "name": "Tea 4",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000005",
+              "name": "Tea 5",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000006",
+              "name": "Tea 6",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000007",
+              "name": "Tea 7",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000008",
+              "name": "Tea 8",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000009",
+              "name": "Tea 9",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000010",
+              "name": "Tea 10",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000011",
+              "name": "Tea 11",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000012",
+              "name": "Tea 12",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000013",
+              "name": "Tea 13",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000014",
+              "name": "Tea 14",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000015",
+              "name": "Tea 15",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000016",
+              "name": "Tea 16",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000017",
+              "name": "Tea 17",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000018",
+              "name": "Tea 18",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000019",
+              "name": "Tea 19",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000020",
+              "name": "Tea 20",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000021",
+              "name": "Tea 21",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000022",
+              "name": "Tea 22",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000023",
+              "name": "Tea 23",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000024",
+              "name": "Tea 24",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000025",
+              "name": "Tea 25",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000026",
+              "name": "Tea 26",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000027",
+              "name": "Tea 27",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000028",
+              "name": "Tea 28",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000029",
+              "name": "Tea 29",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000030",
+              "name": "Tea 30",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000031",
+              "name": "Tea 31",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000032",
+              "name": "Tea 32",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000033",
+              "name": "Tea 33",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000034",
+              "name": "Tea 34",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000035",
+              "name": "Tea 35",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000036",
+              "name": "Tea 36",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000037",
+              "name": "Tea 37",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000038",
+              "name": "Tea 38",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000039",
+              "name": "Tea 39",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000040",
+              "name": "Tea 40",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000041",
+              "name": "Tea 41",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000042",
+              "name": "Tea 42",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000043",
+              "name": "Tea 43",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000044",
+              "name": "Tea 44",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000045",
+              "name": "Tea 45",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_7290116936628",
+              "name": "Ceremonial matcha 80g",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000047",
+              "name": "Tea 47",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000048",
+              "name": "Tea 48",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000049",
+              "name": "Tea 49",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000050",
+              "name": "Tea 50",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000051",
+              "name": "Tea 51",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000052",
+              "name": "Tea 52",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000053",
+              "name": "Tea 53",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000054",
+              "name": "Tea 54",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000055",
+              "name": "Tea 55",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000056",
+              "name": "Tea 56",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000057",
+              "name": "Tea 57",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000058",
+              "name": "Tea 58",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000059",
+              "name": "Tea 59",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000060",
+              "name": "Tea 60",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000061",
+              "name": "Tea 61",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000062",
+              "name": "Tea 62",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000063",
+              "name": "Tea 63",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000064",
+              "name": "Tea 64",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000065",
+              "name": "Tea 65",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000066",
+              "name": "Tea 66",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            }
+          ],
+          "pagination": {
+            "complete": true,
+            "limit": 120,
+            "reason": "reported_total"
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "absence",
+      "expected": "incomplete short search does not establish stock",
+      "actual": {
+        "ok": true,
+        "result": {
+          "results": [
+            {
+              "code": "P_8100000000000",
+              "name": "Tea 0",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000001",
+              "name": "Tea 1",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            }
+          ],
+          "pagination": {
+            "complete": false,
+            "limit": 30,
+            "reason": "source_did_not_report_exhaustion"
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "exact-matcha",
+      "expected": "exact80g BY_UNIT available",
+      "actual": {
+        "ok": true,
+        "result": {
+          "results": [
+            {
+              "code": "P_8100000000000",
+              "name": "Tea 0",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000001",
+              "name": "Tea 1",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000002",
+              "name": "Tea 2",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000003",
+              "name": "Tea 3",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000004",
+              "name": "Tea 4",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000005",
+              "name": "Tea 5",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000006",
+              "name": "Tea 6",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000007",
+              "name": "Tea 7",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000008",
+              "name": "Tea 8",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000009",
+              "name": "Tea 9",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000010",
+              "name": "Tea 10",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000011",
+              "name": "Tea 11",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000012",
+              "name": "Tea 12",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000013",
+              "name": "Tea 13",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000014",
+              "name": "Tea 14",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000015",
+              "name": "Tea 15",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000016",
+              "name": "Tea 16",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000017",
+              "name": "Tea 17",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000018",
+              "name": "Tea 18",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000019",
+              "name": "Tea 19",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000020",
+              "name": "Tea 20",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000021",
+              "name": "Tea 21",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000022",
+              "name": "Tea 22",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000023",
+              "name": "Tea 23",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000024",
+              "name": "Tea 24",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000025",
+              "name": "Tea 25",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000026",
+              "name": "Tea 26",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000027",
+              "name": "Tea 27",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000028",
+              "name": "Tea 28",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000029",
+              "name": "Tea 29",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000030",
+              "name": "Tea 30",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000031",
+              "name": "Tea 31",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000032",
+              "name": "Tea 32",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000033",
+              "name": "Tea 33",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000034",
+              "name": "Tea 34",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000035",
+              "name": "Tea 35",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000036",
+              "name": "Tea 36",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000037",
+              "name": "Tea 37",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000038",
+              "name": "Tea 38",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000039",
+              "name": "Tea 39",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000040",
+              "name": "Tea 40",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000041",
+              "name": "Tea 41",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000042",
+              "name": "Tea 42",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000043",
+              "name": "Tea 43",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000044",
+              "name": "Tea 44",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000045",
+              "name": "Tea 45",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_7290116936628",
+              "name": "Ceremonial matcha 80g",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000047",
+              "name": "Tea 47",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000048",
+              "name": "Tea 48",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000049",
+              "name": "Tea 49",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000050",
+              "name": "Tea 50",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000051",
+              "name": "Tea 51",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000052",
+              "name": "Tea 52",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000053",
+              "name": "Tea 53",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000054",
+              "name": "Tea 54",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000055",
+              "name": "Tea 55",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000056",
+              "name": "Tea 56",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000057",
+              "name": "Tea 57",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000058",
+              "name": "Tea 58",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000059",
+              "name": "Tea 59",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000060",
+              "name": "Tea 60",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000061",
+              "name": "Tea 61",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000062",
+              "name": "Tea 62",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000063",
+              "name": "Tea 63",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000064",
+              "name": "Tea 64",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000065",
+              "name": "Tea 65",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000066",
+              "name": "Tea 66",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            }
+          ],
+          "pagination": {
+            "complete": true,
+            "limit": 120,
+            "reason": "reported_total"
+          },
+          "exactLookup": [
+            {
+              "productId": "P_7290116936628",
+              "sellingMethod": "BY_UNIT",
+              "name": "Ceremonial matcha 80g",
+              "available": true,
+              "availabilityEvidence": {
+                "jsonStatus": "https://schema.org/InStock",
+                "microdataStatuses": [
+                  "https://schema.org/InStock"
+                ],
+                "conflicting": false
+              },
+              "identity": {
+                "barcode": "7290116936628",
+                "variant": "Ceremonial matcha 80g",
+                "packSize": "80g",
+                "equivalenceKeys": [
+                  "sku:7290116936628",
+                  "base:matcha"
+                ]
+              }
+            }
+          ],
+          "exactLookupVerified": true
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "existing-stock-out",
+      "expected": "no write existing SKU out",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "PRODUCT_UNAVAILABLE",
+          "message": "The exact requested product is unavailable; no substitute was selected."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "existing-stock-unknown",
+      "expected": "no write existing SKU unknown",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "AVAILABILITY_UNVERIFIED",
+          "message": "Catalog availability is unknown; no write was attempted."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "existing-stock-conflict",
+      "expected": "no write existing SKU conflict",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "AVAILABILITY_UNVERIFIED",
+          "message": "Catalog availability is unknown; no write was attempted."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "12plus5",
+      "expected": "existing quantity17 update endpoint; PRO25 unchanged",
+      "actual": {
+        "ok": true,
+        "result": {
+          "revision": "4e89a175e804be26755c017d1acff13a1d4b3e4dd4d876ad8b30624d6e83ae03",
+          "productId": "P_7290110565527",
+          "sellingMethod": "BY_UNIT",
+          "name": "PRO20 200g",
+          "identity": {
+            "barcode": "7290110565527",
+            "variant": "PRO20 200g",
+            "packSize": "200g",
+            "equivalenceKeys": [
+              "sku:7290110565527",
+              "base:protein20"
+            ]
+          },
+          "available": true,
+          "availabilityEvidence": {
+            "jsonStatus": "https://schema.org/InStock",
+            "microdataStatuses": [
+              "https://schema.org/InStock"
+            ],
+            "conflicting": false
+          },
+          "quantity": 17
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "new-row",
+      "expected": "new separate matcha quantity3 add endpoint",
+      "actual": {
+        "ok": true,
+        "result": {
+          "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc",
+          "productId": "P_7290116936628",
+          "sellingMethod": "BY_UNIT",
+          "name": "Ceremonial matcha 80g",
+          "identity": {
+            "barcode": "7290116936628",
+            "variant": "Ceremonial matcha 80g",
+            "packSize": "80g",
+            "equivalenceKeys": [
+              "sku:7290116936628",
+              "base:matcha"
+            ]
+          },
+          "available": true,
+          "availabilityEvidence": {
+            "jsonStatus": "https://schema.org/InStock",
+            "microdataStatuses": [
+              "https://schema.org/InStock"
+            ],
+            "conflicting": false
+          },
+          "quantity": 3
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "identity",
+      "expected": "PRO20 200g and PRO25 180g identities distinct",
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 17,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290116936628",
+              "sellingMethod": "BY_UNIT",
+              "name": "Ceremonial matcha 80g",
+              "unit": "unit",
+              "quantity": 3,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290116936628",
+                "variant": "Ceremonial matcha 80g",
+                "packSize": "80g",
+                "equivalenceKeys": [
+                  "sku:7290116936628",
+                  "base:matcha"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "wrong-sale-unit",
+      "expected": "reject no write",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "IDENTITY_UNVERIFIED",
+          "message": "Exact SKU and sale unit were not uniquely verified on the product page."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "account-bound",
+      "expected": "reject different product account",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "ACCOUNT_CHANGED",
+          "message": "Product availability belongs to a different account."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "incomplete-cart",
+      "expected": "partial DOM rejected",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "INCOMPLETE_CART",
+          "message": "Cart integrity is unverified; all writes are blocked."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "response-loss",
+      "expected": "unknown after actual write19",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "OUTCOME_UNKNOWN",
+          "message": "Operation 0bc1bc44-ed61-4227-94ed-15f79dcf95ba remains unresolved. Inspect sanitized evidence and fresh state; never replay it."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "no-replay",
+      "expected": "same request no second write",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "OUTCOME_UNKNOWN",
+          "message": "Do not retry. Inspect the operation and current site state first."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "sanitized-evidence",
+      "expected": "no secret leaked pending retained",
+      "actual": {
+        "ok": true,
+        "result": {
+          "fingerprint": "060a1173d669e2f52917dca441b84162d484594128ae8bc04d3c9d122cf742a1",
+          "kind": "cart",
+          "status": "pending",
+          "evidence": [
+            {
+              "at": "2026-10-21T07:46:24.124Z",
+              "stage": "prepared"
+            },
+            {
+              "at": "2026-10-21T07:46:24.152Z",
+              "stage": "dispatch_attempted"
+            },
+            {
+              "at": "2026-10-21T07:46:24.268Z",
+              "stage": "dispatch_attempted",
+              "errorName": "Other",
+              "errorDigest": "63d96b5e1ece32a976c090bf990073f6524409c2ad03a9c0716608d75780c6ac",
+              "reason": "transport",
+              "httpStatus": 503,
+              "endpoint": "cart/update"
+            }
+          ],
+          "unresolved": {
+            "reason": "Write outcome not yet verified",
+            "lastVerifiedQuantity": 17,
+            "scope": {
+              "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+              "cartId": "active",
+              "equivalenceKeys": [
+                "sku:7290110565527",
+                "base:protein20"
+              ]
+            }
+          },
+          "cartBefore": {
+            "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+            "items": [
+              {
+                "productId": "P_7290110565527",
+                "sellingMethod": "BY_UNIT",
+                "name": "PRO20 200g",
+                "unit": "unit",
+                "quantity": 17,
+                "unitPrice": null,
+                "lineTotal": null,
+                "substitution": null,
+                "comment": "",
+                "identity": {
+                  "barcode": "7290110565527",
+                  "variant": "PRO20 200g",
+                  "packSize": "200g",
+                  "equivalenceKeys": [
+                    "sku:7290110565527",
+                    "base:protein20"
+                  ]
+                }
+              },
+              {
+                "productId": "P_7290119377411",
+                "sellingMethod": "BY_UNIT",
+                "name": "PRO25 180g",
+                "unit": "unit",
+                "quantity": 4,
+                "unitPrice": null,
+                "lineTotal": null,
+                "substitution": null,
+                "comment": "",
+                "identity": {
+                  "barcode": "7290119377411",
+                  "variant": "PRO25 180g",
+                  "packSize": "180g",
+                  "equivalenceKeys": [
+                    "sku:7290119377411",
+                    "base:protein25"
+                  ]
+                }
+              },
+              {
+                "productId": "P_7290116936628",
+                "sellingMethod": "BY_UNIT",
+                "name": "Ceremonial matcha 80g",
+                "unit": "unit",
+                "quantity": 3,
+                "unitPrice": null,
+                "lineTotal": null,
+                "substitution": null,
+                "comment": "",
+                "identity": {
+                  "barcode": "7290116936628",
+                  "variant": "Ceremonial matcha 80g",
+                  "packSize": "80g",
+                  "equivalenceKeys": [
+                    "sku:7290116936628",
+                    "base:matcha"
+                  ]
+                }
+              }
+            ],
+            "address": null,
+            "delivery": null,
+            "deliveryFee": null,
+            "total": null,
+            "currency": "ILS",
+            "estimated": true,
+            "integrity": {
+              "complete": true,
+              "cartId": "active"
+            },
+            "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+          },
+          "product": {
+            "productId": "P_7290110565527",
+            "sellingMethod": "BY_UNIT",
+            "name": "PRO20 200g",
+            "identity": {
+              "barcode": "7290110565527",
+              "variant": "PRO20 200g",
+              "packSize": "200g",
+              "equivalenceKeys": [
+                "sku:7290110565527",
+                "base:protein20"
+              ]
+            },
+            "available": true,
+            "availabilityEvidence": {
+              "jsonStatus": "https://schema.org/InStock",
+              "microdataStatuses": [
+                "https://schema.org/InStock"
+              ],
+              "conflicting": false
+            }
+          },
+          "targetQuantity": 19,
+          "requestedAbsoluteTarget": 19
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "verified-empty",
+      "expected": "explicit empty in DOM and response",
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "ea78a861d6aee808b0664d0b9467813850c2cb2b2157654ec09c328eea52f739"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "missing-empty",
+      "expected": "missing explicit empty rejected",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "SITE_CONTRACT_FAILED",
+          "message": "Site data or browser operation could not be verified. No raw browser output is exposed."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "concurrent-edit",
+      "expected": "stale revision rejects preserving external PRO25 edit",
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "CART_CHANGED",
+          "message": "Read and review the changed cart before writing."
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "background-poll",
+      "expected": "polls occurred and operations completed",
+      "actual": 71,
+      "status": "PASS"
+    },
+    {
+      "id": "actual-live-write-and-empty",
+      "status": "BLOCKED",
+      "expected": "explicitly prohibited saved profile/live mutations",
+      "actual": "not attempted"
+    }
+  ],
+  "transcript": [
+    {
+      "name": "open_shufersal",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "opened": true,
+          "authenticated": true,
+          "siteAdapter": "live",
+          "siteProfileConfigured": false,
+          "checkoutVerified": false
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "search_shufersal",
+      "args": {
+        "query": "ceremonial tea"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "results": [
+            {
+              "code": "P_8100000000000",
+              "name": "Tea 0",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000001",
+              "name": "Tea 1",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000002",
+              "name": "Tea 2",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000003",
+              "name": "Tea 3",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000004",
+              "name": "Tea 4",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000005",
+              "name": "Tea 5",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000006",
+              "name": "Tea 6",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000007",
+              "name": "Tea 7",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000008",
+              "name": "Tea 8",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000009",
+              "name": "Tea 9",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000010",
+              "name": "Tea 10",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000011",
+              "name": "Tea 11",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000012",
+              "name": "Tea 12",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000013",
+              "name": "Tea 13",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000014",
+              "name": "Tea 14",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000015",
+              "name": "Tea 15",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000016",
+              "name": "Tea 16",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000017",
+              "name": "Tea 17",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000018",
+              "name": "Tea 18",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000019",
+              "name": "Tea 19",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000020",
+              "name": "Tea 20",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000021",
+              "name": "Tea 21",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000022",
+              "name": "Tea 22",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000023",
+              "name": "Tea 23",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000024",
+              "name": "Tea 24",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000025",
+              "name": "Tea 25",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000026",
+              "name": "Tea 26",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000027",
+              "name": "Tea 27",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000028",
+              "name": "Tea 28",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000029",
+              "name": "Tea 29",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000030",
+              "name": "Tea 30",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000031",
+              "name": "Tea 31",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000032",
+              "name": "Tea 32",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000033",
+              "name": "Tea 33",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000034",
+              "name": "Tea 34",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000035",
+              "name": "Tea 35",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000036",
+              "name": "Tea 36",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000037",
+              "name": "Tea 37",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000038",
+              "name": "Tea 38",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000039",
+              "name": "Tea 39",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000040",
+              "name": "Tea 40",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000041",
+              "name": "Tea 41",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000042",
+              "name": "Tea 42",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000043",
+              "name": "Tea 43",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000044",
+              "name": "Tea 44",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000045",
+              "name": "Tea 45",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_7290116936628",
+              "name": "Ceremonial matcha 80g",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000047",
+              "name": "Tea 47",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000048",
+              "name": "Tea 48",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000049",
+              "name": "Tea 49",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000050",
+              "name": "Tea 50",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000051",
+              "name": "Tea 51",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000052",
+              "name": "Tea 52",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000053",
+              "name": "Tea 53",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000054",
+              "name": "Tea 54",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000055",
+              "name": "Tea 55",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000056",
+              "name": "Tea 56",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000057",
+              "name": "Tea 57",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000058",
+              "name": "Tea 58",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000059",
+              "name": "Tea 59",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000060",
+              "name": "Tea 60",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000061",
+              "name": "Tea 61",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000062",
+              "name": "Tea 62",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000063",
+              "name": "Tea 63",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000064",
+              "name": "Tea 64",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000065",
+              "name": "Tea 65",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000066",
+              "name": "Tea 66",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            }
+          ],
+          "pagination": {
+            "complete": true,
+            "limit": 120,
+            "reason": "reported_total"
+          }
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "search_shufersal",
+      "args": {
+        "query": "absent tea"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "results": [
+            {
+              "code": "P_8100000000000",
+              "name": "Tea 0",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000001",
+              "name": "Tea 1",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            }
+          ],
+          "pagination": {
+            "complete": false,
+            "limit": 30,
+            "reason": "source_did_not_report_exhaustion"
+          }
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "search_shufersal",
+      "args": {
+        "query": "P_7290116936628"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "results": [
+            {
+              "code": "P_8100000000000",
+              "name": "Tea 0",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000001",
+              "name": "Tea 1",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000002",
+              "name": "Tea 2",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000003",
+              "name": "Tea 3",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000004",
+              "name": "Tea 4",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000005",
+              "name": "Tea 5",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000006",
+              "name": "Tea 6",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000007",
+              "name": "Tea 7",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000008",
+              "name": "Tea 8",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000009",
+              "name": "Tea 9",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000010",
+              "name": "Tea 10",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000011",
+              "name": "Tea 11",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000012",
+              "name": "Tea 12",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000013",
+              "name": "Tea 13",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000014",
+              "name": "Tea 14",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000015",
+              "name": "Tea 15",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000016",
+              "name": "Tea 16",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000017",
+              "name": "Tea 17",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000018",
+              "name": "Tea 18",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000019",
+              "name": "Tea 19",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000020",
+              "name": "Tea 20",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000021",
+              "name": "Tea 21",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000022",
+              "name": "Tea 22",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000023",
+              "name": "Tea 23",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000024",
+              "name": "Tea 24",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000025",
+              "name": "Tea 25",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000026",
+              "name": "Tea 26",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000027",
+              "name": "Tea 27",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000028",
+              "name": "Tea 28",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000029",
+              "name": "Tea 29",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000030",
+              "name": "Tea 30",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000031",
+              "name": "Tea 31",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000032",
+              "name": "Tea 32",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000033",
+              "name": "Tea 33",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000034",
+              "name": "Tea 34",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000035",
+              "name": "Tea 35",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000036",
+              "name": "Tea 36",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000037",
+              "name": "Tea 37",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000038",
+              "name": "Tea 38",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000039",
+              "name": "Tea 39",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000040",
+              "name": "Tea 40",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000041",
+              "name": "Tea 41",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000042",
+              "name": "Tea 42",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000043",
+              "name": "Tea 43",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000044",
+              "name": "Tea 44",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000045",
+              "name": "Tea 45",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_7290116936628",
+              "name": "Ceremonial matcha 80g",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000047",
+              "name": "Tea 47",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000048",
+              "name": "Tea 48",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000049",
+              "name": "Tea 49",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000050",
+              "name": "Tea 50",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000051",
+              "name": "Tea 51",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000052",
+              "name": "Tea 52",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000053",
+              "name": "Tea 53",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000054",
+              "name": "Tea 54",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000055",
+              "name": "Tea 55",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000056",
+              "name": "Tea 56",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000057",
+              "name": "Tea 57",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000058",
+              "name": "Tea 58",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000059",
+              "name": "Tea 59",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000060",
+              "name": "Tea 60",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000061",
+              "name": "Tea 61",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000062",
+              "name": "Tea 62",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000063",
+              "name": "Tea 63",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000064",
+              "name": "Tea 64",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000065",
+              "name": "Tea 65",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            },
+            {
+              "code": "P_8100000000066",
+              "name": "Tea 66",
+              "price": 19,
+              "sellingMethod": {
+                "code": "BY_UNIT"
+              }
+            }
+          ],
+          "pagination": {
+            "complete": true,
+            "limit": 120,
+            "reason": "reported_total"
+          },
+          "exactLookup": [
+            {
+              "productId": "P_7290116936628",
+              "sellingMethod": "BY_UNIT",
+              "name": "Ceremonial matcha 80g",
+              "available": true,
+              "availabilityEvidence": {
+                "jsonStatus": "https://schema.org/InStock",
+                "microdataStatuses": [
+                  "https://schema.org/InStock"
+                ],
+                "conflicting": false
+              },
+              "identity": {
+                "barcode": "7290116936628",
+                "variant": "Ceremonial matcha 80g",
+                "packSize": "80g",
+                "equivalenceKeys": [
+                  "sku:7290116936628",
+                  "base:matcha"
+                ]
+              }
+            }
+          ],
+          "exactLookupVerified": true
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 12,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 5,
+        "operationId": "b1acb8f4-5042-4025-a38e-aa6bb02b8a95",
+        "expectedRevision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "PRODUCT_UNAVAILABLE",
+          "message": "The exact requested product is unavailable; no substitute was selected."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 12,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 5,
+        "operationId": "2452f7e1-7a67-4a87-8701-691037df676f",
+        "expectedRevision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "AVAILABILITY_UNVERIFIED",
+          "message": "Catalog availability is unknown; no write was attempted."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 12,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 5,
+        "operationId": "a8b7f5c8-5132-4770-b05d-a806f574c4b4",
+        "expectedRevision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "AVAILABILITY_UNVERIFIED",
+          "message": "Catalog availability is unknown; no write was attempted."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 12,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 5,
+        "operationId": "e3c29361-9b98-48af-9193-a6a5ebd95cc2",
+        "expectedRevision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 0
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "revision": "4e89a175e804be26755c017d1acff13a1d4b3e4dd4d876ad8b30624d6e83ae03",
+          "productId": "P_7290110565527",
+          "sellingMethod": "BY_UNIT",
+          "name": "PRO20 200g",
+          "identity": {
+            "barcode": "7290110565527",
+            "variant": "PRO20 200g",
+            "packSize": "200g",
+            "equivalenceKeys": [
+              "sku:7290110565527",
+              "base:protein20"
+            ]
+          },
+          "available": true,
+          "availabilityEvidence": {
+            "jsonStatus": "https://schema.org/InStock",
+            "microdataStatuses": [
+              "https://schema.org/InStock"
+            ],
+            "conflicting": false
+          },
+          "quantity": 17
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4
+        },
+        "writes": 1
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4
+        },
+        "writes": 1
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 17,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "4e89a175e804be26755c017d1acff13a1d4b3e4dd4d876ad8b30624d6e83ae03"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4
+        },
+        "writes": 1
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290116936628",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 3,
+        "operationId": "7f8140c0-a6b1-4e66-ac69-3faae2cb4314",
+        "expectedRevision": "4e89a175e804be26755c017d1acff13a1d4b3e4dd4d876ad8b30624d6e83ae03"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4
+        },
+        "writes": 1
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc",
+          "productId": "P_7290116936628",
+          "sellingMethod": "BY_UNIT",
+          "name": "Ceremonial matcha 80g",
+          "identity": {
+            "barcode": "7290116936628",
+            "variant": "Ceremonial matcha 80g",
+            "packSize": "80g",
+            "equivalenceKeys": [
+              "sku:7290116936628",
+              "base:matcha"
+            ]
+          },
+          "available": true,
+          "availabilityEvidence": {
+            "jsonStatus": "https://schema.org/InStock",
+            "microdataStatuses": [
+              "https://schema.org/InStock"
+            ],
+            "conflicting": false
+          },
+          "quantity": 3
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 17,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290116936628",
+              "sellingMethod": "BY_UNIT",
+              "name": "Ceremonial matcha 80g",
+              "unit": "unit",
+              "quantity": 3,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290116936628",
+                "variant": "Ceremonial matcha 80g",
+                "packSize": "80g",
+                "equivalenceKeys": [
+                  "sku:7290116936628",
+                  "base:matcha"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 17,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290116936628",
+              "sellingMethod": "BY_UNIT",
+              "name": "Ceremonial matcha 80g",
+              "unit": "unit",
+              "quantity": 3,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290116936628",
+                "variant": "Ceremonial matcha 80g",
+                "packSize": "80g",
+                "equivalenceKeys": [
+                  "sku:7290116936628",
+                  "base:matcha"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 1,
+        "operationId": "91829c72-9576-464f-982f-ec7669449746",
+        "expectedRevision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "IDENTITY_UNVERIFIED",
+          "message": "Exact SKU and sale unit were not uniquely verified on the product page."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 17,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290116936628",
+              "sellingMethod": "BY_UNIT",
+              "name": "Ceremonial matcha 80g",
+              "unit": "unit",
+              "quantity": 3,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290116936628",
+                "variant": "Ceremonial matcha 80g",
+                "packSize": "80g",
+                "equivalenceKeys": [
+                  "sku:7290116936628",
+                  "base:matcha"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 1,
+        "operationId": "b1f1ae2c-5a77-4576-91e1-87a89c7c5798",
+        "expectedRevision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "ACCOUNT_CHANGED",
+          "message": "Product availability belongs to a different account."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "INCOMPLETE_CART",
+          "message": "Cart integrity is unverified; all writes are blocked."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 17,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290116936628",
+              "sellingMethod": "BY_UNIT",
+              "name": "Ceremonial matcha 80g",
+              "unit": "unit",
+              "quantity": 3,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290116936628",
+                "variant": "Ceremonial matcha 80g",
+                "packSize": "80g",
+                "equivalenceKeys": [
+                  "sku:7290116936628",
+                  "base:matcha"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 2,
+        "operationId": "0bc1bc44-ed61-4227-94ed-15f79dcf95ba",
+        "expectedRevision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 17,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 2
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "OUTCOME_UNKNOWN",
+          "message": "Operation 0bc1bc44-ed61-4227-94ed-15f79dcf95ba remains unresolved. Inspect sanitized evidence and fresh state; never replay it."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 19,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 3
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 2,
+        "operationId": "0bc1bc44-ed61-4227-94ed-15f79dcf95ba",
+        "expectedRevision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 19,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 3
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "OUTCOME_UNKNOWN",
+          "message": "Do not retry. Inspect the operation and current site state first."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 19,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 3
+      }
+    },
+    {
+      "name": "get_shufersal_operation",
+      "args": {
+        "operationId": "0bc1bc44-ed61-4227-94ed-15f79dcf95ba"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 19,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 3
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "fingerprint": "060a1173d669e2f52917dca441b84162d484594128ae8bc04d3c9d122cf742a1",
+          "kind": "cart",
+          "status": "pending",
+          "evidence": [
+            {
+              "at": "2026-10-21T07:46:24.124Z",
+              "stage": "prepared"
+            },
+            {
+              "at": "2026-10-21T07:46:24.152Z",
+              "stage": "dispatch_attempted"
+            },
+            {
+              "at": "2026-10-21T07:46:24.268Z",
+              "stage": "dispatch_attempted",
+              "errorName": "Other",
+              "errorDigest": "63d96b5e1ece32a976c090bf990073f6524409c2ad03a9c0716608d75780c6ac",
+              "reason": "transport",
+              "httpStatus": 503,
+              "endpoint": "cart/update"
+            }
+          ],
+          "unresolved": {
+            "reason": "Write outcome not yet verified",
+            "lastVerifiedQuantity": 17,
+            "scope": {
+              "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+              "cartId": "active",
+              "equivalenceKeys": [
+                "sku:7290110565527",
+                "base:protein20"
+              ]
+            }
+          },
+          "cartBefore": {
+            "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+            "items": [
+              {
+                "productId": "P_7290110565527",
+                "sellingMethod": "BY_UNIT",
+                "name": "PRO20 200g",
+                "unit": "unit",
+                "quantity": 17,
+                "unitPrice": null,
+                "lineTotal": null,
+                "substitution": null,
+                "comment": "",
+                "identity": {
+                  "barcode": "7290110565527",
+                  "variant": "PRO20 200g",
+                  "packSize": "200g",
+                  "equivalenceKeys": [
+                    "sku:7290110565527",
+                    "base:protein20"
+                  ]
+                }
+              },
+              {
+                "productId": "P_7290119377411",
+                "sellingMethod": "BY_UNIT",
+                "name": "PRO25 180g",
+                "unit": "unit",
+                "quantity": 4,
+                "unitPrice": null,
+                "lineTotal": null,
+                "substitution": null,
+                "comment": "",
+                "identity": {
+                  "barcode": "7290119377411",
+                  "variant": "PRO25 180g",
+                  "packSize": "180g",
+                  "equivalenceKeys": [
+                    "sku:7290119377411",
+                    "base:protein25"
+                  ]
+                }
+              },
+              {
+                "productId": "P_7290116936628",
+                "sellingMethod": "BY_UNIT",
+                "name": "Ceremonial matcha 80g",
+                "unit": "unit",
+                "quantity": 3,
+                "unitPrice": null,
+                "lineTotal": null,
+                "substitution": null,
+                "comment": "",
+                "identity": {
+                  "barcode": "7290116936628",
+                  "variant": "Ceremonial matcha 80g",
+                  "packSize": "80g",
+                  "equivalenceKeys": [
+                    "sku:7290116936628",
+                    "base:matcha"
+                  ]
+                }
+              }
+            ],
+            "address": null,
+            "delivery": null,
+            "deliveryFee": null,
+            "total": null,
+            "currency": "ILS",
+            "estimated": true,
+            "integrity": {
+              "complete": true,
+              "cartId": "active"
+            },
+            "revision": "8ea4c2ee7aab7be05d394142e782a90aafabe4f8689a613bebdf62b606451cbc"
+          },
+          "product": {
+            "productId": "P_7290110565527",
+            "sellingMethod": "BY_UNIT",
+            "name": "PRO20 200g",
+            "identity": {
+              "barcode": "7290110565527",
+              "variant": "PRO20 200g",
+              "packSize": "200g",
+              "equivalenceKeys": [
+                "sku:7290110565527",
+                "base:protein20"
+              ]
+            },
+            "available": true,
+            "availabilityEvidence": {
+              "jsonStatus": "https://schema.org/InStock",
+              "microdataStatuses": [
+                "https://schema.org/InStock"
+              ],
+              "conflicting": false
+            }
+          },
+          "targetQuantity": 19,
+          "requestedAbsoluteTarget": 19
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 19,
+          "P_7290119377411": 4,
+          "P_7290116936628": 3
+        },
+        "writes": 3
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {},
+        "writes": 3
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "ea78a861d6aee808b0664d0b9467813850c2cb2b2157654ec09c328eea52f739"
+        }
+      },
+      "after": {
+        "rows": {},
+        "writes": 3
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {},
+        "writes": 3
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "SITE_CONTRACT_FAILED",
+          "message": "Site data or browser operation could not be verified. No raw browser output is exposed."
+        }
+      },
+      "after": {
+        "rows": {},
+        "writes": 3
+      }
+    },
+    {
+      "name": "get_shufersal_cart",
+      "args": {},
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 3
+      },
+      "actual": {
+        "ok": true,
+        "result": {
+          "accountId": "fb75fe5172df3202abf0e9ff0e78570978d57929b7e1bb1525fe74bb4bee4f4d",
+          "items": [
+            {
+              "productId": "P_7290110565527",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO20 200g",
+              "unit": "unit",
+              "quantity": 12,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290110565527",
+                "variant": "PRO20 200g",
+                "packSize": "200g",
+                "equivalenceKeys": [
+                  "sku:7290110565527",
+                  "base:protein20"
+                ]
+              }
+            },
+            {
+              "productId": "P_7290119377411",
+              "sellingMethod": "BY_UNIT",
+              "name": "PRO25 180g",
+              "unit": "unit",
+              "quantity": 4,
+              "unitPrice": null,
+              "lineTotal": null,
+              "substitution": null,
+              "comment": "",
+              "identity": {
+                "barcode": "7290119377411",
+                "variant": "PRO25 180g",
+                "packSize": "180g",
+                "equivalenceKeys": [
+                  "sku:7290119377411",
+                  "base:protein25"
+                ]
+              }
+            }
+          ],
+          "address": null,
+          "delivery": null,
+          "deliveryFee": null,
+          "total": null,
+          "currency": "ILS",
+          "estimated": true,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 4
+        },
+        "writes": 3
+      }
+    },
+    {
+      "name": "add_to_shufersal_cart",
+      "args": {
+        "productId": "P_7290110565527",
+        "sellingMethod": "BY_UNIT",
+        "quantity": 5,
+        "operationId": "8bcc7752-a961-404d-8084-739e3d56dbb7",
+        "expectedRevision": "0b28f4a133f876c951818d561efee1dd27d6f85f6cceafc6f0f5a607b7dc5a93"
+      },
+      "before": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 9
+        },
+        "writes": 3
+      },
+      "actual": {
+        "ok": false,
+        "error": {
+          "code": "CART_CHANGED",
+          "message": "Read and review the changed cart before writing."
+        }
+      },
+      "after": {
+        "rows": {
+          "P_7290110565527": 12,
+          "P_7290119377411": 9
+        },
+        "writes": 3
+      }
+    }
+  ],
+  "requests": [
+    "/online/he/A",
+    "/poll",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/",
+    "/favicon.ico",
+    "/online/he/search/results?q=ceremonial+tea&limit=30",
+    "/poll",
+    "/poll",
+    "/online/he/search/results?q=ceremonial+tea&limit=60",
+    "/online/he/search/results?q=ceremonial+tea&limit=120",
+    "/poll",
+    "/online/he/",
+    "/favicon.ico",
+    "/online/he/search/results?q=absent+tea&limit=30",
+    "/poll",
+    "/online/he/",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/search/results?q=P_7290116936628&limit=30",
+    "/online/he/search/results?q=P_7290116936628&limit=60",
+    "/online/he/search/results?q=P_7290116936628&limit=120",
+    "/online/he/p/P_7290116936628",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/p/P_7290116936628",
+    "/favicon.ico",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/p/P_7290110565527",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/poll",
+    "/online/he/A",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/p/P_7290110565527",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/A",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/poll",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/poll",
+    "/online/he/p/P_7290110565527",
+    "/favicon.ico",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/p/P_7290110565527",
+    "/favicon.ico",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/write?endpoint=update&id=P_7290110565527&qty=17&method=BY_UNIT&entry=0",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/poll",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/p/P_7290116936628",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/write?endpoint=add&id=P_7290116936628&qty=3&method=BY_UNIT",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/poll",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/poll",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/p/P_7290110565527",
+    "/poll",
+    "/favicon.ico",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/p/P_7290110565527",
+    "/favicon.ico",
+    "/online/he/A",
+    "/poll",
+    "/poll",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/poll",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/poll",
+    "/online/he/p/P_7290110565527",
+    "/favicon.ico",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/write?endpoint=update&id=P_7290110565527&qty=19&method=BY_UNIT&entry=0",
+    "/poll",
+    "/poll",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/poll",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load",
+    "/online/he/A",
+    "/favicon.ico",
+    "/online/he/cart/load"
+  ],
+  "writes": [
+    {
+      "endpoint": "update",
+      "id": "P_7290110565527",
+      "qty": "17",
+      "method": "BY_UNIT",
+      "entry": "0"
+    },
+    {
+      "endpoint": "add",
+      "id": "P_7290116936628",
+      "qty": "3",
+      "method": "BY_UNIT"
+    },
+    {
+      "endpoint": "update",
+      "id": "P_7290110565527",
+      "qty": "19",
+      "method": "BY_UNIT",
+      "entry": "0"
+    }
+  ]
+}

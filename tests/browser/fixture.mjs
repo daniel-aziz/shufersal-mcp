@@ -31,7 +31,7 @@ function cartPage(current, submit = false) {
     ${submit ? '<button data-submit onclick="fetch(\'/submit\',{method:\'POST\'})">Place order</button>' : ''}</main>`;
 }
 export async function startFixture() {
-    const state = { current: cart(), history: [], writes: 0, submits: 0, breakContract: false, redirect: false, changeAtCheckout: false, loopHistory: false };
+    const state = { current: cart(), history: [], writes: 0, submits: 0, breakContract: false, redirect: false, changeAtCheckout: false, loopHistory: false, backgroundPolling: false, loseQuantityResponse: false };
     const server = createServer(async (request, response) => {
         response.setHeader('Content-Type', 'text/html; charset=utf-8');
         const path = new URL(request.url, 'http://fixture').pathname;
@@ -48,10 +48,12 @@ export async function startFixture() {
             else if(path==='/submit') { state.submits++; state.history.push({orderNumber:`order-${state.submits}`,status:'confirmed',cart:structuredClone(state.current)}); }
             for(const line of state.current.items) line.lineTotal=line.unitPrice*line.quantity;
             state.current.total=state.current.items.reduce((sum,line)=>sum+line.lineTotal,state.current.deliveryFee);
+            if(path==='/quantity' && state.loseQuantityResponse) { response.writeHead(200,{'Content-Length':'100'}); response.write('partial'); setTimeout(()=>response.destroy(),20); return; }
             response.end('OK'); return;
         }
+        if(path==='/background') { setTimeout(()=>response.end('poll'),500); return; }
         if(path==='/online/he/search/results') {
-            response.setHeader('Content-Type','application/json'); response.end(JSON.stringify({results:[{code:'milk',name:'Milk',price:7,sellingMethod:{code:'unit'}}]})); return;
+            response.setHeader('Content-Type','application/json'); response.end(JSON.stringify({results:[{code:'milk',name:'Milk',price:7,sellingMethod:{code:'unit'},available:true}]})); return;
         }
         if(path==='/cart' && state.redirect) { response.writeHead(302,{Location:'http://127.0.0.1:1/blocked'}); response.end(); return; }
         if(path==='/cart' || path==='/checkout') {
@@ -59,6 +61,7 @@ export async function startFixture() {
             if(path==='/checkout' && state.changeAtCheckout) current.total++;
             let html=cartPage(current,path==='/checkout');
             if(state.breakContract) html=html.replace('data-field="total"','data-field="unknown-total"');
+            if(state.backgroundPolling) html += `<script>fetch('/background'); setInterval(()=>fetch('/background'),100);</script>`;
             response.end(page(html)); return;
         }
         if(path==='/orders') { response.end(page(`<main data-orders-ready>${state.history.map(order=>`<div data-order>${value('number',order.orderNumber)}${value('status',order.status)}<a href="/order/${order.orderNumber}">Details</a></div>`).join('')}${state.loopHistory?'<a data-next href="/orders">Next</a>':''}</main>`)); return; }

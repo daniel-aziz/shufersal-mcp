@@ -1,0 +1,4303 @@
+[
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "open_shufersal",
+    "input": {},
+    "label": "open fixture",
+    "expected": "opened",
+    "actual": {
+      "ok": true,
+      "result": {
+        "opened": true
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "search_shufersal",
+    "input": {
+      "query": "7290116936628"
+    },
+    "label": "exact barcode discovery",
+    "expected": "exact catalog results",
+    "actual": {
+      "ok": true,
+      "result": {
+        "results": [
+          {
+            "code": "7290116936628"
+          }
+        ]
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "create_shopping_list_table",
+    "input": {
+      "recipe": [
+        {
+          "ingredient": "<script>alert(1)</script>|Milk",
+          "quantity": "5",
+          "unit_of_measure": "unit"
+        }
+      ]
+    },
+    "label": "untrusted ingredient",
+    "expected": "escaped output",
+    "actual": {
+      "content": [
+        {
+          "type": "text",
+          "text": "| Ingredient | Quantity | Unit | Brand |\n| --- | --- | --- | --- |\n| <script>alert(1)</script>&#124;Milk | 5 | unit |  |"
+        }
+      ]
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "FAIL"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 12,
+            "unitPrice": 7,
+            "lineTotal": 84,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 94,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "00378f29b98e1999aeea9164479c65a970dc30996defc7d217103cc3fa9d05a6"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 12,
+          "unitPrice": 7,
+          "lineTotal": 84,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 94,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 12,
+          "unitPrice": 7,
+          "lineTotal": 84,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 94,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "add_to_shufersal_cart",
+    "input": {
+      "productId": "milk",
+      "sellingMethod": "unit",
+      "quantity": 5,
+      "expectedRevision": "00378f29b98e1999aeea9164479c65a970dc30996defc7d217103cc3fa9d05a6",
+      "operationId": "844a9234-008f-4969-b573-771d895556c2"
+    },
+    "label": "12+5",
+    "expected": "17",
+    "actual": {
+      "ok": true,
+      "result": {
+        "revision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+        "productId": "milk",
+        "sellingMethod": "unit",
+        "name": "Milk",
+        "available": true,
+        "identity": {
+          "barcode": null,
+          "variant": null,
+          "packSize": null,
+          "equivalenceKeys": null
+        },
+        "quantity": 17
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 12,
+          "unitPrice": 7,
+          "lineTotal": 84,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 94,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 129,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "add_to_shufersal_cart",
+    "input": {
+      "productId": "milk",
+      "sellingMethod": "unit",
+      "quantity": 5,
+      "expectedRevision": "00378f29b98e1999aeea9164479c65a970dc30996defc7d217103cc3fa9d05a6",
+      "operationId": "844a9234-008f-4969-b573-771d895556c2"
+    },
+    "label": "retry stable ID",
+    "expected": "17, zero writes",
+    "actual": {
+      "ok": true,
+      "result": {
+        "revision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+        "productId": "milk",
+        "sellingMethod": "unit",
+        "name": "Milk",
+        "available": true,
+        "identity": {
+          "barcode": null,
+          "variant": null,
+          "packSize": null,
+          "equivalenceKeys": null
+        },
+        "quantity": 17
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 129,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 129,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 17,
+            "unitPrice": 7,
+            "lineTotal": 119,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 129,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 129,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 129,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "apply_shufersal_cart_targets",
+    "input": {
+      "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+      "targets": [
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "expectedName": "Fixture product",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d"
+        }
+      ]
+    },
+    "label": "new row",
+    "expected": "quantity 3",
+    "actual": {
+      "ok": true,
+      "result": {
+        "verified": [
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "quantity": 3,
+            "expectedName": "Fixture product",
+            "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+            "product": {
+              "productId": "new",
+              "sellingMethod": "unit",
+              "name": "Fixture product",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": [
+                  "sku:new"
+                ]
+              },
+              "available": true
+            },
+            "result": {
+              "revision": "4ebe77d4e1f1a618f98642a857afa86608970d8b3986de295ac113816395e724",
+              "productId": "new",
+              "sellingMethod": "unit",
+              "name": "Fixture product",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": [
+                  "sku:new"
+                ]
+              },
+              "available": true,
+              "quantity": 3
+            }
+          }
+        ],
+        "unresolved": [],
+        "unavailable": [],
+        "unattempted": [],
+        "pendingOperations": []
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 129,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_orders",
+    "input": {},
+    "label": "history",
+    "expected": "2 records",
+    "actual": {
+      "ok": true,
+      "result": [
+        {
+          "orderNumber": "history-1",
+          "status": "delivered",
+          "cart": {
+            "accountId": "fixture-account",
+            "items": [
+              {
+                "productId": "milk",
+                "sellingMethod": "unit",
+                "name": "Milk",
+                "unit": "1 litre",
+                "quantity": 17,
+                "unitPrice": 7,
+                "lineTotal": 119,
+                "substitution": "none"
+              },
+              {
+                "productId": "new",
+                "sellingMethod": "unit",
+                "name": "Fixture product",
+                "unit": "unit",
+                "quantity": 3,
+                "unitPrice": 3,
+                "lineTotal": 9,
+                "substitution": "none",
+                "comment": ""
+              }
+            ],
+            "address": "Fixture office",
+            "delivery": {
+              "id": "slot-1",
+              "start": "2099-10-20T10:00:00+03:00",
+              "end": "2099-10-20T12:00:00+03:00"
+            },
+            "deliveryFee": 10,
+            "total": 138,
+            "currency": "ILS",
+            "estimated": false,
+            "integrity": {
+              "complete": true,
+              "cartId": "active"
+            }
+          }
+        },
+        {
+          "orderNumber": "history-2",
+          "status": "delivered",
+          "cart": {
+            "accountId": "fixture-account",
+            "items": [
+              {
+                "productId": "milk",
+                "sellingMethod": "unit",
+                "name": "Milk",
+                "unit": "1 litre",
+                "quantity": 17,
+                "unitPrice": 7,
+                "lineTotal": 119,
+                "substitution": "none"
+              },
+              {
+                "productId": "new",
+                "sellingMethod": "unit",
+                "name": "Fixture product",
+                "unit": "unit",
+                "quantity": 3,
+                "unitPrice": 3,
+                "lineTotal": 9,
+                "substitution": "none",
+                "comment": ""
+              }
+            ],
+            "address": "Fixture office",
+            "delivery": {
+              "id": "slot-1",
+              "start": "2099-10-20T10:00:00+03:00",
+              "end": "2099-10-20T12:00:00+03:00"
+            },
+            "deliveryFee": 10,
+            "total": 138,
+            "currency": "ILS",
+            "estimated": false,
+            "integrity": {
+              "complete": true,
+              "cartId": "active"
+            }
+          }
+        }
+      ]
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_order",
+    "input": {
+      "orderNumber": "history-1"
+    },
+    "label": "specific history",
+    "expected": "record",
+    "actual": {
+      "ok": true,
+      "result": {
+        "orderNumber": "history-1",
+        "status": "delivered",
+        "cart": {
+          "accountId": "fixture-account",
+          "items": [
+            {
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "unit": "1 litre",
+              "quantity": 17,
+              "unitPrice": 7,
+              "lineTotal": 119,
+              "substitution": "none"
+            },
+            {
+              "productId": "new",
+              "sellingMethod": "unit",
+              "name": "Fixture product",
+              "unit": "unit",
+              "quantity": 3,
+              "unitPrice": 3,
+              "lineTotal": 9,
+              "substitution": "none",
+              "comment": ""
+            }
+          ],
+          "address": "Fixture office",
+          "delivery": {
+            "id": "slot-1",
+            "start": "2099-10-20T10:00:00+03:00",
+            "end": "2099-10-20T12:00:00+03:00"
+          },
+          "deliveryFee": 10,
+          "total": 138,
+          "currency": "ILS",
+          "estimated": false,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          }
+        }
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "plan_shufersal_replenishment",
+    "input": {
+      "orderNumbers": [
+        "history-1",
+        "history-2"
+      ],
+      "unlistedStockIsEmpty": true
+    },
+    "label": "plan",
+    "expected": "no mutation",
+    "actual": {
+      "ok": true,
+      "result": {
+        "cartRevision": "4ebe77d4e1f1a618f98642a857afa86608970d8b3986de295ac113816395e724",
+        "baselineOrderNumbers": [
+          "history-1",
+          "history-2"
+        ],
+        "lines": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "occurrences": 2,
+            "sampleSize": 2,
+            "regular": true,
+            "historicalTarget": 17,
+            "target": 17,
+            "remaining": 0,
+            "inCart": 17,
+            "addQuantity": 0,
+            "needsStockUpdate": false,
+            "needsQuantityReview": false
+          },
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "name": "Fixture product",
+            "unit": "unit",
+            "occurrences": 2,
+            "sampleSize": 2,
+            "regular": true,
+            "historicalTarget": 3,
+            "target": 3,
+            "remaining": 0,
+            "inCart": 3,
+            "addQuantity": 0,
+            "needsStockUpdate": false,
+            "needsQuantityReview": false
+          }
+        ],
+        "activeOrderNumbers": [],
+        "ready": true,
+        "preservedCartItems": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 17,
+            "unitPrice": 7,
+            "lineTotal": 119,
+            "substitution": "none"
+          },
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "name": "Fixture product",
+            "unit": "unit",
+            "quantity": 3,
+            "unitPrice": 3,
+            "lineTotal": 9,
+            "substitution": "none",
+            "comment": ""
+          }
+        ],
+        "pricesRequireRefresh": true,
+        "instructions": "No cart changes made. Review active orders first. Resolve missing stock and fractional unit targets. Search current products/prices before adding. Add only positive differences using guarded tools, sequentially with the latest revision. Never remove existing items or automatically substitute unavailable products."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_delivery_slots",
+    "input": {},
+    "label": "slots",
+    "expected": "read",
+    "actual": {
+      "ok": true,
+      "result": [
+        {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        }
+      ]
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 17,
+            "unitPrice": 7,
+            "lineTotal": 119,
+            "substitution": "none"
+          },
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "name": "Fixture product",
+            "unit": "unit",
+            "quantity": 3,
+            "unitPrice": 3,
+            "lineTotal": 9,
+            "substitution": "none",
+            "comment": ""
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 138,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "4ebe77d4e1f1a618f98642a857afa86608970d8b3986de295ac113816395e724"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "set_shufersal_cart_quantity",
+    "input": {
+      "productId": "milk",
+      "sellingMethod": "unit",
+      "quantity": 18,
+      "expectedRevision": "4ebe77d4e1f1a618f98642a857afa86608970d8b3986de295ac113816395e724",
+      "operationId": "8e88c312-bbbf-4d15-938c-6ddce2f37b31"
+    },
+    "label": "set",
+    "expected": "18",
+    "actual": {
+      "ok": true,
+      "result": {
+        "revision": "a7ab52ad98232cb03754cf60fb178ef64551851ff0785b9c462a5d1eabe88cbf",
+        "productId": "milk",
+        "sellingMethod": "unit",
+        "name": "Milk",
+        "available": true,
+        "identity": {
+          "barcode": null,
+          "variant": null,
+          "packSize": null,
+          "equivalenceKeys": null
+        },
+        "quantity": 18
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 17,
+          "unitPrice": 7,
+          "lineTotal": 119,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 138,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 18,
+            "unitPrice": 7,
+            "lineTotal": 126,
+            "substitution": "none"
+          },
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "name": "Fixture product",
+            "unit": "unit",
+            "quantity": 3,
+            "unitPrice": 3,
+            "lineTotal": 9,
+            "substitution": "none",
+            "comment": ""
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 145,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "a7ab52ad98232cb03754cf60fb178ef64551851ff0785b9c462a5d1eabe88cbf"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "select_shufersal_delivery_slot",
+    "input": {
+      "slotId": "slot-1",
+      "expectedRevision": "a7ab52ad98232cb03754cf60fb178ef64551851ff0785b9c462a5d1eabe88cbf",
+      "operationId": "1307bd5f-f40e-4f69-836f-428685fdc090"
+    },
+    "label": "fixture slot",
+    "expected": "verified",
+    "actual": {
+      "ok": true,
+      "result": {
+        "revision": "a7ab52ad98232cb03754cf60fb178ef64551851ff0785b9c462a5d1eabe88cbf",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        }
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "prepare_shufersal_checkout",
+    "input": {},
+    "label": "checkout preview",
+    "expected": "read",
+    "actual": {
+      "ok": true,
+      "result": {
+        "cart": {
+          "accountId": "fixture-account",
+          "items": [
+            {
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "unit": "1 litre",
+              "quantity": 18,
+              "unitPrice": 7,
+              "lineTotal": 126,
+              "substitution": "none"
+            },
+            {
+              "productId": "new",
+              "sellingMethod": "unit",
+              "name": "Fixture product",
+              "unit": "unit",
+              "quantity": 3,
+              "unitPrice": 3,
+              "lineTotal": 9,
+              "substitution": "none",
+              "comment": ""
+            }
+          ],
+          "address": "Fixture office",
+          "delivery": {
+            "id": "slot-1",
+            "start": "2099-10-20T10:00:00+03:00",
+            "end": "2099-10-20T12:00:00+03:00"
+          },
+          "deliveryFee": 10,
+          "total": 145,
+          "currency": "ILS",
+          "estimated": false,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          },
+          "revision": "a7ab52ad98232cb03754cf60fb178ef64551851ff0785b9c462a5d1eabe88cbf"
+        },
+        "possibleDuplicateOrderNumbers": [],
+        "checkoutEnabled": false,
+        "readAt": "2026-10-21T07:31:57.752Z"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 18,
+            "unitPrice": 7,
+            "lineTotal": 126,
+            "substitution": "none"
+          },
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "name": "Fixture product",
+            "unit": "unit",
+            "quantity": 3,
+            "unitPrice": 3,
+            "lineTotal": 9,
+            "substitution": "none",
+            "comment": ""
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 145,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "a7ab52ad98232cb03754cf60fb178ef64551851ff0785b9c462a5d1eabe88cbf"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "submit_shufersal_order",
+    "input": {
+      "confirmed": true,
+      "expectedRevision": "a7ab52ad98232cb03754cf60fb178ef64551851ff0785b9c462a5d1eabe88cbf",
+      "operationId": "0fe33024-b03e-4d90-961e-c48cec42921c"
+    },
+    "label": "checkout disabled",
+    "expected": "reject",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "CHECKOUT_DISABLED",
+        "message": "Checkout is disabled until the site adapter has been verified and checkout explicitly enabled by the operator."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_operation",
+    "input": {
+      "operationId": "f8aae4c6-f676-4bf9-954b-b9efa8822d7c"
+    },
+    "label": "missing operation",
+    "expected": "reject",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "UNKNOWN_OPERATION",
+        "message": "No operation exists with this ID."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "reconcile_shufersal_checkout",
+    "input": {
+      "operationId": "f9bc1fe4-fb64-490b-be6e-5f1f3c0fbc58"
+    },
+    "label": "missing operation",
+    "expected": "reject",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "UNKNOWN_OPERATION",
+        "message": "This is not a checkout operation."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "assess_shufersal_cart_recovery",
+    "input": {
+      "operationId": "26660ef2-89b8-46c0-a718-79d125ec7afb"
+    },
+    "label": "missing operation",
+    "expected": "reject",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "UNKNOWN_OPERATION",
+        "message": "No operation exists with this ID."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "reconcile_shufersal_cart",
+    "input": {
+      "operationId": "222f600f-a6bd-4789-b046-9dd6ecda2e96"
+    },
+    "label": "missing operation",
+    "expected": "reject",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "UNKNOWN_OPERATION",
+        "message": "This is not a cart operation."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_unresolved_items",
+    "input": {},
+    "label": "queue",
+    "expected": "empty",
+    "actual": {
+      "ok": true,
+      "result": []
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 18,
+          "unitPrice": 7,
+          "lineTotal": 126,
+          "substitution": "none"
+        },
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "f27e5045-aa82-4c63-9563-846643454c8d",
+          "expectedRevision": "af59d50ea41ec5f934c5f68e5f86cc8be6b10d535eefbb20a8c58d3c987a97ee",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 145,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 24,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "apply_shufersal_cart_targets",
+    "input": {
+      "expectedRevision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b",
+      "targets": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "quantity": 7,
+          "expectedName": "Milk",
+          "operationId": "bea99aec-a69c-4cbb-9fdd-6113aed42024"
+        }
+      ]
+    },
+    "label": "existing cart availability false",
+    "expected": "must not write",
+    "actual": {
+      "ok": true,
+      "result": {
+        "verified": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "quantity": 7,
+            "expectedName": "Milk",
+            "operationId": "bea99aec-a69c-4cbb-9fdd-6113aed42024",
+            "product": {
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": null
+              }
+            },
+            "result": {
+              "revision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": null
+              },
+              "quantity": 7
+            }
+          }
+        ],
+        "unresolved": [],
+        "unavailable": [],
+        "unattempted": [],
+        "pendingOperations": []
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "FAIL"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 24,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "apply_shufersal_cart_targets",
+    "input": {
+      "expectedRevision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b",
+      "targets": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "quantity": 7,
+          "expectedName": "Milk",
+          "operationId": "2fc923d4-c306-4197-ab78-e43516bee823"
+        }
+      ]
+    },
+    "label": "existing cart availability null",
+    "expected": "must not write",
+    "actual": {
+      "ok": true,
+      "result": {
+        "verified": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "quantity": 7,
+            "expectedName": "Milk",
+            "operationId": "2fc923d4-c306-4197-ab78-e43516bee823",
+            "product": {
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": null
+              }
+            },
+            "result": {
+              "revision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": null
+              },
+              "quantity": 7
+            }
+          }
+        ],
+        "unresolved": [],
+        "unavailable": [],
+        "unattempted": [],
+        "pendingOperations": []
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "FAIL"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "apply_shufersal_cart_targets",
+    "input": {
+      "expectedRevision": "4d4d7da72d7c9eacd464540186248034161d9e8912154b1912f48fadfdf6a260",
+      "targets": [
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "expectedName": "Fixture product",
+          "operationId": "74f89302-e13d-44bc-960a-51a6c0b8fe99"
+        }
+      ]
+    },
+    "label": "empty cart completeness true",
+    "expected": "add",
+    "actual": {
+      "ok": true,
+      "result": {
+        "verified": [
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "quantity": 3,
+            "expectedName": "Fixture product",
+            "operationId": "74f89302-e13d-44bc-960a-51a6c0b8fe99",
+            "product": {
+              "productId": "new",
+              "sellingMethod": "unit",
+              "name": "Fixture product",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": [
+                  "sku:new"
+                ]
+              },
+              "available": true
+            },
+            "result": {
+              "revision": "938d30c3c6641792778dcfbc4eac2acbea85cffcaa802dbcd65c00096c58dc81",
+              "productId": "new",
+              "sellingMethod": "unit",
+              "name": "Fixture product",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": null,
+                "equivalenceKeys": [
+                  "sku:new"
+                ]
+              },
+              "available": true,
+              "quantity": 3
+            }
+          }
+        ],
+        "unresolved": [],
+        "unavailable": [],
+        "unattempted": [],
+        "pendingOperations": []
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 10,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "absoluteTarget": 3,
+          "mode": "add",
+          "comment": "",
+          "operationId": "74f89302-e13d-44bc-960a-51a6c0b8fe99",
+          "expectedRevision": "4d4d7da72d7c9eacd464540186248034161d9e8912154b1912f48fadfdf6a260",
+          "name": "Fixture product",
+          "unit": "unit",
+          "unitPrice": 3,
+          "lineTotal": 9,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 19,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "apply_shufersal_cart_targets",
+    "input": {
+      "expectedRevision": "17069cb410756c8517209d804f224a738633f18331e1bf7341cbe2b6098148b4",
+      "targets": [
+        {
+          "productId": "new",
+          "sellingMethod": "unit",
+          "quantity": 3,
+          "expectedName": "Fixture product",
+          "operationId": "29848031-ef47-434b-a810-ee694f1378d7"
+        }
+      ]
+    },
+    "label": "empty cart completeness false",
+    "expected": "reject",
+    "actual": {
+      "ok": true,
+      "result": {
+        "verified": [],
+        "unresolved": [],
+        "unavailable": [],
+        "unattempted": [
+          {
+            "productId": "new",
+            "sellingMethod": "unit",
+            "quantity": 3,
+            "expectedName": "Fixture product",
+            "operationId": "29848031-ef47-434b-a810-ee694f1378d7",
+            "reason": "INCOMPLETE_CART"
+          }
+        ],
+        "pendingOperations": []
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 10,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": false,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 10,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": false,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 24,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "add_to_shufersal_cart",
+    "input": {
+      "productId": "milk",
+      "sellingMethod": "unit",
+      "quantity": 5,
+      "expectedRevision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b",
+      "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d"
+    },
+    "label": "crash-like response loss",
+    "expected": "pending",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "OUTCOME_UNKNOWN",
+        "message": "Operation 87942859-e0d6-45f4-b30c-8bd8fc2ab75d remains unresolved. Inspect sanitized evidence and fresh state; never replay it."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_unresolved_items",
+    "input": {},
+    "label": "restart durable queue",
+    "expected": "pending preserved",
+    "actual": {
+      "ok": true,
+      "result": [
+        {
+          "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d",
+          "product": {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "available": true,
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": null,
+              "equivalenceKeys": null
+            }
+          },
+          "requestedAbsoluteTarget": 7,
+          "lastVerifiedQuantity": 2,
+          "reason": "Write outcome not yet verified",
+          "scope": null,
+          "historicalOutcome": "unknown",
+          "evidence": [
+            {
+              "at": "2026-10-21T07:31:57.758Z",
+              "stage": "prepared"
+            },
+            {
+              "at": "2026-10-21T07:31:57.768Z",
+              "stage": "dispatch_attempted"
+            },
+            {
+              "at": "2026-10-21T07:31:57.776Z",
+              "stage": "dispatch_attempted",
+              "errorName": "Error",
+              "errorDigest": "721fd6dd3219d7152a3ae8c887c755870ca4ff8cf7639f1270c8d7e8dad1002d",
+              "reason": "transport"
+            }
+          ]
+        }
+      ]
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "prepare_shufersal_cart_recovery",
+    "input": {
+      "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d",
+      "targets": []
+    },
+    "label": "abandon prepare",
+    "expected": "read",
+    "actual": {
+      "ok": true,
+      "result": {
+        "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d",
+        "product": {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "available": true,
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": null,
+            "equivalenceKeys": null
+          }
+        },
+        "beforeQuantity": 2,
+        "targetQuantity": 7,
+        "currentQuantity": 7,
+        "currentRevision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+        "changedUnrelatedQuantities": [],
+        "addressChanged": false,
+        "deliveryChanged": false,
+        "historicalOutcome": "unknown",
+        "automaticReplayAllowed": false,
+        "warning": "Current quantities cannot prove whether the original write happened. Acceptance retires the old intent without replay; it does not prove success or failure. Stop old workers and investigate outstanding requests. Delayed remote writes and edits by colleagues remain possible.",
+        "cart": {
+          "accountId": "fixture-account",
+          "items": [
+            {
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "unit": "1 litre",
+              "quantity": 7,
+              "unitPrice": 7,
+              "lineTotal": 49,
+              "substitution": "none"
+            }
+          ],
+          "address": "Fixture office",
+          "delivery": {
+            "id": "slot-1",
+            "start": "2099-10-20T10:00:00+03:00",
+            "end": "2099-10-20T12:00:00+03:00"
+          },
+          "deliveryFee": 10,
+          "total": 59,
+          "currency": "ILS",
+          "estimated": false,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          }
+        },
+        "targets": [],
+        "approvalRequired": "Owner must explicitly approve this revision and these absolute target quantities, accept the unknown history, and investigate outstanding requests. Do not invent approval."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 7,
+            "unitPrice": 7,
+            "lineTotal": 49,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 59,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "accept_shufersal_cart_recovery",
+    "input": {
+      "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d",
+      "resolutionId": "77374df5-4df9-4af5-b780-ed743d168aaf",
+      "expectedRevision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+      "reason": "Fixture owner abandons",
+      "targets": [],
+      "ownerApproval": {
+        "confirmed": true,
+        "owner": "fixture-owner",
+        "approvalReference": "fixture-explicit-approval",
+        "acceptsUnknownOutcome": true,
+        "outstandingRequestsInvestigated": true
+      }
+    },
+    "label": "abandon accept",
+    "expected": "no writes",
+    "actual": {
+      "ok": true,
+      "result": {
+        "version": 1,
+        "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d",
+        "resolutionId": "77374df5-4df9-4af5-b780-ed743d168aaf",
+        "decision": "accept_current_state",
+        "historicalOutcome": "unknown",
+        "recordedAt": "2026-10-21T07:31:57.786Z",
+        "reason": "Fixture owner abandons",
+        "requestFingerprint": "b5d65bbcd32dcf98294d2ec4531154bf9b6d2086dcfb22cc0e36e00793b46c5f",
+        "reviewedRevision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+        "observedCart": {
+          "accountId": "fixture-account",
+          "items": [
+            {
+              "productId": "milk",
+              "sellingMethod": "unit",
+              "name": "Milk",
+              "unit": "1 litre",
+              "quantity": 7,
+              "unitPrice": 7,
+              "lineTotal": 49,
+              "substitution": "none"
+            }
+          ],
+          "address": "Fixture office",
+          "delivery": {
+            "id": "slot-1",
+            "start": "2099-10-20T10:00:00+03:00",
+            "end": "2099-10-20T12:00:00+03:00"
+          },
+          "deliveryFee": 10,
+          "total": 59,
+          "currency": "ILS",
+          "estimated": false,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          }
+        },
+        "beforeQuantity": 2,
+        "targetQuantity": 7,
+        "observedQuantity": 7,
+        "approval": {
+          "channel": "mcp_owner",
+          "confirmed": true,
+          "owner": "fixture-owner",
+          "approvalReference": "fixture-explicit-approval",
+          "acceptsUnknownOutcome": true,
+          "outstandingRequestsInvestigated": true
+        },
+        "ownerRequest": {
+          "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d",
+          "resolutionId": "77374df5-4df9-4af5-b780-ed743d168aaf",
+          "expectedRevision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+          "reason": "Fixture owner abandons",
+          "targets": [],
+          "ownerApproval": {
+            "confirmed": true,
+            "owner": "fixture-owner",
+            "approvalReference": "fixture-explicit-approval",
+            "acceptsUnknownOutcome": true,
+            "outstandingRequestsInvestigated": true
+          }
+        }
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 7,
+            "unitPrice": 7,
+            "lineTotal": 49,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 59,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "resume_shufersal_cart_recovery",
+    "input": {
+      "productId": "milk",
+      "sellingMethod": "unit",
+      "operationId": "87942859-e0d6-45f4-b30c-8bd8fc2ab75d",
+      "resolutionId": "77374df5-4df9-4af5-b780-ed743d168aaf",
+      "expectedRevision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34"
+    },
+    "label": "abandon prevents replay",
+    "expected": "reject",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "TARGET_NOT_APPROVED",
+        "message": "This product is not in the approved target list."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "label": "stale ownership",
+    "actual": {
+      "code": "ACCOUNT_LOCKED",
+      "message": "Another worker owns this state directory, or a stale lock needs manual recovery."
+    },
+    "expected": "recover safely without deleting ledger",
+    "verdict": "FAIL"
+  }
+]

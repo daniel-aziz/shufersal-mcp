@@ -1,0 +1,2660 @@
+[
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "uncertain",
+            "sellingMethod": "unit",
+            "name": "uncertain",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": [
+                "sku:uncertain"
+              ]
+            }
+          },
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "name": "independent",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": [
+                "sku:independent"
+              ]
+            }
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 38,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "e38b066fc701fca12677674a7151d666ec5a383132af64470c99f31aecc64d1e"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "add_to_shufersal_cart",
+    "input": {
+      "productId": "uncertain",
+      "sellingMethod": "unit",
+      "quantity": 5,
+      "expectedRevision": "e38b066fc701fca12677674a7151d666ec5a383132af64470c99f31aecc64d1e",
+      "operationId": "6aa0bab7-63a6-4649-ab29-dc3fdc7b2d86"
+    },
+    "label": "pending known scope true",
+    "expected": "unknown",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "OUTCOME_UNKNOWN",
+        "message": "Operation 6aa0bab7-63a6-4649-ab29-dc3fdc7b2d86 remains unresolved. Inspect sanitized evidence and fresh state; never replay it."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "uncertain",
+            "sellingMethod": "unit",
+            "name": "uncertain",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": [
+                "sku:uncertain"
+              ]
+            }
+          },
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "name": "independent",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": [
+                "sku:independent"
+              ]
+            }
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 38,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "e38b066fc701fca12677674a7151d666ec5a383132af64470c99f31aecc64d1e"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "apply_shufersal_cart_targets",
+    "input": {
+      "expectedRevision": "e38b066fc701fca12677674a7151d666ec5a383132af64470c99f31aecc64d1e",
+      "targets": [
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "quantity": 7,
+          "expectedName": "independent",
+          "operationId": "446c7881-f67f-4adf-bbfa-c11bfdb50787"
+        }
+      ]
+    },
+    "label": "independent continuation scope true",
+    "expected": "verified addition",
+    "actual": {
+      "ok": true,
+      "result": {
+        "verified": [
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "quantity": 7,
+            "expectedName": "independent",
+            "operationId": "446c7881-f67f-4adf-bbfa-c11bfdb50787",
+            "product": {
+              "productId": "independent",
+              "sellingMethod": "unit",
+              "name": "independent",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": [
+                  "sku:independent"
+                ]
+              }
+            },
+            "result": {
+              "revision": "ed672cff190b6cb4a565c9fdd664a5db517b2c0bd595403f399ea98a657b53eb",
+              "productId": "independent",
+              "sellingMethod": "unit",
+              "name": "independent",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": [
+                  "sku:independent"
+                ]
+              },
+              "quantity": 7
+            }
+          }
+        ],
+        "unresolved": [],
+        "unavailable": [],
+        "unattempted": [],
+        "pendingOperations": [
+          {
+            "operationId": "6aa0bab7-63a6-4649-ab29-dc3fdc7b2d86",
+            "product": {
+              "productId": "uncertain",
+              "sellingMethod": "unit",
+              "name": "uncertain",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": [
+                  "sku:uncertain"
+                ]
+              }
+            },
+            "requestedAbsoluteTarget": 7,
+            "lastVerifiedQuantity": 2,
+            "reason": "Write outcome not yet verified",
+            "scope": {
+              "accountId": "fixture-account",
+              "cartId": "active",
+              "equivalenceKeys": [
+                "sku:uncertain"
+              ]
+            },
+            "historicalOutcome": "unknown",
+            "evidence": [
+              {
+                "at": "2026-10-21T07:33:25.545Z",
+                "stage": "prepared"
+              },
+              {
+                "at": "2026-10-21T07:33:25.545Z",
+                "stage": "dispatch_attempted"
+              },
+              {
+                "at": "2026-10-21T07:33:25.546Z",
+                "stage": "dispatch_attempted",
+                "errorName": "Error",
+                "errorDigest": "1b35829701ef5b3f55215f9e221cccf04f70abbdb13e5130a99302ec79628fad",
+                "reason": "transport"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 73,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "uncertain",
+            "sellingMethod": "unit",
+            "name": "uncertain",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": [
+                "sku:uncertain"
+              ]
+            }
+          },
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "name": "independent",
+            "unit": "1 litre",
+            "quantity": 7,
+            "unitPrice": 7,
+            "lineTotal": 49,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": [
+                "sku:independent"
+              ]
+            }
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 73,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "ed672cff190b6cb4a565c9fdd664a5db517b2c0bd595403f399ea98a657b53eb"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 73,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 73,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "prepare_shufersal_cart_recovery",
+    "input": {
+      "operationId": "6aa0bab7-63a6-4649-ab29-dc3fdc7b2d86",
+      "targets": []
+    },
+    "label": "prepare before changed cart",
+    "expected": "read",
+    "actual": {
+      "ok": true,
+      "result": {
+        "operationId": "6aa0bab7-63a6-4649-ab29-dc3fdc7b2d86",
+        "product": {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "available": true,
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        "beforeQuantity": 2,
+        "targetQuantity": 7,
+        "currentQuantity": 2,
+        "currentRevision": "ed672cff190b6cb4a565c9fdd664a5db517b2c0bd595403f399ea98a657b53eb",
+        "changedUnrelatedQuantities": [
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "beforeQuantity": 2,
+            "currentQuantity": 7
+          }
+        ],
+        "addressChanged": false,
+        "deliveryChanged": false,
+        "historicalOutcome": "unknown",
+        "automaticReplayAllowed": false,
+        "warning": "Current quantities cannot prove whether the original write happened. Acceptance retires the old intent without replay; it does not prove success or failure. Stop old workers and investigate outstanding requests. Delayed remote writes and edits by colleagues remain possible.",
+        "cart": {
+          "accountId": "fixture-account",
+          "items": [
+            {
+              "productId": "uncertain",
+              "sellingMethod": "unit",
+              "name": "uncertain",
+              "unit": "1 litre",
+              "quantity": 2,
+              "unitPrice": 7,
+              "lineTotal": 14,
+              "substitution": "none",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": [
+                  "sku:uncertain"
+                ]
+              }
+            },
+            {
+              "productId": "independent",
+              "sellingMethod": "unit",
+              "name": "independent",
+              "unit": "1 litre",
+              "quantity": 7,
+              "unitPrice": 7,
+              "lineTotal": 49,
+              "substitution": "none",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": [
+                  "sku:independent"
+                ]
+              }
+            }
+          ],
+          "address": "Fixture office",
+          "delivery": {
+            "id": "slot-1",
+            "start": "2099-10-20T10:00:00+03:00",
+            "end": "2099-10-20T12:00:00+03:00"
+          },
+          "deliveryFee": 10,
+          "total": 73,
+          "currency": "ILS",
+          "estimated": false,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          }
+        },
+        "targets": [],
+        "approvalRequired": "Owner must explicitly approve this revision and these absolute target quantities, accept the unknown history, and investigate outstanding requests. Do not invent approval."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 73,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 73,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "accept_shufersal_cart_recovery",
+    "input": {
+      "operationId": "6aa0bab7-63a6-4649-ab29-dc3fdc7b2d86",
+      "resolutionId": "7009cac7-1164-47e2-a580-b56972212624",
+      "expectedRevision": "ed672cff190b6cb4a565c9fdd664a5db517b2c0bd595403f399ea98a657b53eb",
+      "targets": [],
+      "reason": "Fixture abandonment",
+      "ownerApproval": {
+        "confirmed": true,
+        "owner": "fixture",
+        "approvalReference": "fixture",
+        "acceptsUnknownOutcome": true,
+        "outstandingRequestsInvestigated": true
+      }
+    },
+    "label": "changed approval",
+    "expected": "CART_CHANGED zero writes",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "CART_CHANGED",
+        "message": "Review a fresh assessment before accepting the current state."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 8,
+          "unitPrice": 7,
+          "lineTotal": 56,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 80,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:uncertain"
+            ]
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 8,
+          "unitPrice": 7,
+          "lineTotal": 56,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": [
+              "sku:independent"
+            ]
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 80,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "uncertain",
+            "sellingMethod": "unit",
+            "name": "uncertain",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": null
+            }
+          },
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "name": "independent",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": null
+            }
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 38,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "1be3e0069a34eaf46ddce25f1644559d8f1bbc1a40eb905e5a0a77f46b9fd807"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "add_to_shufersal_cart",
+    "input": {
+      "productId": "uncertain",
+      "sellingMethod": "unit",
+      "quantity": 5,
+      "expectedRevision": "1be3e0069a34eaf46ddce25f1644559d8f1bbc1a40eb905e5a0a77f46b9fd807",
+      "operationId": "0225833c-0690-44fd-a9e1-cb277182970e"
+    },
+    "label": "pending known scope false",
+    "expected": "unknown",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "OUTCOME_UNKNOWN",
+        "message": "Operation 0225833c-0690-44fd-a9e1-cb277182970e remains unresolved. Inspect sanitized evidence and fresh state; never replay it."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "uncertain",
+            "sellingMethod": "unit",
+            "name": "uncertain",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": null
+            }
+          },
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "name": "independent",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": null
+            }
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 38,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "1be3e0069a34eaf46ddce25f1644559d8f1bbc1a40eb905e5a0a77f46b9fd807"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "apply_shufersal_cart_targets",
+    "input": {
+      "expectedRevision": "1be3e0069a34eaf46ddce25f1644559d8f1bbc1a40eb905e5a0a77f46b9fd807",
+      "targets": [
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "quantity": 7,
+          "expectedName": "independent",
+          "operationId": "f0a8347f-f24d-4718-9ef9-73a19db10417"
+        }
+      ]
+    },
+    "label": "independent continuation scope false",
+    "expected": "globally blocked",
+    "actual": {
+      "ok": true,
+      "result": {
+        "verified": [],
+        "unresolved": [],
+        "unavailable": [],
+        "unattempted": [
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "quantity": 7,
+            "expectedName": "independent",
+            "operationId": "f0a8347f-f24d-4718-9ef9-73a19db10417",
+            "reason": "UNRESOLVED_OPERATION"
+          }
+        ],
+        "pendingOperations": [
+          {
+            "operationId": "0225833c-0690-44fd-a9e1-cb277182970e",
+            "product": {
+              "productId": "uncertain",
+              "sellingMethod": "unit",
+              "name": "uncertain",
+              "available": true,
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": null
+              }
+            },
+            "requestedAbsoluteTarget": 7,
+            "lastVerifiedQuantity": 2,
+            "reason": "Write outcome not yet verified",
+            "scope": null,
+            "historicalOutcome": "unknown",
+            "evidence": [
+              {
+                "at": "2026-10-21T07:33:25.549Z",
+                "stage": "prepared"
+              },
+              {
+                "at": "2026-10-21T07:33:25.549Z",
+                "stage": "dispatch_attempted"
+              },
+              {
+                "at": "2026-10-21T07:33:25.549Z",
+                "stage": "dispatch_attempted",
+                "errorName": "Error",
+                "errorDigest": "1b35829701ef5b3f55215f9e221cccf04f70abbdb13e5130a99302ec79628fad",
+                "reason": "transport"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "uncertain",
+            "sellingMethod": "unit",
+            "name": "uncertain",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": null
+            }
+          },
+          {
+            "productId": "independent",
+            "sellingMethod": "unit",
+            "name": "independent",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none",
+            "identity": {
+              "barcode": null,
+              "variant": null,
+              "packSize": "1 unit",
+              "equivalenceKeys": null
+            }
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 38,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "1be3e0069a34eaf46ddce25f1644559d8f1bbc1a40eb905e5a0a77f46b9fd807"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "prepare_shufersal_cart_recovery",
+    "input": {
+      "operationId": "0225833c-0690-44fd-a9e1-cb277182970e",
+      "targets": []
+    },
+    "label": "prepare before changed cart",
+    "expected": "read",
+    "actual": {
+      "ok": true,
+      "result": {
+        "operationId": "0225833c-0690-44fd-a9e1-cb277182970e",
+        "product": {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "available": true,
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        "beforeQuantity": 2,
+        "targetQuantity": 7,
+        "currentQuantity": 2,
+        "currentRevision": "1be3e0069a34eaf46ddce25f1644559d8f1bbc1a40eb905e5a0a77f46b9fd807",
+        "changedUnrelatedQuantities": [],
+        "addressChanged": false,
+        "deliveryChanged": false,
+        "historicalOutcome": "unknown",
+        "automaticReplayAllowed": false,
+        "warning": "Current quantities cannot prove whether the original write happened. Acceptance retires the old intent without replay; it does not prove success or failure. Stop old workers and investigate outstanding requests. Delayed remote writes and edits by colleagues remain possible.",
+        "cart": {
+          "accountId": "fixture-account",
+          "items": [
+            {
+              "productId": "uncertain",
+              "sellingMethod": "unit",
+              "name": "uncertain",
+              "unit": "1 litre",
+              "quantity": 2,
+              "unitPrice": 7,
+              "lineTotal": 14,
+              "substitution": "none",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": null
+              }
+            },
+            {
+              "productId": "independent",
+              "sellingMethod": "unit",
+              "name": "independent",
+              "unit": "1 litre",
+              "quantity": 2,
+              "unitPrice": 7,
+              "lineTotal": 14,
+              "substitution": "none",
+              "identity": {
+                "barcode": null,
+                "variant": null,
+                "packSize": "1 unit",
+                "equivalenceKeys": null
+              }
+            }
+          ],
+          "address": "Fixture office",
+          "delivery": {
+            "id": "slot-1",
+            "start": "2099-10-20T10:00:00+03:00",
+            "end": "2099-10-20T12:00:00+03:00"
+          },
+          "deliveryFee": 10,
+          "total": 38,
+          "currency": "ILS",
+          "estimated": false,
+          "integrity": {
+            "complete": true,
+            "cartId": "active"
+          }
+        },
+        "targets": [],
+        "approvalRequired": "Owner must explicitly approve this revision and these absolute target quantities, accept the unknown history, and investigate outstanding requests. Do not invent approval."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 38,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "accept_shufersal_cart_recovery",
+    "input": {
+      "operationId": "0225833c-0690-44fd-a9e1-cb277182970e",
+      "resolutionId": "0b8116cf-133a-49ed-b41d-a383b8ef9af8",
+      "expectedRevision": "1be3e0069a34eaf46ddce25f1644559d8f1bbc1a40eb905e5a0a77f46b9fd807",
+      "targets": [],
+      "reason": "Fixture abandonment",
+      "ownerApproval": {
+        "confirmed": true,
+        "owner": "fixture",
+        "approvalReference": "fixture",
+        "acceptsUnknownOutcome": true,
+        "outstandingRequestsInvestigated": true
+      }
+    },
+    "label": "changed approval",
+    "expected": "CART_CHANGED zero writes",
+    "actual": {
+      "ok": false,
+      "error": {
+        "code": "CART_CHANGED",
+        "message": "Review a fresh assessment before accepting the current state."
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 3,
+          "unitPrice": 7,
+          "lineTotal": 21,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 45,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "uncertain",
+          "sellingMethod": "unit",
+          "name": "uncertain",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        },
+        {
+          "productId": "independent",
+          "sellingMethod": "unit",
+          "name": "independent",
+          "unit": "1 litre",
+          "quantity": 3,
+          "unitPrice": 7,
+          "lineTotal": 21,
+          "substitution": "none",
+          "identity": {
+            "barcode": null,
+            "variant": null,
+            "packSize": "1 unit",
+            "equivalenceKeys": null
+          }
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 45,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "get_shufersal_cart",
+    "input": {},
+    "label": "fresh snapshot",
+    "expected": "read-only",
+    "actual": {
+      "ok": true,
+      "result": {
+        "accountId": "fixture-account",
+        "items": [
+          {
+            "productId": "milk",
+            "sellingMethod": "unit",
+            "name": "Milk",
+            "unit": "1 litre",
+            "quantity": 2,
+            "unitPrice": 7,
+            "lineTotal": 14,
+            "substitution": "none"
+          }
+        ],
+        "address": "Fixture office",
+        "delivery": {
+          "id": "slot-1",
+          "start": "2099-10-20T10:00:00+03:00",
+          "end": "2099-10-20T12:00:00+03:00"
+        },
+        "deliveryFee": 10,
+        "total": 24,
+        "currency": "ILS",
+        "estimated": false,
+        "integrity": {
+          "complete": true,
+          "cartId": "active"
+        },
+        "revision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b"
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 0,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "add_to_shufersal_cart",
+    "input": {
+      "productId": "milk",
+      "sellingMethod": "unit",
+      "quantity": 5,
+      "expectedRevision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b",
+      "operationId": "78442df4-0c93-42e8-951e-4cc42311db84"
+    },
+    "label": "concurrent identical call 1",
+    "expected": "once",
+    "actual": {
+      "ok": true,
+      "result": {
+        "revision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+        "productId": "milk",
+        "sellingMethod": "unit",
+        "name": "Milk",
+        "available": true,
+        "identity": {
+          "barcode": null,
+          "variant": null,
+          "packSize": null,
+          "equivalenceKeys": null
+        },
+        "quantity": 7
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "build": "fef067c isolated baseline",
+    "tool": "add_to_shufersal_cart",
+    "input": {
+      "productId": "milk",
+      "sellingMethod": "unit",
+      "quantity": 5,
+      "expectedRevision": "8f64620336966ec4a7f65f7c4da7483930435bafe19534778efbe8c3f935af1b",
+      "operationId": "78442df4-0c93-42e8-951e-4cc42311db84"
+    },
+    "label": "concurrent identical call 2",
+    "expected": "once",
+    "actual": {
+      "ok": true,
+      "result": {
+        "revision": "98e1b4e6affb48f6398fb8f3bf6b3ad16590c02c1897b43e72bb40cdda3e9a34",
+        "productId": "milk",
+        "sellingMethod": "unit",
+        "name": "Milk",
+        "available": true,
+        "identity": {
+          "barcode": null,
+          "variant": null,
+          "packSize": null,
+          "equivalenceKeys": null
+        },
+        "quantity": 7
+      }
+    },
+    "before": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 2,
+          "unitPrice": 7,
+          "lineTotal": 14,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 24,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "after": {
+      "accountId": "fixture-account",
+      "items": [
+        {
+          "productId": "milk",
+          "sellingMethod": "unit",
+          "name": "Milk",
+          "unit": "1 litre",
+          "quantity": 7,
+          "unitPrice": 7,
+          "lineTotal": 49,
+          "substitution": "none"
+        }
+      ],
+      "address": "Fixture office",
+      "delivery": {
+        "id": "slot-1",
+        "start": "2099-10-20T10:00:00+03:00",
+        "end": "2099-10-20T12:00:00+03:00"
+      },
+      "deliveryFee": 10,
+      "total": 59,
+      "currency": "ILS",
+      "estimated": false,
+      "integrity": {
+        "complete": true,
+        "cartId": "active"
+      }
+    },
+    "writes": 1,
+    "verdict": "PASS"
+  },
+  {
+    "label": "concurrent total",
+    "actual": 1,
+    "expected": 1,
+    "verdict": "PASS"
+  }
+]

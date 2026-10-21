@@ -1,0 +1,62 @@
+{
+  "build": "fef067c",
+  "requests": [
+    "/online/he/",
+    "/favicon.ico",
+    "/online/he/search/results?q=yogurt&limit=30",
+    "/online/he/",
+    "/favicon.ico",
+    "/online/he/search/results?q=7290116936628&limit=30",
+    "/online/he/A",
+    "/favicon.ico"
+  ],
+  "records": [
+    {
+      "tool": "search_shufersal",
+      "input": {
+        "query": "yogurt"
+      },
+      "expected": "pagination or complete results",
+      "actual": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"ok\":true,\"result\":{\"results\":[{\"code\":\"P_0\",\"name\":\"Product 0\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_1\",\"name\":\"Product 1\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_2\",\"name\":\"Product 2\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_3\",\"name\":\"Product 3\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_4\",\"name\":\"Product 4\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_5\",\"name\":\"Product 5\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_6\",\"name\":\"Product 6\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_7\",\"name\":\"Product 7\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_8\",\"name\":\"Product 8\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_9\",\"name\":\"Product 9\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_10\",\"name\":\"Product 10\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_11\",\"name\":\"Product 11\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_12\",\"name\":\"Product 12\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_13\",\"name\":\"Product 13\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_14\",\"name\":\"Product 14\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_15\",\"name\":\"Product 15\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_16\",\"name\":\"Product 16\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_17\",\"name\":\"Product 17\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_18\",\"name\":\"Product 18\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_19\",\"name\":\"Product 19\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_20\",\"name\":\"Product 20\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_21\",\"name\":\"Product 21\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_22\",\"name\":\"Product 22\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_23\",\"name\":\"Product 23\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_24\",\"name\":\"Product 24\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_25\",\"name\":\"Product 25\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_26\",\"name\":\"Product 26\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_27\",\"name\":\"Product 27\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_28\",\"name\":\"Product 28\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_29\",\"name\":\"Product 29\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"}]}}"
+          }
+        ]
+      },
+      "verdict": "FAIL"
+    },
+    {
+      "tool": "search_shufersal",
+      "input": {
+        "query": "7290116936628"
+      },
+      "expected": "exact barcode result or explicit absence/incomplete",
+      "actual": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"ok\":true,\"result\":{\"results\":[{\"code\":\"P_0\",\"name\":\"Product 0\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_1\",\"name\":\"Product 1\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_2\",\"name\":\"Product 2\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_3\",\"name\":\"Product 3\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_4\",\"name\":\"Product 4\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_5\",\"name\":\"Product 5\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_6\",\"name\":\"Product 6\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_7\",\"name\":\"Product 7\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_8\",\"name\":\"Product 8\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_9\",\"name\":\"Product 9\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_10\",\"name\":\"Product 10\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_11\",\"name\":\"Product 11\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_12\",\"name\":\"Product 12\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_13\",\"name\":\"Product 13\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_14\",\"name\":\"Product 14\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_15\",\"name\":\"Product 15\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_16\",\"name\":\"Product 16\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_17\",\"name\":\"Product 17\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_18\",\"name\":\"Product 18\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_19\",\"name\":\"Product 19\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_20\",\"name\":\"Product 20\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_21\",\"name\":\"Product 21\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_22\",\"name\":\"Product 22\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_23\",\"name\":\"Product 23\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_24\",\"name\":\"Product 24\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_25\",\"name\":\"Product 25\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_26\",\"name\":\"Product 26\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_27\",\"name\":\"Product 27\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_28\",\"name\":\"Product 28\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"},{\"code\":\"P_29\",\"name\":\"Product 29\",\"price\":3,\"sellingMethod\":\"BY_UNIT\"}]}}"
+          }
+        ]
+      },
+      "verdict": "FAIL"
+    },
+    {
+      "tool": "get_shufersal_cart",
+      "input": {},
+      "expected": "complete empty cart supported or explicit safe rejection",
+      "actual": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"ok\":false,\"error\":{\"code\":\"SITE_CONTRACT_FAILED\",\"message\":\"Site data or browser operation could not be verified. No raw browser output is exposed.\"}}"
+          }
+        ],
+        "isError": true
+      },
+      "verdict": "FAIL"
+    }
+  ]
+}

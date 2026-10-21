@@ -1,6 +1,6 @@
-import { type Page } from "puppeteer";
+import { type Page, type HTTPRequest } from "puppeteer";
 import { z } from "zod";
-import { cartSchema, orderSchema, revision, ShoppingError, slotSchema, type Cart, type Order, type ProductKey, type ShoppingSite } from "./model.js";
+import { cartSchema, orderSchema, revision, ShoppingError, slotSchema, type Cart, type Order, type ProductKey, type ProductDescription, type ShoppingSite } from "./model.js";
 import { type CartFields, type SiteProfile, sameOriginUrl } from "./site-profile.js";
 
 const searchSchema = z.object({ results: z.array(z.object({
@@ -11,7 +11,8 @@ const searchSchema = z.object({ results: z.array(z.object({
     stock: z.object({ stockLevelStatus: z.object({ code: z.string() }).nullish() }).nullish(),
     unitDescription: z.string().nullish(), brandName: z.string().nullish(),
     sourceOfSupply: z.string().nullish(), longTail: z.boolean().nullish(),
-})) });
+})), pagination: z.object({ totalNumberOfResults: z.number().int().nonnegative().optional(),
+    totalResults: z.number().int().nonnegative().optional() }).optional() });
 
 export class BrowserShoppingSite implements ShoppingSite {
     constructor(private readonly getPage: () => Promise<Page>, private readonly profile: SiteProfile | undefined,
@@ -52,15 +53,55 @@ export class BrowserShoppingSite implements ShoppingSite {
 
     async search(query: string) {
         const page = await this.navigate(this.base);
-        const result: unknown = await page.evaluate(async (base, query) => {
-            const url = new URL("search/results", base);
-            url.searchParams.set("q", query);
-            url.searchParams.set("limit", "30");
-            const response = await fetch(url, { credentials: "include", headers: { accept: "application/json", "x-requested-with": "XMLHttpRequest" }, signal: AbortSignal.timeout(15_000) });
-            if (!response.ok) throw new Error("Search failed");
-            return response.json();
-        }, this.base, query);
-        return searchSchema.parse(result);
+        // The observed autocomplete contract supports limit, not a verified page/cursor parameter.
+        // Widen that bounded window. Never report absence as unavailable or claim exhaustion from a short page.
+        let previous: z.infer<typeof searchSchema>["results"] = [];
+        let reason = "bounded_window";
+        let lastLimit = 0;
+        for (const limit of [30, 60, 120, 240]) {
+            lastLimit = limit;
+            const raw: unknown = await page.evaluate(async (base, query, limit) => {
+                const url = new URL("search/results", base);
+                url.searchParams.set("q", query);
+                url.searchParams.set("limit", String(limit));
+                const response = await fetch(url, { credentials: "include", headers: { accept: "application/json", "x-requested-with": "XMLHttpRequest" }, signal: AbortSignal.timeout(15_000) });
+                if (!response.ok) throw new Error("Search failed");
+                return response.json();
+            }, this.base, query, limit);
+            const result = searchSchema.parse(raw);
+            const key = (product: typeof result.results[number]) => JSON.stringify([product.code,
+                typeof product.sellingMethod === "string" ? product.sellingMethod : product.sellingMethod.code]);
+            const keys = result.results.map(key);
+            if (new Set(keys).size !== keys.length || previous.some((product, index) => key(product) !== keys[index]))
+                throw new ShoppingError("SEARCH_CHANGED", "Search membership changed while widening results; retry a fresh search.");
+            previous = result.results;
+            const total = result.pagination?.totalNumberOfResults ?? result.pagination?.totalResults;
+            if (total !== undefined && total === previous.length)
+                return { results: previous, pagination: { complete: true, limit, reason: "reported_total" } };
+            if (result.results.length < limit) { reason = "source_did_not_report_exhaustion"; break; }
+        }
+        return { results: previous, pagination: { complete: false, limit: lastLimit, reason } };
+    }
+
+    async describeProduct(key: ProductKey, expectedAccountId?: string): Promise<ProductDescription> {
+        const snapshot = await this.readCart();
+        if (expectedAccountId && snapshot.accountId !== expectedAccountId) throw new ShoppingError("ACCOUNT_CHANGED", "Availability belongs to another account.");
+        const result = await this.search(key.productId);
+        const matches = result.results.filter(product => product.code === key.productId
+            && (typeof product.sellingMethod === "string" ? product.sellingMethod : product.sellingMethod.code) === key.sellingMethod);
+        if (matches.length !== 1) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact product and sale unit not uniquely verified.");
+        const product = matches[0];
+        const stock = product.stock?.stockLevelStatus?.code;
+        const stockValue = stock === "inStock" ? true : stock === "outOfStock" ? false : null;
+        const explicit = typeof product.available === "boolean" ? product.available : null;
+        const conflicting = explicit !== null && stockValue !== null && explicit !== stockValue;
+        const after = await this.readCart();
+        if (after.accountId !== snapshot.accountId) throw new ShoppingError("ACCOUNT_CHANGED", "Account changed during availability verification.");
+        return { ...key, name: product.name, available: conflicting ? null : explicit ?? stockValue,
+            identity: { barcode: /^P_\d+$/.test(key.productId) ? key.productId.slice(2) : null,
+                variant: product.variant ?? null, packSize: product.unitDescription ?? null,
+                equivalenceKeys: product.baseProduct ? [`sku:${key.productId.replace(/^P_/, "")}`, `base:${product.baseProduct}`] : null },
+            availabilityEvidence: { jsonStatus: explicit === null ? null : String(explicit), microdataStatuses: stock ? [stock] : [], conflicting } };
     }
 
     private async extractCart(page: Page, fields: CartFields): Promise<Cart> {
@@ -174,6 +215,17 @@ export class BrowserShoppingSite implements ShoppingSite {
         const page = await this.authenticatedPage(cart.path);
         await page.waitForSelector(cart.fields.ready);
         const row = await this.findRow(page, cart.fields.items.rows, cart.fields.items.productId, key.productId, cart.fields.items.sellingMethod, key.sellingMethod);
+        // Wait for the action's writes, not unrelated polling/analytics traffic. The profile
+        // button contract dispatches synchronously; missing dispatch remains uncertain.
+        const writes = new Map<HTTPRequest, { finished: boolean; failed: boolean }>();
+        const started = (request: HTTPRequest) => {
+            if (new URL(request.url()).origin === new URL(page.url()).origin
+                && ["POST", "PUT", "PATCH", "DELETE"].includes(request.method()))
+                writes.set(request, { finished: false, failed: false });
+        };
+        const finished = (request: HTTPRequest) => { const state = writes.get(request); if (state) state.finished = true; };
+        const failed = (request: HTTPRequest) => { const state = writes.get(request); if (state) { state.finished = true; state.failed = true; } };
+        page.on("request", started); page.on("requestfinished", finished); page.on("requestfailed", failed);
         try {
             if (amount === 0) {
                 await row.$eval(cart.fields.items.removeButton, button => { if (!(button instanceof HTMLElement)) throw new Error("Missing button"); button.click(); });
@@ -188,8 +240,22 @@ export class BrowserShoppingSite implements ShoppingSite {
                 }, amount);
                 await row.$eval(cart.fields.items.updateButton, button => { if (!(button instanceof HTMLElement)) throw new Error("Missing button"); button.click(); });
             }
-        } finally { await row.dispose(); }
-        await page.waitForNetworkIdle({ idleTime: 250, timeout: 10_000 });
+            // CDP request events may arrive after the click evaluation resolves. Observe a
+            // bounded dispatch/completion window, without dispatching the action a second time.
+            const deadline = Date.now() + 10_000;
+            while (Date.now() < deadline) {
+                if (writes.size && [...writes.values()].every(state => state.finished)) {
+                    if ([...writes.values()].some(state => state.failed))
+                        throw new ShoppingError("OUTCOME_UNKNOWN", "The quantity request lost its response. Read-only reconciliation is required.");
+                    return;
+                }
+                await new Promise(resolve => setTimeout(resolve, 25));
+            }
+            throw new ShoppingError("OUTCOME_UNKNOWN", "Quantity dispatch or response was not verified. Read-only reconciliation is required.");
+        } finally {
+            page.off("request", started); page.off("requestfinished", finished); page.off("requestfailed", failed);
+            await row.dispose();
+        }
     }
 
     private async findRow(page: Page, selector: string, field: { selector: string; attribute?: string }, value: string, second?: { selector: string; attribute?: string }, secondValue?: string) {

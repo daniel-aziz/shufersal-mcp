@@ -7,7 +7,7 @@ export const identitySchema = z.object({
     barcode: id.nullable(), variant: id.nullable(), packSize: id.nullable(),
     equivalenceKeys: z.array(id).min(1).nullable(),
 });
-export const productDescriptionSchema = z.object({ productId: id, sellingMethod: id, name: id, identity: identitySchema, available: z.boolean().nullable() });
+export const productDescriptionSchema = z.object({ productId: id, sellingMethod: id, name: id, identity: identitySchema, available: z.boolean().nullable(), availabilityEvidence: z.object({ jsonStatus: z.string().nullable(), microdataStatuses: z.array(z.string()), conflicting: z.boolean() }).optional() });
 export type ProductDescription = z.infer<typeof productDescriptionSchema>;
 export const lineSchema = z.object({
     productId: id,

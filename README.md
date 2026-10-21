@@ -86,7 +86,7 @@ For an uncertain cart write, call `reconcile_shufersal_cart`. It compares the ta
 
 ## Browser ownership and security
 
-All MCP shopping operations run sequentially, including reads that navigate the shared page. An exclusive filesystem lock prevents two servers using the same state directory. It is intentionally not stolen after a crash. Confirm that the old process is stopped, inspect pending operations, and only then remove a stale `owner.lock` file. Keep `operations.json` intact.
+All MCP shopping operations run sequentially, including reads that navigate the shared page. An exclusive filesystem lock prevents two servers using the same state directory. It is never stolen from a live or uncertain owner. Use `npm run ownership:status` and the supported `npm run recover:lock` flow after a crash; recovery archives a verified stale lock and preserves operation history. See [ownership and build identity](docs/ownership-build.md). Never manually delete `owner.lock` or `operations.json` to bypass a guard.
 
 Use **one state directory per account** and one active worker. A filesystem lock does not coordinate separate computers or unrelated state directories. The calling application must enforce ownership across remote/local runners. Stop the old worker before takeover, and reconcile uncertain operations first.
 
@@ -220,3 +220,7 @@ Absent-product writes verify explicit stock on the exact authenticated product p
 not price or search presence. Search responses retain `stock.stockLevelStatus.code`.
 Unknown availability still blocks a write; explicit out-of-stock is reported as
 unavailable. See [availability verification](docs/cart-workflow-contract.md#account-context-availability-2026-10-21).
+
+## Reliability audit
+
+See the [audit requirements and verification boundary](docs/reliability-audit.md), [adapter completeness and identity](docs/adapter-reliability.md), and [safe lock recovery/build identification](docs/ownership-build.md). The permanent client intentionally exposes four read/planning tools; the 23-tool repository inventory is exercised in isolated fixtures without expanding that permission boundary.

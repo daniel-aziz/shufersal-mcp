@@ -14,7 +14,7 @@ export class FakeSite {
     async open() { return { opened: true }; }
     async search(query) { return { results: [{ code: query }] }; }
     async readCart() { return structuredClone(this.current); }
-    async describeProduct(key) { return { ...key, name: 'Fixture product', available: true, identity: { barcode: null, variant: null, packSize: null, equivalenceKeys: ['sku:' + key.productId] } }; }
+    async describeProduct(key) { const line = this.current.items.find(item => item.productId === key.productId && item.sellingMethod === key.sellingMethod); return { ...key, name: line?.name ?? 'Fixture product', available: true, identity: line?.identity ?? { barcode: null, variant: null, packSize: null, equivalenceKeys: null } }; }
     async readOrders() { return structuredClone(this.history); }
     async readSlots() { return [slot]; }
     async add(key, amount) {

@@ -47,7 +47,8 @@ export class LiveShufersalSite extends BrowserShoppingSite {
 
     override async readCart() {
         const { page, accountId } = await this.page();
-        await page.waitForSelector("#cartContainer article:not(.miglog-prod-comment)");
+        await page.waitForFunction(() => Boolean(document.querySelector("#cartContainer article:not(.miglog-prod-comment)"))
+            || [...document.querySelectorAll("#cartContainer #cartTotalItems")].some(node => node.textContent?.trim() === "0"));
         const cart = await page.evaluate(() => {
             const roots = document.querySelectorAll("#cartContainer");
             if (roots.length !== 1) throw new Error("Cart missing or ambiguous");
@@ -64,7 +65,9 @@ export class LiveShufersalSite extends BrowserShoppingSite {
             const rows = Array.from(root.querySelectorAll("article")).filter(row =>
                 !row.classList.contains("miglog-prod-comment") || row.matches("[data-product-code], [data-entry-number], [data-entry-qty]")
                 || Boolean(row.querySelector(".miglog-prod-name, [name='sellingMethod']")));
-            if (!rows.length) throw new Error("Cart contents not verified: no product rows");
+            const counts = root.querySelectorAll("#cartTotalItems");
+            if (!rows.length && (counts.length !== 1 || counts[0].textContent?.trim() !== "0"))
+                throw new Error("Cart contents not verified: missing explicit empty state");
             const entries = new Set<string>();
             const products = new Set<string>();
             const items = rows.map(row => {
@@ -112,7 +115,7 @@ export class LiveShufersalSite extends BrowserShoppingSite {
             const response = await fetch("/online/he/cart/load", { credentials: "include", signal: AbortSignal.timeout(15_000) });
             if (!response.ok) return false;
             const document = new DOMParser().parseFromString(await response.text(), "text/html");
-            if (!document.querySelector(".miglog-prodlist")) return false;
+            if (document.querySelectorAll(".miglog-prodlist").length !== 1) return false;
             const rows = [...document.querySelectorAll("article")].filter(row => !row.classList.contains("miglog-prod-comment") || row.hasAttribute("data-product-code"));
             const actual = rows.map(row => {
                 const method = row.querySelector("[name='sellingMethod']");
@@ -120,7 +123,9 @@ export class LiveShufersalSite extends BrowserShoppingSite {
                     sellingMethod: method instanceof HTMLInputElement || method instanceof HTMLSelectElement ? method.value : null };
             });
             const normalize = (values: unknown[]) => JSON.stringify(values.map(value => JSON.stringify(value)).sort());
-            return rows.length > 0 && normalize(actual) === normalize(expected);
+            const counts = document.querySelectorAll("#cartTotalItems");
+            const explicitlyEmpty = counts.length === 1 && counts[0].textContent?.trim() === "0";
+            return (rows.length > 0 || explicitlyEmpty) && normalize(actual) === normalize(expected);
         }, cart.items.map(({ productId, quantity, sellingMethod }) => ({ productId, quantity, sellingMethod })));
         return cartSchema.parse({ ...cart, accountId, integrity: { complete, cartId: "active" } });
     }
@@ -198,6 +203,20 @@ export class LiveShufersalSite extends BrowserShoppingSite {
         return results;
     }
 
+    override async search(query: string) {
+        const result = await super.search(query);
+        const barcode = /^(?:P_)?(\d{8,14})$/.exec(query.trim())?.[1];
+        if (!barcode) return result;
+        const exactLookup = [];
+        for (const sellingMethod of ["BY_UNIT", "BY_WEIGHT"] as const) {
+            try { exactLookup.push(await this.describeProduct({ productId: `P_${barcode}`, sellingMethod })); }
+            catch (error) {
+                if (!(error instanceof ShoppingError) || error.code !== "IDENTITY_UNVERIFIED") throw error;
+            }
+        }
+        return { ...result, exactLookup, exactLookupVerified: exactLookup.length > 0 };
+    }
+
     async describeProduct(key: ProductKey, expectedAccountId?: string): Promise<ProductDescription> {
         // Search suggestions can omit a SKU entirely and their price is not stock evidence.
         // The authenticated exact product page exposes explicit Product/Offer availability.
@@ -228,17 +247,28 @@ export class LiveShufersalSite extends BrowserShoppingSite {
             const verified = statuses.length === 1 && statuses[0] === status;
             const available = verified && status === "https://schema.org/InStock" ? true
                 : verified && status === "https://schema.org/OutOfStock" ? false : null;
-            const packRows = [...document.querySelectorAll(".dataList .box")].filter(box => box.querySelector(".name")?.textContent?.trim() === "מידה/סוג:");
-            return { name: product.name, available, packSize: packRows.length === 1 ? packRows[0].querySelector(".text")?.textContent?.trim() ?? null : null };
+            const packRows = [...(productScope?.querySelectorAll(".dataList .box") ?? [])].filter(box => box.querySelector(".name")?.textContent?.trim() === "מידה/סוג:");
+            const baseProduct = root.getAttribute("data-base-product-code")?.trim() || null;
+            const variant = root.getAttribute("data-variant")?.trim() || null;
+            const packSize = root.getAttribute("data-unit-description")?.trim()
+                || (packRows.length === 1 ? packRows[0].querySelector(".text")?.textContent?.trim() ?? null : null);
+            return { name: product.name, available, packSize, baseProduct, variant,
+                availabilityEvidence: { jsonStatus: typeof status === "string" ? status : null,
+                    microdataStatuses: statuses.filter((value): value is string => typeof value === "string"),
+                    conflicting: new Set([status, ...statuses].filter(value => typeof value === "string")).size > 1 } };
         }, key);
         const account = accountSchema.safeParse(await page.evaluate(() => ({ uid: window.miglog?.account?.uid, anonymous: window.miglog?.account?.anonymous })));
         if (!account.success || createHash("sha256").update(account.data.uid).digest("hex") !== accountId)
             throw new ShoppingError("ACCOUNT_CHANGED", "Account changed while checking product availability.");
         if (!raw) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact SKU and sale unit were not uniquely verified on the product page.");
-        const product = z.object({ name: z.string().min(1), available: z.boolean().nullable(), packSize: z.string().nullable() }).parse(raw);
-        return { ...key, name: product.name, available: product.available,
+        const product = z.object({ name: z.string().min(1), available: z.boolean().nullable(), packSize: z.string().nullable(),
+            variant: z.string().nullable(), baseProduct: z.string().nullable(),
+            availabilityEvidence: z.object({ jsonStatus: z.string().nullable(), microdataStatuses: z.array(z.string()), conflicting: z.boolean() }),
+        }).parse(raw);
+        return { ...key, name: product.name, available: product.available, availabilityEvidence: product.availabilityEvidence,
             identity: { barcode: /^P_\d+$/.test(key.productId) ? key.productId.slice(2) : null,
-                variant: null, packSize: product.packSize, equivalenceKeys: null } };
+                variant: product.variant, packSize: product.packSize,
+                equivalenceKeys: product.baseProduct ? [`sku:${key.productId.replace(/^P_/, "")}`, `base:${product.baseProduct}`] : null } };
     }
 
     override async add(key: ProductKey, amount: number, comment: string, guard?: { expectedQuantity: number; targetQuantity: number; accountId: string }): Promise<WriteEvidence> {

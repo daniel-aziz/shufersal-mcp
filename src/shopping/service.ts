@@ -24,7 +24,7 @@ export class ShoppingService {
     async search(query: string) { return this.site.search(query); }
     async cart() {
         const cart = cartSchema.parse(await this.site.readCart());
-        if (cart.integrity?.complete === false) throw new ShoppingError("INCOMPLETE_CART", "Cart integrity is unverified; all writes are blocked.");
+        if (cart.integrity?.complete !== true) throw new ShoppingError("INCOMPLETE_CART", "Cart integrity is unverified; all writes are blocked.");
         for (const line of cart.items) quantity(cart, line);
         return { ...cart, revision: revision(cart) };
     }
@@ -43,12 +43,27 @@ export class ShoppingService {
 
     private async describe(cart: Cart, key: ProductKey): Promise<ProductDescription> {
         const line = cart.items.find(item => item.productId === key.productId && item.sellingMethod === key.sellingMethod);
-        if (line) return { productId: line.productId, sellingMethod: line.sellingMethod, name: line.name, available: true,
-            identity: line.identity ?? { barcode: null, variant: null, packSize: null, equivalenceKeys: null } };
-        if (!this.site.describeProduct) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact product identity and availability must be verified before adding an absent SKU.");
+        if (!this.site.describeProduct) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact account-context product availability must be verified before changing quantities.");
         const description = productDescriptionSchema.parse(await this.site.describeProduct(key, cart.accountId));
-        if (description.productId !== key.productId || description.sellingMethod !== key.sellingMethod) throw new ShoppingError("PRODUCT_MISMATCH", "The returned SKU or sale unit does not match the requested product.");
-        return description;
+        if (description.productId !== key.productId || description.sellingMethod !== key.sellingMethod)
+            throw new ShoppingError("PRODUCT_MISMATCH", "The returned SKU or sale unit does not match the requested product.");
+        if (!line?.identity) return description;
+        for (const field of ["barcode", "variant", "packSize"] as const) {
+            const previous = line.identity[field];
+            const current = description.identity[field];
+            if (previous !== null && current !== null && previous !== current)
+                throw new ShoppingError("PRODUCT_MISMATCH", "Product or pack identity conflicts with the verified cart row.");
+        }
+        const previousKeys = line.identity.equivalenceKeys;
+        const currentKeys = description.identity.equivalenceKeys;
+        if (previousKeys && currentKeys && JSON.stringify([...previousKeys].sort()) !== JSON.stringify([...currentKeys].sort()))
+            throw new ShoppingError("PACK_EQUIVALENCE_REVIEW", "Fresh product equivalence conflicts with the cart; review the exact sale unit before writing.");
+        return { ...description, identity: {
+            barcode: description.identity.barcode ?? line.identity.barcode,
+            variant: description.identity.variant ?? line.identity.variant,
+            packSize: description.identity.packSize ?? line.identity.packSize,
+            equivalenceKeys: currentKeys ?? previousKeys,
+        } };
     }
 
     private assertIndependent(operations: Record<string, Operation>, cart: Cart | undefined, product: ProductDescription | undefined) {
@@ -199,7 +214,7 @@ export class ShoppingService {
         try { result = await this.verifyCartChange(operation); }
         catch (error) { await this.saveEvidence(operations); throw error; }
         operations[operationId] = { ...operation, status: "complete", result };
-        await this.journal.save(operations);
+        await this.saveEvidence(operations);
         return result;
     }
 

@@ -16,6 +16,9 @@ test('live adapter uses absolute update for existing 12 + delta 5 = 17, with cor
   if(req.url==='/online/he/cart/load'){res.end(html());return;}
   if(req.url.startsWith('/fixture/update')){updateCalls++;quantity=Number(new URL(req.url,'http://fixture').searchParams.get('quantity'));res.end(html());return;}
   if(req.url.startsWith('/fixture/add')){addCalls++;present=true;quantity=Number(new URL(req.url,'http://fixture').searchParams.get('quantity'));res.end(html());return;}
+  if(req.url.startsWith('/online/he/p/')) {res.end(`<script>window.miglog={account:{uid:'fixture',anonymous:false}};</script>
+  <div itemscope itemtype="https://schema.org/Product"><div class="addToCart" data-product-code="${key.productId}" data-base-product-code="pro20" data-unit-description="200g" data-variant="PRO20"><input name="sellingMethod" value="BY_UNIT"></div><div itemscope itemtype="https://schema.org/Offer"><link itemprop="availability" href="https://schema.org/InStock"></div></div>
+  <script type="application/ld+json">${JSON.stringify({'@type':'Product',sku:key.productId.slice(2),name:'Danone PRO20',offers:{availability:'https://schema.org/InStock'}})}</script>`);return;}
   res.end(`<script>window.miglog={account:{uid:'fixture',anonymous:false},cart:{
    addToCart:async(id,qty,method,comment,element,context)=>{if(element!==null||context.openFrom!=='SEARCH')throw Error('wrong arguments');return (await fetch('/fixture/add?quantity='+qty)).text()},
    item:{update_qty:async(entry,method,qty,id)=>{const body=await(await fetch('/fixture/update?quantity='+qty)).text();if(${lose})throw {status:502,responseText:'password=SECRET cookie=SECRET'};return body;}}

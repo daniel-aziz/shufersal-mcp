@@ -23,7 +23,9 @@
     "auth": "node scripts/verify-live.mjs --auth-only",
     "verify:live": "node scripts/verify-live.mjs",
     "verify:cart": "node scripts/verify-live-cart.mjs",
-    "recover:cart": "node dist/recover-cart.js"
+    "recover:cart": "node dist/recover-cart.js",
+    "ownership:status": "node dist/recover-lock.js --inspect",
+    "recover:lock": "node dist/recover-lock.js --recover"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",

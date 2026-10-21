@@ -42,3 +42,36 @@ test('real Chromium exercises search, cart changes, slots, checkout and order ve
         await assert.rejects(new BrowserShoppingSite(async()=>page,undefined,fixture.base).readCart(),error=>error.code==='SITE_PROFILE_REQUIRED');
     } finally { await browser.close(); await fixture.close(); }
 });
+
+
+test('quantity writes complete once while unrelated background GET requests remain active', async () => {
+    const fixture=await startFixture();fixture.state.backgroundPolling=true;
+    const browser=await puppeteer.launch({headless:true,args:process.env.CI?['--no-sandbox']:[]});
+    try {
+        const page=await browser.newPage();const journal=new MemoryJournal();
+        const service=new ShoppingService(new BrowserShoppingSite(async()=>page,profile,fixture.base),journal);
+        const before=await service.cart();
+        const input={productId:'milk',sellingMethod:'unit',quantity:4,mode:'set',expectedRevision:before.revision,operationId:'polling-set',comment:''};
+        try { await service.changeQuantity(input); }
+        catch(error) { assert.equal(fixture.state.current.items[0].quantity,4);assert.equal(fixture.state.writes,1);throw error; }
+        assert.equal(fixture.state.current.items[0].quantity,4);assert.equal(fixture.state.writes,1);
+        await service.changeQuantity(input);assert.equal(fixture.state.writes,1);
+        await service.changeQuantity({...input,quantity:0,expectedRevision:(await service.cart()).revision,operationId:'polling-remove'});
+        assert.equal(fixture.state.current.items.length,0);assert.equal(fixture.state.writes,2);
+    } finally {await browser.close();await fixture.close();}
+});
+
+
+test('profile quantity response loss preserves pending outcome and never replays dispatch',async()=>{
+    const fixture=await startFixture();fixture.state.loseQuantityResponse=true;
+    const browser=await puppeteer.launch({headless:true,args:process.env.CI?['--no-sandbox']:[]});
+    try {
+        const page=await browser.newPage();const journal=new MemoryJournal();
+        const service=new ShoppingService(new BrowserShoppingSite(async()=>page,profile,fixture.base),journal);
+        const input={productId:'milk',sellingMethod:'unit',quantity:4,mode:'set',expectedRevision:(await service.cart()).revision,operationId:'lost-profile-response',comment:''};
+        await assert.rejects(service.changeQuantity(input),{code:'OUTCOME_UNKNOWN'});
+        assert.equal(fixture.state.current.items[0].quantity,4);assert.equal(fixture.state.writes,1);
+        assert.equal((await service.operation(input.operationId)).status,'pending');
+        await assert.rejects(service.changeQuantity(input),{code:'OUTCOME_UNKNOWN'});assert.equal(fixture.state.writes,1);
+    } finally {await browser.close();await fixture.close();}
+});
