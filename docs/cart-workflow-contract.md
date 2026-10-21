@@ -36,3 +36,30 @@ Evidence includes allowlisted stage/reason, exception type and digest, numeric H
 4. Batch targets execute sequentially from fresh state and return `verified`, `unresolved`, `unavailable` and `unattempted`, plus the full pending-operation list. A scoped uncertain item does not cancel safe independent items. Cart changes require fresh review; no blind retry. A previously completed result is historical, not a claim about today's quantity.
 
 Do not use the contextual target list as execution permission during repair. Preserve all Coke Zero and unrelated items. Checkout remains disabled. No profile, credential or ledger reset is part of setup. Reconnect the local MCP after deployment to discover the added tools.
+
+## Account-context availability (2026-10-21)
+
+Search suggestions expose `stock.stockLevelStatus.code`; the old Zod schema stripped
+`stock`, and `describeProduct` incorrectly expected a top-level `available` boolean.
+The search schema now preserves the allowlisted status without exposing arbitrary
+response fields. Search results remain discovery data, not permission to write.
+
+Before adding an absent SKU, the live adapter opens its exact `/online/he/p/{SKU}`
+page in the authenticated browser. It requires matching Product JSON-LD SKU, exact
+cart-control product code, requested selling unit, and the same account as the
+fresh cart both before and after parsing. Product-scoped Offer microdata must agree
+with that Product's JSON-LD: `https://schema.org/InStock` is available;
+`https://schema.org/OutOfStock` is unavailable. Missing, contradictory, duplicate or
+unrecognized stock evidence is unknown. Missing identity fails closed. Price,
+catalog presence and add buttons never establish stock. This check does not reserve
+inventory; existing pre-write and readback safeguards still apply.
+
+Read-only authenticated inspection of `P_7290116936628` found matching SKU and
+`OutOfStock` in both representations, plus the visible out-of-stock indicator.
+The product modal nevertheless displayed an add button and price, demonstrating
+why those are unsafe availability signals. Barcode search did not return this SKU
+at inspection time. No live write was performed; stock may change later.
+
+The availability check reports unknown variant/equivalence metadata rather than
+inventing pack relationships. Existing cart rows retain their verified identity;
+uncertain operations with unknown equivalence scope remain conservatively blocked.

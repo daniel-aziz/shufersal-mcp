@@ -7,7 +7,8 @@ const searchSchema = z.object({ results: z.array(z.object({
     code: z.string(), name: z.string(),
     price: z.union([z.number(), z.object({ value: z.number(), formattedValue: z.string().optional() })]),
     sellingMethod: z.union([z.string(), z.object({ code: z.string() })]),
-    baseProduct: z.string().nullish(), variant: z.string().nullish(), available: z.boolean().optional(),
+    baseProduct: z.string().nullish(), variant: z.string().nullish(), available: z.boolean().nullish(),
+    stock: z.object({ stockLevelStatus: z.object({ code: z.string() }).nullish() }).nullish(),
     unitDescription: z.string().nullish(), brandName: z.string().nullish(),
     sourceOfSupply: z.string().nullish(), longTail: z.boolean().nullish(),
 })) });
