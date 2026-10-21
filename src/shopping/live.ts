@@ -198,16 +198,47 @@ export class LiveShufersalSite extends BrowserShoppingSite {
         return results;
     }
 
-    async describeProduct(key: ProductKey): Promise<ProductDescription> {
-        const results = await this.search(key.productId.replace(/^P_/, ""));
-        const matches = results.results.filter(product => product.code === key.productId
-            && (typeof product.sellingMethod === "string" ? product.sellingMethod : product.sellingMethod.code) === key.sellingMethod);
-        if (matches.length !== 1) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact SKU and sale unit were not uniquely returned by catalog search.");
-        const product = matches[0];
-        return { ...key, name: product.name, available: product.available ?? null,
-            identity: { barcode: /^P_\d+$/.test(product.code) ? product.code.slice(2) : null,
-                variant: product.variant ?? null, packSize: product.unitDescription ?? null,
-                equivalenceKeys: product.baseProduct ? [`sku:${product.code.replace(/^P_/, "")}`, `base:${product.baseProduct}`] : null } };
+    async describeProduct(key: ProductKey, expectedAccountId?: string): Promise<ProductDescription> {
+        // Search suggestions can omit a SKU entirely and their price is not stock evidence.
+        // The authenticated exact product page exposes explicit Product/Offer availability.
+        const { page, accountId } = await this.page(`p/${encodeURIComponent(key.productId)}`);
+        if (expectedAccountId && accountId !== expectedAccountId) throw new ShoppingError("ACCOUNT_CHANGED", "Product availability belongs to a different account.");
+        const raw = await page.evaluate(key => {
+            const roots = [...document.querySelectorAll(".addToCart[data-product-code]")].filter(root => root.getAttribute("data-product-code") === key.productId);
+            const products: { sku?: unknown; name?: unknown; offers?: { availability?: unknown } }[] = [];
+            for (const script of document.querySelectorAll('script[type="application/ld+json"]')) {
+                try {
+                    const value = JSON.parse(script.textContent ?? "");
+                    if (value?.["@type"] === "Product") products.push(value);
+                } catch { /* Malformed structured data cannot establish availability. */ }
+            }
+            const matches = products.filter(product => product.sku === key.productId.replace(/^P_/, ""));
+            const root = roots.length === 1 ? roots[0] : null;
+            const methods = root?.querySelectorAll('[name="sellingMethod"]');
+            const method = methods?.length === 1 ? methods[0] : null;
+            const saleUnitMatches = method instanceof HTMLSelectElement
+                ? [...method.options].some(option => option.value === key.sellingMethod && !option.disabled)
+                : method instanceof HTMLInputElement && method.value === key.sellingMethod;
+            if (!root || matches.length !== 1 || !saleUnitMatches) return null;
+            const product = matches[0];
+            const productScope = root.closest('[itemscope][itemtype="https://schema.org/Product"]');
+            const statuses = [...(productScope?.querySelectorAll('[itemscope][itemtype="https://schema.org/Offer"] [itemprop="availability"]') ?? [])].map(node => node.getAttribute("href") ?? node.getAttribute("content"));
+            const status = product.offers?.availability;
+            // Require the two server-rendered explicit representations to agree. Unknown is never in stock.
+            const verified = statuses.length === 1 && statuses[0] === status;
+            const available = verified && status === "https://schema.org/InStock" ? true
+                : verified && status === "https://schema.org/OutOfStock" ? false : null;
+            const packRows = [...document.querySelectorAll(".dataList .box")].filter(box => box.querySelector(".name")?.textContent?.trim() === "מידה/סוג:");
+            return { name: product.name, available, packSize: packRows.length === 1 ? packRows[0].querySelector(".text")?.textContent?.trim() ?? null : null };
+        }, key);
+        const account = accountSchema.safeParse(await page.evaluate(() => ({ uid: window.miglog?.account?.uid, anonymous: window.miglog?.account?.anonymous })));
+        if (!account.success || createHash("sha256").update(account.data.uid).digest("hex") !== accountId)
+            throw new ShoppingError("ACCOUNT_CHANGED", "Account changed while checking product availability.");
+        if (!raw) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact SKU and sale unit were not uniquely verified on the product page.");
+        const product = z.object({ name: z.string().min(1), available: z.boolean().nullable(), packSize: z.string().nullable() }).parse(raw);
+        return { ...key, name: product.name, available: product.available,
+            identity: { barcode: /^P_\d+$/.test(key.productId) ? key.productId.slice(2) : null,
+                variant: null, packSize: product.packSize, equivalenceKeys: null } };
     }
 
     override async add(key: ProductKey, amount: number, comment: string, guard?: { expectedQuantity: number; targetQuantity: number; accountId: string }): Promise<WriteEvidence> {

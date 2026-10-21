@@ -85,7 +85,7 @@ export interface ShoppingSite {
     readCart(): Promise<Cart>;
     readOrders(): Promise<Order[]>;
     readSlots(): Promise<Slot[]>;
-    describeProduct?(key: ProductKey): Promise<ProductDescription>;
+    describeProduct?(key: ProductKey, expectedAccountId?: string): Promise<ProductDescription>;
     add(key: ProductKey, amount: number, comment: string, guard?: { expectedQuantity: number; targetQuantity: number; accountId: string }): Promise<void | import("./evidence.js").WriteEvidence>;
     setQuantity(key: ProductKey, amount: number): Promise<void>;
     selectSlot(slotId: string): Promise<void>;

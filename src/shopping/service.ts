@@ -46,7 +46,7 @@ export class ShoppingService {
         if (line) return { productId: line.productId, sellingMethod: line.sellingMethod, name: line.name, available: true,
             identity: line.identity ?? { barcode: null, variant: null, packSize: null, equivalenceKeys: null } };
         if (!this.site.describeProduct) throw new ShoppingError("IDENTITY_UNVERIFIED", "Exact product identity and availability must be verified before adding an absent SKU.");
-        const description = productDescriptionSchema.parse(await this.site.describeProduct(key));
+        const description = productDescriptionSchema.parse(await this.site.describeProduct(key, cart.accountId));
         if (description.productId !== key.productId || description.sellingMethod !== key.sellingMethod) throw new ShoppingError("PRODUCT_MISMATCH", "The returned SKU or sale unit does not match the requested product.");
         return description;
     }

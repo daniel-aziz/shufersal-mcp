@@ -215,3 +215,8 @@ See [cart workflow contract and incident findings](docs/cart-workflow-contract.m
 Existing recovery tools support replacing a superseded product target or accepting `targets: []` to abandon it. Owner approval still binds the full current snapshot and targets, with historical outcome unknown. Missing or unverified rows never authorize a zero-based addition.
 
 See [Dot deployment and tool discovery](docs/dot-setup.md) for updating the local worker without resetting its session or ledger.
+
+Absent-product writes verify explicit stock on the exact authenticated product page,
+not price or search presence. Search responses retain `stock.stockLevelStatus.code`.
+Unknown availability still blocks a write; explicit out-of-stock is reported as
+unavailable. See [availability verification](docs/cart-workflow-contract.md#account-context-availability-2026-10-21).
