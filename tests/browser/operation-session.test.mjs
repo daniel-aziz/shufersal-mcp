@@ -29,3 +29,23 @@ test('owned Chromium closes after success/error and another session reuses the s
   assert.equal((await inspectOwnership(dir)).status,'unlocked');
  }finally{await a.close();await b.close();await rm(dir,{recursive:true,force:true});}
 });
+
+test('a relaunch on the same profile does not restore tabs from the previous launch',async(t)=>{
+ if(process.env.CI) {
+  const launch=puppeteer.launch.bind(puppeteer);
+  t.mock.method(puppeteer,'launch',options=>launch({...options,args:[...(options.args??[]),'--no-sandbox']}));
+ }
+ const dir=await mkdtemp(join(tmpdir(),'browser-restore-'));
+ // Chrome 154 restores tabs; set PUPPETEER_EXECUTABLE_PATH to the production browser to cover it.
+ const session=new BrowserSession({profile:join(dir,'browser'),headless:true,executablePath:process.env.PUPPETEER_EXECUTABLE_PATH});
+ try {
+  for(let launch=1;launch<=3;launch++){
+   const page=await session.getPage();
+   await page.setContent(`<p>launch ${launch}</p>`);
+   await new Promise(resolve=>setTimeout(resolve,1500)); // Chrome opens restored tabs asynchronously.
+   // Startup tab plus the operation page; restored tabs would add two per prior launch.
+   assert.equal((await page.browser().pages()).length,2);
+   await session.close();
+  }
+ }finally{await session.close();await rm(dir,{recursive:true,force:true});}
+});

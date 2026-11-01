@@ -1,5 +1,6 @@
 import puppeteer, { type Browser, type Page } from "puppeteer";
-import { mkdir, chmod } from "node:fs/promises";
+import { mkdir, chmod, rm } from "node:fs/promises";
+import { join } from "node:path";
 import { ShoppingError } from "./shopping/model.js";
 
 export class BrowserSession {
@@ -18,6 +19,9 @@ export class BrowserSession {
             } else {
                 await mkdir(this.options.profile, { recursive: true, mode: 0o700 });
                 await chmod(this.options.profile, 0o700);
+                // Chrome restores every tab from the previous launch; those tabs reload alongside each operation.
+                // Remove only tab-restore data. Cookies, login and storage are unchanged.
+                await rm(join(this.options.profile, "Default", "Sessions"), { recursive: true, force: true });
                 this.browser = await puppeteer.launch({ userDataDir: this.options.profile, headless: this.options.headless, executablePath: this.options.executablePath });
             }
         }
